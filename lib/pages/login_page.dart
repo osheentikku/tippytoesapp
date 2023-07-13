@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_textfield.dart';
 
@@ -26,12 +27,12 @@ class LoginPage extends StatelessWidget {
               //logo
               CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 150,
+                radius: 130,
                 backgroundImage: AssetImage('lib/images/tippytoeslogo'),
               ),
 
               //padding
-              SizedBox(height: 50),
+              SizedBox(height: 30),
 
               //email
               LoginSignUpTextField(
@@ -82,7 +83,7 @@ class LoginPage extends StatelessWidget {
               ),
 
               //pading
-              SizedBox(height: 40),
+              SizedBox(height: 30),
 
               //login
               LoginSignupButton(
@@ -125,18 +126,53 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
 
+              //padding
+              SizedBox(
+                height: 30,
+              ),
+
               //apple/google logo
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                
-                //google logo
+                  //apple logo
+                  AppleGoogleBackground(imagePath: "lib/images/google.png"),
 
-                //apple logo
-                
+                  //spacing
+                  SizedBox(
+                    width: 30,
+                  ),
+
+                  //google logo
+                  AppleGoogleBackground(imagePath: "lib/images/apple.png"),
                 ],
               ),
 
+              //padding
+              SizedBox(height: 50),
+
               //dont have an account?
+              //forgot password
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Don\'t have an account?',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      'Sign up.',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
