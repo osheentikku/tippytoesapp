@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_textfield.dart';
 
 class LoginPage extends StatelessWidget {
@@ -7,6 +8,9 @@ class LoginPage extends StatelessWidget {
   //text editting controllers
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  //user login method
+  void userLogin() {}
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             children: [
               //pre logo padding
-              SizedBox(height: 40),
+              SizedBox(height: 30),
 
               //logo
               CircleAvatar(
@@ -43,7 +47,7 @@ class LoginPage extends StatelessWidget {
 
               //padding
               SizedBox(
-                height: 40,
+                height: 30,
               ),
 
               //password
@@ -57,11 +61,80 @@ class LoginPage extends StatelessWidget {
                   size: 35,
                 ),
               ),
+
+              //padding
+              SizedBox(
+                height: 8,
+              ),
+
               //forgot password
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Forgot Password?',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+
+              //pading
+              SizedBox(height: 40),
 
               //login
+              LoginSignupButton(
+                text: 'LOGIN',
+                onTap: userLogin,
+              ),
 
-              //apple/google row
+              //padding
+              SizedBox(
+                height: 30,
+              ),
+
+              //or continue with
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Color.fromARGB(255, 116, 97, 97),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        'Or continue with',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 87, 73, 73),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Color.fromARGB(255, 116, 97, 97),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              //apple/google logo
+              Row(
+                children: [
+                
+                //google logo
+
+                //apple logo
+                
+                ],
+              ),
 
               //dont have an account?
             ],

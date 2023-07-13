@@ -39,9 +39,8 @@ class LoginSignUpTextField extends StatelessWidget {
           //hints
           hintText: hintText,
           hintStyle: TextStyle(
-            fontFamily: 'Inter',
             fontSize: 20,
-            color: Colors.black38,
+            color: Colors.black54,
           ),
           prefixIcon: preIcon,
         ),

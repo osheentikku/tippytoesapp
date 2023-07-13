@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tippy Toes Daycare',
       theme: ThemeData(  
-        fontFamily: GoogleFonts.inter().fontFamily, 
+        fontFamily: 'Inter', 
       ),
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
