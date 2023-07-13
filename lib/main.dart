@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'pages/login_page.dart';
 
 void main() {
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tippy Toes Daycare',
-      theme: ThemeData(        
+      theme: ThemeData(  
+        fontFamily: GoogleFonts.inter().fontFamily, 
       ),
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
