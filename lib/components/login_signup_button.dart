@@ -4,18 +4,26 @@ import 'package:google_fonts/google_fonts.dart';
 class LoginSignupButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
+  final screenHeight;
+  final screenWidth;
 
-  const LoginSignupButton({super.key, required this.onTap, required this.text});
+  const LoginSignupButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    required this.screenHeight,
+    required this.screenWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(15),
-        margin: EdgeInsets.symmetric(horizontal: 125),
+        padding: EdgeInsets.all(screenHeight * 0.015),
+        margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(screenWidth * 0.05),
           color: Colors.white,
         ),
         child: Center(

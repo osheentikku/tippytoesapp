@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>595744277476-dj9rg5cuaquft4k7ndb9vikdiic17ch1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.595744277476-dj9rg5cuaquft4k7ndb9vikdiic17ch1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC2ydJdfuCCnXihdv_KneT0tOrp06A6C6Y</string>
+	<key>GCM_SENDER_ID</key>
+	<string>595744277476</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>us.tippytoes.tippytoesapp</string>
+	<key>PROJECT_ID</key>
+	<string>tippytoes-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tippytoes-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:595744277476:ios:2f05658543b93369443df1</string>
+</dict>
+</plist>

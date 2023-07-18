@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tippytoesapp/pages/auth_page.dart';
 import 'pages/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -14,11 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tippy Toes Daycare',
-      theme: ThemeData(  
-        fontFamily: 'Inter', 
+      theme: ThemeData(
+        fontFamily: 'Inter',
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: const AuthPage(),
     );
   }
 }
