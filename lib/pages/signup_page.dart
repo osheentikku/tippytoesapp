@@ -20,7 +20,6 @@ class _SignupPageState extends State<SignupPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  
 
   //account type
   bool isAdmin = false;
@@ -32,35 +31,41 @@ class _SignupPageState extends State<SignupPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
     );
 
+    //check if password is confirmed
+    if (passwordController.text.trim() !=
+        confirmPasswordController.text.trim()) {
+      Navigator.pop(context);
+      showErrorMessage("Passwords don't match. Please try again.");
+      return;
+    }
+
     //try creating the user
     try {
-      //check if password is confirmed
-      if (passwordController.text.trim() == confirmPasswordController.text.trim()) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
-      } else {
-        //show error message, passwords don't match
-        showErrorMessage("Passwords don't match. Please try again.");
-      }
-
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
       //pop loading circle
       Navigator.pop(context);
-
+      
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);
-
       //wrong login info
-      showErrorMessage(
-          "Your username or password is incorrect. Please try again.");
+      if (e.code == "weak-password") {
+        showErrorMessage(
+            "Weak password. Make sure password length is at least 6 characters.");
+      } else if (e.code == 'email-already-in-use') {
+        showErrorMessage("Account already exists with this email.");
+      } else {
+        showErrorMessage(e.code);
+      }
     }
   }
 
@@ -75,7 +80,7 @@ class _SignupPageState extends State<SignupPage> {
             child: Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 107, 95, 95),
@@ -263,28 +268,28 @@ class _SignupPageState extends State<SignupPage> {
                 //padding
                 SizedBox(height: screenHeight * 0.05),
 
-                //dont have an account?
+                //already have an account?
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account?',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(
-                        width: screenWidth * 0.01,
-                      ),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: Text(
+                  child: GestureDetector(
+                    onTap: widget.onTap,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account?',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.01,
+                        ),
+                        Text(
                           'Login now.',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

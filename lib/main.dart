@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter',
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginOrSignupPage(),
+      home: AuthPage(),
     );
   }
 }

@@ -234,25 +234,25 @@ class _LoginPageState extends State<LoginPage> {
                 //dont have an account?
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don\'t have an account?',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(
-                        width: screenWidth * 0.01,
-                      ),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: Text(
+                  child: GestureDetector(
+                    onTap: widget.onTap,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.01,
+                        ),
+                        const Text(
                           'Sign up.',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
