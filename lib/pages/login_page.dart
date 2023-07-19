@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
-import 'package:tippytoesapp/components/login_signup_textfield.dart';
+import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,8 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     //try login
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
 
       //pop loading circle
@@ -98,11 +98,11 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //email
-                LoginSignUpTextField(
+                LoginSignUpIconTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
-                  hintText: "email",
+                  hintText: "Email",
                   obscure: false,
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
@@ -117,11 +117,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //password
-                LoginSignUpTextField(
+                LoginSignUpIconTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: passwordController,
-                  hintText: "password",
+                  hintText: "Password",
                   obscure: true,
                   preIcon: Icon(
                     Icons.lock_outline_rounded,
@@ -232,7 +232,6 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: screenHeight * 0.05),
 
                 //dont have an account?
-                //forgot password
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                   child: Row(

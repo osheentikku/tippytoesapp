@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tippytoesapp/pages/login_or_signup_page.dart';
 import 'package:tippytoesapp/pages/login_page.dart';
 import 'home_page.dart';
 
@@ -18,7 +19,7 @@ class AuthPage extends StatelessWidget {
           }
           //user is NOT logged in
           else {
-            return LoginPage();
+            return LoginOrSignupPage();
           }
         },
       ),

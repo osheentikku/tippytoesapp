@@ -6,14 +6,12 @@ class LoginSignUpTextField extends StatelessWidget {
   final controller;
   final String hintText;
   final bool obscure;
-  final Icon preIcon;
 
   const LoginSignUpTextField({
     super.key,
     required this.controller,
     required this.hintText,
     required this.obscure,
-    required this.preIcon,
     required this.screenHeight,
     required this.screenWidth,
   });
@@ -46,7 +44,6 @@ class LoginSignUpTextField extends StatelessWidget {
             fontSize: 20,
             color: Colors.black54,
           ),
-          prefixIcon: preIcon,
         ),
       ),
     );
