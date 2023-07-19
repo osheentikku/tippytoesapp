@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LoginSignUpIconTextField extends StatelessWidget {
-  final screenHeight;
-  final screenWidth;
-  final controller;
+  final double screenHeight;
+  final double screenWidth;
+  final TextEditingController controller;
   final String hintText;
   final bool obscure;
   final Icon preIcon;
@@ -29,11 +29,11 @@ class LoginSignUpIconTextField extends StatelessWidget {
           //border
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: const BorderSide(color: Colors.white),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: const BorderSide(color: Colors.white),
           ),
 
           //filled color
@@ -42,7 +42,7 @@ class LoginSignUpIconTextField extends StatelessWidget {
 
           //hints
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 20,
             color: Colors.black54,
           ),

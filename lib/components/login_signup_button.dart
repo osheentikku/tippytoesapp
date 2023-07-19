@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginSignupButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
-  final screenHeight;
-  final screenWidth;
+  final double screenHeight;
+  final double screenWidth;
 
   const LoginSignupButton({
     super.key,
@@ -29,7 +28,7 @@ class LoginSignupButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 107, 95, 95)),

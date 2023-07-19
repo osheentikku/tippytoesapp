@@ -5,6 +5,8 @@ import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 
+import 'forgot_password_page.dart';
+
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
   LoginPage({super.key, required this.onTap});
@@ -24,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
@@ -44,22 +46,22 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
 
       //wrong login info
-      loginErrorMessage();
+      showErrorMessage(e.message.toString());
     }
   }
 
-  //wrong email/password message popup
-  void loginErrorMessage() {
+  //error message popup
+  void showErrorMessage(String message) {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
+        return AlertDialog(
           backgroundColor: Colors.white,
           title: Center(
             child: Text(
-              'Your username or password is incorrect. Please try again.',
+              message,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 107, 95, 95),
@@ -73,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    //get screen height and width
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -141,9 +144,21 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(fontSize: 18),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ForgotPasswordPage();
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),

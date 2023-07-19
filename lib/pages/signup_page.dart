@@ -53,19 +53,11 @@ class _SignupPageState extends State<SignupPage> {
       );
       //pop loading circle
       Navigator.pop(context);
-      
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);
       //wrong login info
-      if (e.code == "weak-password") {
-        showErrorMessage(
-            "Weak password. Make sure password length is at least 6 characters.");
-      } else if (e.code == 'email-already-in-use') {
-        showErrorMessage("Account already exists with this email.");
-      } else {
-        showErrorMessage(e.code);
-      }
+      showErrorMessage(e.message.toString());
     }
   }
 

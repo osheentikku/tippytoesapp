@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LoginSignUpTextField extends StatelessWidget {
-  final screenHeight;
-  final screenWidth;
-  final controller;
+  final double screenHeight;
+  final double screenWidth;
+  final TextEditingController controller;
   final String hintText;
   final bool obscure;
 
@@ -40,7 +40,7 @@ class LoginSignUpTextField extends StatelessWidget {
 
           //hints
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 20,
             color: Colors.black54,
           ),
