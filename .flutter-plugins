@@ -1,4 +1,6 @@
 # This is a generated file; do not edit or check into version control.
+cloud_firestore=/Users/osheentikku/.pub-cache/hosted/pub.dev/cloud_firestore-4.8.3/
+cloud_firestore_web=/Users/osheentikku/.pub-cache/hosted/pub.dev/cloud_firestore_web-3.6.3/
 firebase_auth=/Users/osheentikku/.pub-cache/hosted/pub.dev/firebase_auth-4.7.0/
 firebase_auth_web=/Users/osheentikku/.pub-cache/hosted/pub.dev/firebase_auth_web-5.6.0/
 firebase_core=/Users/osheentikku/.pub-cache/hosted/pub.dev/firebase_core-2.15.0/

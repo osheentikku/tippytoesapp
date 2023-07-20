@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_textfield.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
+import 'package:change_case/change_case.dart';
 
 class SignupPage extends StatefulWidget {
   final Function()? onTap;
@@ -23,7 +25,7 @@ class _SignupPageState extends State<SignupPage> {
 
   //account type
   bool isAdmin = false;
-  bool approved = false;
+  bool isApproved = false;
 
   //user signup method
   void userSignup() async {
@@ -59,6 +61,26 @@ class _SignupPageState extends State<SignupPage> {
       //wrong login info
       showErrorMessage(e.message.toString());
     }
+
+    //add user details
+    addUserDetails(
+      firstNameController.text.trim().toCapitalCase(),
+      lastNameController.text.trim().toCapitalCase(),
+      emailController.text.trim().toLowerCase(),
+      isAdmin,
+      isApproved,
+    );
+  }
+
+  void addUserDetails(String firstName, String lastName, String email,
+      bool isAdmin, bool isApproved) async {
+    await FirebaseFirestore.instance.collection("users").doc(email).set({
+      'First Name': firstName,
+      'Last Name': lastName,
+      'Email': email,
+      'Admin': isAdmin,
+      'Approved': isApproved,
+    });
   }
 
   //error message popup
@@ -84,6 +106,16 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  void setAdmin(bool? selectedValue) {
+    if (selectedValue is bool) {
+      setState(
+        () {
+          isAdmin = selectedValue;
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -97,9 +129,10 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //pre logo padding
+                //pre padding
                 SizedBox(height: screenHeight * 0.03),
 
+                //create an account
                 Text(
                   "Create an account",
                   style: TextStyle(
@@ -122,7 +155,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //last name
@@ -136,7 +169,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //email
@@ -150,7 +183,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //password
@@ -164,7 +197,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //confirm password
@@ -178,10 +211,59 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
-                //login
+                //account type
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  child: DropdownButtonFormField(
+                    items: const [
+                      DropdownMenuItem(
+                        value: true,
+                        child: Text(
+                          "Admin",
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: false,
+                        child: Text(
+                          "Parent/Guardian",
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                      ),
+                    ],
+                    onChanged: setAdmin,
+                    hint: const Text(
+                      "Select account type",
+                      style: TextStyle(fontSize: 20, color: Colors.black54),
+                    ),
+                    iconSize: 20,
+                    decoration: InputDecoration(
+                      //border
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+
+                      //filled color
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                  ),
+                ),
+
+                //padding
+                SizedBox(
+                  height: screenHeight * 0.02,
+                ),
+
+                //signup
                 LoginSignupButton(
                   text: 'Sign Up',
                   onTap: userSignup,
@@ -191,7 +273,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //or continue with
@@ -258,7 +340,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: screenHeight * 0.03),
 
                 //already have an account?
                 Padding(
