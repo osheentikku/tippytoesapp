@@ -11,6 +11,7 @@ class RoleBasedPage extends StatefulWidget {
 }
 
 class _RoleBasedPageState extends State<RoleBasedPage> {
+  // Function to check if the current user is an admin or not in Firestore
   Future<bool> checkUserRole() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -31,6 +32,7 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
     checkAndRedirect();
   }
 
+  // Function to check user role and redirect accordingly
   Future<Widget> checkAndRedirect() async {
     bool isAdmin = await checkUserRole();
     if (isAdmin) {
@@ -44,10 +46,12 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Widget>(
+        // Invoke the function to determine the page to show
         future: checkAndRedirect(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
+              // Show a loading indicator while checking user role
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -56,6 +60,8 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
               child: Text('Error occurred while checking user role.'),
             );
           } else {
+            // If the check is completed, return the determined page,
+            // or an empty Container if no page is returned
             return snapshot.data ?? Container();
           }
         },
