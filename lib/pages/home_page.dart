@@ -18,7 +18,8 @@ class HomePage extends StatelessWidget {
         IconButton(onPressed: userLogout, icon: Icon(Icons.logout))
       ]),
       body: Center(
-        child: Text("Logged in as:" + user.email!),
+        child: Text(
+            "Logged in as:" + user.email! + ". You are a parent/guardian."),
       ),
     );
   }

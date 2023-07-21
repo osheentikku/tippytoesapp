@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/pages/login_or_signup_page.dart';
-import 'home_page.dart';
+import 'package:tippytoesapp/pages/rolebased_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -12,12 +12,14 @@ class AuthPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          //user is logged in
+          //uncomment below line if interested in showing loading splash screen during sign in
+          //if (snapshot.connectionState == ConnectionState.waiting)
+
+          // User is logged in
           if (snapshot.hasData) {
-            return HomePage();
-          }
-          //user is NOT logged in
-          else {
+            return RoleBasedPage();
+          } else {
+            // User is NOT logged in
             return LoginOrSignupPage();
           }
         },

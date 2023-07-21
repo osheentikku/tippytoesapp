@@ -53,6 +53,16 @@ class _SignupPageState extends State<SignupPage> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+
+      //add user details
+      addUserDetails(
+        firstNameController.text.trim().toCapitalCase(),
+        lastNameController.text.trim().toCapitalCase(),
+        emailController.text.trim().toLowerCase(),
+        isAdmin,
+        isApproved,
+      );
+
       //pop loading circle
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
@@ -61,20 +71,13 @@ class _SignupPageState extends State<SignupPage> {
       //wrong login info
       showErrorMessage(e.message.toString());
     }
-
-    //add user details
-    addUserDetails(
-      firstNameController.text.trim().toCapitalCase(),
-      lastNameController.text.trim().toCapitalCase(),
-      emailController.text.trim().toLowerCase(),
-      isAdmin,
-      isApproved,
-    );
   }
 
   void addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
-    await FirebaseFirestore.instance.collection("users").doc(email).set({
+        
+    User user = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
       'First Name': firstName,
       'Last Name': lastName,
       'Email': email,
