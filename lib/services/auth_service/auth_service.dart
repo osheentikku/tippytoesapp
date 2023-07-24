@@ -19,11 +19,11 @@ class AuthService {
 
     //login
     return await FirebaseAuth.instance.signInWithCredential(credential);
+    
   }
 
   //apple sign in
   signInWithApple() async {
-
     //create a new credential for user
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [

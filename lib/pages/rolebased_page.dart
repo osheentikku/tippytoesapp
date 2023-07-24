@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/admin_home_page.dart';
+import 'package:tippytoesapp/pages/admin_pages/admin_home_page.dart';
+import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
 
 import 'home_page.dart';
 
@@ -36,7 +37,7 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
   Future<Widget> checkAndRedirect() async {
     bool isAdmin = await checkUserRole();
     if (isAdmin) {
-      return AdminHomePage();
+      return AdminNavigationPage();
     } else {
       return HomePage();
     }

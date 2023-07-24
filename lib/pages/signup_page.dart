@@ -75,7 +75,6 @@ class _SignupPageState extends State<SignupPage> {
 
   void addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
-        
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
       'First Name': firstName,
