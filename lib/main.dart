@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tippytoesapp/pages/auth_page.dart';
 import 'package:tippytoesapp/pages/login_or_signup_page.dart';
+import 'package:tippytoesapp/pages/rolebased_page.dart';
 import 'pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
