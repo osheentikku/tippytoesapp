@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_textfield.dart';
 import 'package:change_case/change_case.dart';
+import 'package:tippytoesapp/pages/rolebased_page.dart';
+
+import '../services/auth_service/auth_service.dart';
 
 class NewUserPage extends StatefulWidget {
-  final User user;
-  NewUserPage({super.key, required this.user});
+  NewUserPage({
+    super.key,
+  });
 
   @override
   State<NewUserPage> createState() => _NewUserPageState();
@@ -24,26 +29,22 @@ class _NewUserPageState extends State<NewUserPage> {
 
   //user signup method
   void userSignup() async {
-    //show loading circle
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
     //add user details
-    addUserDetails(
-      firstNameController.text.trim().toCapitalCase(),
-      lastNameController.text.trim().toCapitalCase(),
-      widget.user.email!,
-      isAdmin,
-      isApproved,
-    );
+    try {
+      User user = await FirebaseAuth.instance.currentUser!;
 
-    Navigator.pop(context);
+      addUserDetails(
+        firstNameController.text.trim().toCapitalCase(),
+        lastNameController.text.trim().toCapitalCase(),
+        user.email!,
+        isAdmin,
+        isApproved,
+      );
+
+      FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    }
   }
 
   void addUserDetails(String firstName, String lastName, String email,
@@ -172,6 +173,22 @@ class _NewUserPageState extends State<NewUserPage> {
                 SizedBox(
                   height: screenHeight * 0.02,
                 ),
+
+                //create an account
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  child: Text(
+                    "After your account is created, you will need to login again.",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 158, 19, 9),
+                    ),
+                  textAlign: TextAlign.center,),
+                ),
+
+                //padding
+                SizedBox(height: screenHeight * 0.02),
 
                 //signup
                 LoginSignupButton(

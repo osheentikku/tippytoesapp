@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/admin_pages/admin_home_page.dart';
 import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
 import 'package:tippytoesapp/pages/new_user_page.dart';
 
@@ -50,17 +49,17 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
   // Function to check user role and redirect accordingly
   Future<Widget> checkAndRedirect() async {
     final user = FirebaseAuth.instance.currentUser!;
-    bool newUser = await checkUserData();
-    if (newUser && context.mounted) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => NewUserPage(user: user))));
-    }
-
-    bool isAdmin = await checkUserRole();
-    if (isAdmin) {
-      return const AdminNavigationPage();
+    bool oldUser = await checkUserData();
+    if (!oldUser && context.mounted) {
+      return NewUserPage();
+      
     } else {
-      return HomePage();
+      bool isAdmin = await checkUserRole();
+      if (isAdmin) {
+        return const AdminNavigationPage();
+      } else {
+        return HomePage();
+      }
     }
   }
 
