@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/pages/admin_pages/admin_home_page.dart';
 import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
+import 'package:tippytoesapp/pages/new_user_page.dart';
 
 import 'home_page.dart';
 
@@ -12,6 +13,19 @@ class RoleBasedPage extends StatefulWidget {
 }
 
 class _RoleBasedPageState extends State<RoleBasedPage> {
+//check if user has info stored in Firestore
+  Future<bool> checkUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      return userDoc.exists;
+    }
+    return false;
+  }
+
   // Function to check if the current user is an admin or not in Firestore
   Future<bool> checkUserRole() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -35,9 +49,16 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
 
   // Function to check user role and redirect accordingly
   Future<Widget> checkAndRedirect() async {
+    final user = FirebaseAuth.instance.currentUser!;
+    bool newUser = await checkUserData();
+    if (newUser && context.mounted) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: ((context) => NewUserPage(user: user))));
+    }
+
     bool isAdmin = await checkUserRole();
     if (isAdmin) {
-      return AdminNavigationPage();
+      return const AdminNavigationPage();
     } else {
       return HomePage();
     }
