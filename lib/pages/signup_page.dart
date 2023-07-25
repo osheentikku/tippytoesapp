@@ -28,7 +28,7 @@ class _SignupPageState extends State<SignupPage> {
   bool isApproved = false;
 
   //user signup method
-  void userSignup() async {
+  Future userSignup() async {
     //show loading circle
     showDialog(
       context: context,
@@ -73,7 +73,17 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  void addUserDetails(String firstName, String lastName, String email,
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({

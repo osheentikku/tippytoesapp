@@ -10,7 +10,7 @@ class AdminManagementPage extends StatefulWidget {
 }
 
 class _AdminManagementPageState extends State<AdminManagementPage> {
-  void addUserDetails(String firstName, String lastName, String email,
+  Future addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({

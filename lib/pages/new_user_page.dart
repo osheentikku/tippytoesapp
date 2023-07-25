@@ -28,7 +28,7 @@ class _NewUserPageState extends State<NewUserPage> {
   bool isApproved = false;
 
   //user signup method
-  void userSignup() async {
+  Future userSignup() async {
     //add user details
     try {
       User user = await FirebaseAuth.instance.currentUser!;
@@ -47,7 +47,14 @@ class _NewUserPageState extends State<NewUserPage> {
     }
   }
 
-  void addUserDetails(String firstName, String lastName, String email,
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    super.dispose();
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
@@ -87,7 +94,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
                 //create an account
                 const Text(
-                  "Create an account",
+                  "Finish creating your account",
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
@@ -184,7 +191,8 @@ class _NewUserPageState extends State<NewUserPage> {
                       fontWeight: FontWeight.bold,
                       color: const Color.fromARGB(255, 158, 19, 9),
                     ),
-                  textAlign: TextAlign.center,),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
 
                 //padding

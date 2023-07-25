@@ -15,7 +15,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   //text editting controllers
   final emailController = TextEditingController();
 
-  void passwordReset() async {
+  Future passwordReset() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -42,6 +42,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
       showMessage(e.message.toString());
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
   }
 
   //error message popup

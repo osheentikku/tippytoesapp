@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   //user login method
-  void userLogin() async {
+  Future userLogin() async {
     //show loading circle
     showDialog(
       context: context,
@@ -48,6 +48,13 @@ class _LoginPageState extends State<LoginPage> {
       //wrong login info
       showErrorMessage(e.message.toString());
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   //error message popup
