@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_textfield.dart';
 import 'package:change_case/change_case.dart';
-import 'package:tippytoesapp/pages/rolebased_page.dart';
-
-import '../services/auth_service/auth_service.dart';
 
 class NewUserPage extends StatefulWidget {
   NewUserPage({
@@ -29,6 +25,9 @@ class _NewUserPageState extends State<NewUserPage> {
 
   //user signup method
   Future userSignup() async {
+    if (firstNameController.text.isEmpty || lastNameController.text.isEmpty) {
+      showErrorMessage("Please fill out all fields.");
+    }
     //add user details
     try {
       User user = await FirebaseAuth.instance.currentUser!;
@@ -66,6 +65,28 @@ class _NewUserPageState extends State<NewUserPage> {
     });
   }
 
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Center(
+            child: Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 107, 95, 95),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void setAdmin(bool? selectedValue) {
     if (selectedValue is bool) {
       setState(
@@ -82,7 +103,7 @@ class _NewUserPageState extends State<NewUserPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xffFECD08),
+      backgroundColor: const Color(0xffFECD08),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -162,11 +183,11 @@ class _NewUserPageState extends State<NewUserPage> {
                       //border
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
 
                       //filled color
@@ -184,12 +205,12 @@ class _NewUserPageState extends State<NewUserPage> {
                 //create an account
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: Text(
+                  child: const Text(
                     "After your account is created, you will need to login again.",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 158, 19, 9),
+                      color: Color.fromARGB(255, 158, 19, 9),
                     ),
                     textAlign: TextAlign.center,
                   ),

@@ -206,6 +206,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/osheentikku/.pub-cache/hosted/pub.dev/intl-0.18.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "js",
       "rootUri": "file:///Users/osheentikku/.pub-cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
@@ -392,7 +398,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-07-24T18:42:23.288750Z",
+  "generated": "2023-07-25T20:07:27.316017Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }

@@ -27,11 +27,11 @@ class LoginSignUpTextField extends StatelessWidget {
           //border
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: const BorderSide(color: Colors.white),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: const BorderSide(color: Colors.white),
           ),
 
           //filled color
@@ -39,8 +39,8 @@ class LoginSignUpTextField extends StatelessWidget {
           filled: true,
 
           //hints
-          hintText: hintText,
-          hintStyle: const TextStyle(
+          labelText: hintText,
+          labelStyle: const TextStyle(
             fontSize: 20,
             color: Colors.black54,
           ),

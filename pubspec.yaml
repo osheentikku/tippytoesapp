@@ -43,6 +43,7 @@ dependencies:
   sign_in_with_apple: ^5.0.0
   cloud_firestore: ^4.8.3
   change_case: ^1.1.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
