@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
 import 'package:tippytoesapp/pages/login_signup_pages/new_user_page.dart';
+import 'package:tippytoesapp/pages/parent_guardian_pages/navigation_page.dart';
 
-import 'parent_guardian_pages/home_page.dart';
 
 class RoleBasedPage extends StatefulWidget {
   @override
@@ -57,7 +57,7 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
       if (isAdmin) {
         return const AdminNavigationPage();
       } else {
-        return HomePage();
+        return const NavigationPage();
       }
     }
   }

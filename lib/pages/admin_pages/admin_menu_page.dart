@@ -279,6 +279,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       List<String> list,
       double screenHeight,
       double screenWidth) {
+
+        
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
       child: Column(
@@ -311,25 +313,35 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
             optionsViewBuilder: (BuildContext context,
                 AutocompleteOnSelected<String> onSelected,
                 Iterable<String> options) {
+
               return Align(
                 alignment: Alignment.topLeft,
                 child: Material(
-                  elevation: 4.0,
+                  elevation: 4,
                   child: Container(
-                    width: 200,
-                    child: ListView.builder(
-                      itemCount: options.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final String option = options.elementAt(index);
-                        return GestureDetector(
-                          onTap: () {
-                            onSelected(option);
-                          },
-                          child: ListTile(
-                            title: Text(option),
-                          ),
-                        );
-                      },
+                    //set max height for large lists
+                    constraints:
+                        BoxConstraints(maxHeight: screenHeight * 0.3),
+                    width: screenWidth * 0.7,
+                    child: MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      removeBottom: true,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: options.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final String option = options.elementAt(index);
+                          return GestureDetector(
+                            onTap: () {
+                              onSelected(option);
+                            },
+                            child: ListTile(
+                              title: Text(option),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
