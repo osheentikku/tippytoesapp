@@ -15,13 +15,13 @@ class AdminNavigationPage extends StatefulWidget {
 
 class _AdminNavigationPageState extends State<AdminNavigationPage> {
   List pages = [
-    AdminHomePage(),
-    AdminMenuPage(),
-    AdminUpdatesPage(),
-    AdminManagementPage(),
+    const AdminHomePage(),
+    const AdminMenuPage(),
+    const AdminUpdatesPage(),
+    const AdminManagementPage(),
   ];
 
-  int currentIndex = 1;
+  int currentIndex = 3;
   void onTap(int index) {
     setState(() {
       currentIndex = index;
@@ -41,13 +41,13 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
       body: pages[currentIndex],
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: userLogout, icon: Icon(Icons.logout)),
+          IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
         ],
-        backgroundColor: Color(0xffFECD08),
+        backgroundColor: const Color(0xffFECD08),
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
           BottomNavigationBarItem(icon: Icon(Icons.schedule), label: "Updates"),
@@ -55,7 +55,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         ],
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xffFECD08),
+        backgroundColor: const Color(0xffFECD08),
         iconSize: 35,
         unselectedItemColor: Colors.black54,
         selectedItemColor: Colors.black,

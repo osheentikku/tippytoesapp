@@ -15,11 +15,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(actions: [
-        IconButton(onPressed: userLogout, icon: Icon(Icons.logout))
+        IconButton(onPressed: userLogout, icon: const Icon(Icons.logout))
       ]),
       body: Center(
         child: Text(
-            "Logged in as:" + user.email! + ". You are a parent/guardian."),
+            "Logged in as:${user.email!}. You are a parent/guardian."),
       ),
     );
   }

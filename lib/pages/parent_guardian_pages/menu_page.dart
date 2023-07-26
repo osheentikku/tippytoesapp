@@ -36,9 +36,9 @@ class _MenuPageState extends State<MenuPage> {
     if (menuTodaySnapshot.exists) {
       setState(() {
         breakfastToday =
-            List<String>.from(menuTodaySnapshot?['breakfast'] ?? []);
-        lunchToday = List<String>.from(menuTodaySnapshot?['lunch'] ?? []);
-        snackToday = List<String>.from(menuTodaySnapshot?['snack'] ?? []);
+            List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
+        lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
+        snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
       });
     } else {
       setState(() {
@@ -98,7 +98,7 @@ class _MenuPageState extends State<MenuPage> {
               //Date
               Text(
                 DateFormat.yMMMEd().format(DateTime.now()),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
 
               //Padding
@@ -223,14 +223,12 @@ class _MenuPageState extends State<MenuPage> {
               children: [
                 SizedBox(height: screenHeight * 0.02),
                 Expanded(
-                  child: Container(
-                    child: Text(
-                      str,
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
+                  child: Text(
+                    str,
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 20,
                     ),
                   ),
                 ),

@@ -6,10 +6,9 @@ import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
 import 'package:tippytoesapp/pages/login_signup_pages/forgot_password_page.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 
-
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  LoginPage({super.key, required this.onTap});
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -40,7 +39,9 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       //pop loading circle
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);

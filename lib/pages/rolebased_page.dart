@@ -5,10 +5,11 @@ import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
 import 'package:tippytoesapp/pages/login_signup_pages/new_user_page.dart';
 import 'package:tippytoesapp/pages/parent_guardian_pages/navigation_page.dart';
 
-
 class RoleBasedPage extends StatefulWidget {
+  const RoleBasedPage({super.key});
+
   @override
-  _RoleBasedPageState createState() => _RoleBasedPageState();
+  State<RoleBasedPage> createState() => _RoleBasedPageState();
 }
 
 class _RoleBasedPageState extends State<RoleBasedPage> {
@@ -50,8 +51,7 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
   Future<Widget> checkAndRedirect() async {
     bool oldUser = await checkUserData();
     if (!oldUser && context.mounted) {
-      return NewUserPage();
-      
+      return const NewUserPage();
     } else {
       bool isAdmin = await checkUserRole();
       if (isAdmin) {
