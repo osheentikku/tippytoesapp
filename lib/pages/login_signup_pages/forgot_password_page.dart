@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
 
-import '../components/login_signup_icon_textfield.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -15,7 +14,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   //text editting controllers
   final emailController = TextEditingController();
 
-  void passwordReset() async {
+  Future passwordReset() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -30,18 +29,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: emailController.text.trim());
       //pop loading circle
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
 
       //successful reset
-      showMessage("Password reset link sent to " +
-          emailController.text.trim() +
-          ". Check your email.");
+      showMessage(
+          "Password reset link sent to ${emailController.text.trim()}. Check your email.");
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);
 
       showMessage(e.message.toString());
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
   }
 
   //error message popup
@@ -74,11 +80,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xffFECD08),
+      backgroundColor: const Color(0xffFECD08),
       appBar: AppBar(
-        backgroundColor: Color(0xffFECD08),
+        backgroundColor: const Color(0xffFECD08),
         elevation: 0,
-        leading: BackButton(color: Colors.black),
+        leading: const BackButton(color: Colors.black),
         toolbarHeight: screenHeight * 0.05,
       ),
       body: SafeArea(

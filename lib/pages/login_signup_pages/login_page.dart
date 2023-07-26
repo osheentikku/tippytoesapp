@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
+import 'package:tippytoesapp/pages/login_signup_pages/forgot_password_page.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 
-import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   //user login method
-  void userLogin() async {
+  Future userLogin() async {
     //show loading circle
     showDialog(
       context: context,
@@ -48,6 +48,13 @@ class _LoginPageState extends State<LoginPage> {
       //wrong login info
       showErrorMessage(e.message.toString());
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   //error message popup
@@ -80,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xffFECD08),
+      backgroundColor: const Color(0xffFECD08),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -94,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: screenWidth * 0.33,
-                  backgroundImage: AssetImage('lib/images/tippytoeslogo'),
+                  backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
 
                 //padding
@@ -150,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return ForgotPasswordPage();
+                                return const ForgotPasswordPage();
                               },
                             ),
                           );
@@ -185,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
                           color: Color.fromARGB(255, 116, 97, 97),
@@ -194,14 +201,14 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03),
-                        child: Text(
+                        child: const Text(
                           'Or continue with',
                           style: TextStyle(
                             color: Color.fromARGB(255, 87, 73, 73),
                           ),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
                           color: Color.fromARGB(255, 116, 97, 97),

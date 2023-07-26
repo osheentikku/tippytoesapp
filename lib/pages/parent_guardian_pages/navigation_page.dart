@@ -1,24 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tippytoesapp/pages/parent_guardian_pages/updates_page.dart';
 
-import 'admin_home_page.dart';
-import 'admin_management_page.dart';
-import 'admin_menu_page.dart';
-import 'admin_updates_page.dart';
+import 'home_page.dart';
+import 'management_page.dart';
+import 'menu_page.dart';
 
-class AdminNavigationPage extends StatefulWidget {
-  const AdminNavigationPage({super.key});
+class NavigationPage extends StatefulWidget {
+  const NavigationPage({super.key});
 
   @override
-  State<AdminNavigationPage> createState() => _AdminNavigationPageState();
+  State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _AdminNavigationPageState extends State<AdminNavigationPage> {
+class _NavigationPageState extends State<NavigationPage> {
   List pages = [
-    AdminHomePage(),
-    AdminMenuPage(),
-    AdminUpdatesPage(),
-    AdminManagementPage(),
+    HomePage(),
+    const MenuPage(),
+    const UpdatesPage(),
+    const ManagementPage(),
   ];
 
   int currentIndex = 1;
@@ -41,13 +41,13 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
       body: pages[currentIndex],
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: userLogout, icon: Icon(Icons.logout)),
+          IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
         ],
-        backgroundColor: Color(0xffFECD08),
+        backgroundColor: const Color(0xffFECD08),
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
           BottomNavigationBarItem(icon: Icon(Icons.schedule), label: "Updates"),
@@ -55,7 +55,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         ],
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xffFECD08),
+        backgroundColor: const Color(0xffFECD08),
         iconSize: 35,
         unselectedItemColor: Colors.black54,
         selectedItemColor: Colors.black,

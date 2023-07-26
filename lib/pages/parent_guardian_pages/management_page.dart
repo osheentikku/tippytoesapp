@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AdminManagementPage extends StatefulWidget {
-  const AdminManagementPage({super.key});
+class ManagementPage extends StatefulWidget {
+  const ManagementPage({super.key});
 
   @override
-  State<AdminManagementPage> createState() => _AdminManagementPageState();
+  State<ManagementPage> createState() => _ManagementPageState();
 }
 
-class _AdminManagementPageState extends State<AdminManagementPage> {
+class _ManagementPageState extends State<ManagementPage> {
   Future addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;

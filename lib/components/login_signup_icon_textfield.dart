@@ -41,8 +41,8 @@ class LoginSignUpIconTextField extends StatelessWidget {
           filled: true,
 
           //hints
-          hintText: hintText,
-          hintStyle: const TextStyle(
+          labelText: hintText,
+          labelStyle: const TextStyle(
             fontSize: 20,
             color: Colors.black54,
           ),

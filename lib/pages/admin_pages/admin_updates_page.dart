@@ -10,7 +10,7 @@ class AdminUpdatesPage extends StatefulWidget {
 class _AdminUpdatesPageState extends State<AdminUpdatesPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(child: Text("Updates Page")),
     );  }
 }

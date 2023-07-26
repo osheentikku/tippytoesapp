@@ -28,7 +28,7 @@ class _SignupPageState extends State<SignupPage> {
   bool isApproved = false;
 
   //user signup method
-  void userSignup() async {
+  Future userSignup() async {
     //show loading circle
     showDialog(
       context: context,
@@ -38,6 +38,13 @@ class _SignupPageState extends State<SignupPage> {
         );
       },
     );
+
+    if (firstNameController.text.isEmpty ||
+        lastNameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty) {
+      showErrorMessage("Please fill out all fields.");
+    }
 
     //check if password is confirmed
     if (passwordController.text.trim() !=
@@ -64,7 +71,9 @@ class _SignupPageState extends State<SignupPage> {
       );
 
       //pop loading circle
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);
@@ -73,7 +82,17 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  void addUserDetails(String firstName, String lastName, String email,
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
@@ -124,7 +143,7 @@ class _SignupPageState extends State<SignupPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xffFECD08),
+      backgroundColor: const Color(0xffFECD08),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -135,7 +154,7 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //create an account
-                Text(
+                const Text(
                   "Create an account",
                   style: TextStyle(
                     fontSize: 23,
@@ -246,11 +265,11 @@ class _SignupPageState extends State<SignupPage> {
                       //border
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
 
                       //filled color
@@ -283,7 +302,7 @@ class _SignupPageState extends State<SignupPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
                           color: Color.fromARGB(255, 116, 97, 97),
@@ -292,14 +311,14 @@ class _SignupPageState extends State<SignupPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03),
-                        child: Text(
+                        child: const Text(
                           'Or continue with',
                           style: TextStyle(
                             color: Color.fromARGB(255, 87, 73, 73),
                           ),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
                           color: Color.fromARGB(255, 116, 97, 97),
@@ -352,14 +371,14 @@ class _SignupPageState extends State<SignupPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Already have an account?',
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(
                           width: screenWidth * 0.01,
                         ),
-                        Text(
+                        const Text(
                           'Login now.',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),

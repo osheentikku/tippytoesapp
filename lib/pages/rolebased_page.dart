@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
-import 'package:tippytoesapp/pages/new_user_page.dart';
+import 'package:tippytoesapp/pages/login_signup_pages/new_user_page.dart';
+import 'package:tippytoesapp/pages/parent_guardian_pages/navigation_page.dart';
 
-import 'home_page.dart';
 
 class RoleBasedPage extends StatefulWidget {
   @override
@@ -48,7 +48,6 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
 
   // Function to check user role and redirect accordingly
   Future<Widget> checkAndRedirect() async {
-    final user = FirebaseAuth.instance.currentUser!;
     bool oldUser = await checkUserData();
     if (!oldUser && context.mounted) {
       return NewUserPage();
@@ -58,7 +57,7 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
       if (isAdmin) {
         return const AdminNavigationPage();
       } else {
-        return HomePage();
+        return const NavigationPage();
       }
     }
   }
@@ -71,13 +70,13 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
         future: checkAndRedirect(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               // Show a loading indicator while checking user role
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
             // Handle error if needed
-            return Center(
+            return const Center(
               child: Text('Error occurred while checking user role.'),
             );
           } else {
