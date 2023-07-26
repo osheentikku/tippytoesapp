@@ -74,9 +74,9 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     if (menuTodaySnapshot.exists) {
       setState(() {
         breakfastToday =
-            List<String>.from(menuTodaySnapshot?['breakfast'] ?? []);
-        lunchToday = List<String>.from(menuTodaySnapshot?['lunch'] ?? []);
-        snackToday = List<String>.from(menuTodaySnapshot?['snack'] ?? []);
+            List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
+        lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
+        snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
       });
     } else {
       setState(() {
@@ -101,10 +101,33 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     }).then((value) {
       // Menu successfully set for today.
       // You can show a confirmation dialog or a snackbar.
+      showMessage("Menu successfully updated.");
     }).catchError((e) {
       // Handle errors here.
-      print(e);
     });
+  }
+
+  //error message popup
+  void showMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Center(
+            child: Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 107, 95, 95),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void removeItem(List<String> list, String item) {
@@ -141,7 +164,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //Date
                 Text(
                   DateFormat.yMMMEd().format(DateTime.now()),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
 
                 //Padding
@@ -279,8 +302,6 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       List<String> list,
       double screenHeight,
       double screenWidth) {
-
-        
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
       child: Column(
@@ -313,15 +334,13 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
             optionsViewBuilder: (BuildContext context,
                 AutocompleteOnSelected<String> onSelected,
                 Iterable<String> options) {
-
               return Align(
                 alignment: Alignment.topLeft,
                 child: Material(
                   elevation: 4,
                   child: Container(
                     //set max height for large lists
-                    constraints:
-                        BoxConstraints(maxHeight: screenHeight * 0.3),
+                    constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
                     width: screenWidth * 0.7,
                     child: MediaQuery.removePadding(
                       context: context,
@@ -381,7 +400,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 SizedBox(height: screenHeight * 0.02),
                 GestureDetector(
                   onTap: () => removeItem(list, str),
-                  child: Icon(
+                  child: const Icon(
                     Icons.close,
                     color: Colors.red,
                     size: 25,
@@ -391,14 +410,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                   width: screenWidth * 0.005,
                 ),
                 Expanded(
-                  child: Container(
-                    child: Text(
-                      str,
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
+                  child: Text(
+                    str,
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 20,
                     ),
                   ),
                 ),

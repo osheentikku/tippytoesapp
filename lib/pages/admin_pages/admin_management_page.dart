@@ -23,7 +23,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(child: Text("Management Page")),
     );  }
 }

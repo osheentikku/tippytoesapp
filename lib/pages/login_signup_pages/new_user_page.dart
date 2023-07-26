@@ -6,7 +6,7 @@ import 'package:tippytoesapp/components/login_signup_textfield.dart';
 import 'package:change_case/change_case.dart';
 
 class NewUserPage extends StatefulWidget {
-  NewUserPage({
+  const NewUserPage({
     super.key,
   });
 
@@ -42,29 +42,11 @@ class _NewUserPageState extends State<NewUserPage> {
 
       FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      showErrorMessage(e.message.toString());
     }
   }
 
-  @override
-  void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    super.dispose();
-  }
-
-  Future addUserDetails(String firstName, String lastName, String email,
-      bool isAdmin, bool isApproved) async {
-    User user = FirebaseAuth.instance.currentUser!;
-    await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-      'First Name': firstName,
-      'Last Name': lastName,
-      'Email': email,
-      'Admin': isAdmin,
-      'Approved': isApproved,
-    });
-  }
-
+  //error message popup
   void showErrorMessage(String message) {
     showDialog(
       context: context,
@@ -85,6 +67,25 @@ class _NewUserPageState extends State<NewUserPage> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    super.dispose();
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,
+      bool isAdmin, bool isApproved) async {
+    User user = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+      'First Name': firstName,
+      'Last Name': lastName,
+      'Email': email,
+      'Admin': isAdmin,
+      'Approved': isApproved,
+    });
   }
 
   void setAdmin(bool? selectedValue) {

@@ -9,7 +9,7 @@ import 'package:change_case/change_case.dart';
 
 class SignupPage extends StatefulWidget {
   final Function()? onTap;
-  SignupPage({super.key, required this.onTap});
+  const SignupPage({super.key, required this.onTap});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
