@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/parent_guardian_pages/updates_page.dart';
+import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/updates_page.dart';
 
 import 'home_page.dart';
 import 'management_page.dart';
@@ -15,7 +15,7 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   List pages = [
-    HomePage(),
+    const HomePage(),
     const MenuPage(),
     const UpdatesPage(),
     const ManagementPage(),

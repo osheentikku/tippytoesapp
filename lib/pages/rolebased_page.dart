@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/admin_pages/admin_navigation_page.dart';
-import 'package:tippytoesapp/pages/login_signup_pages/new_user_page.dart';
-import 'package:tippytoesapp/pages/parent_guardian_pages/navigation_page.dart';
+import 'package:tippytoesapp/pages/2.%20admin_pages/admin_navigation_page.dart';
+import 'package:tippytoesapp/pages/1.%20login_signup_pages/new_user_page.dart';
+import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/navigation_page.dart';
 
 class RoleBasedPage extends StatefulWidget {
   const RoleBasedPage({super.key});
