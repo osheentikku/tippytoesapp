@@ -13,19 +13,6 @@ class RoleBasedPage extends StatefulWidget {
 }
 
 class _RoleBasedPageState extends State<RoleBasedPage> {
-/*//check if user has info stored in Firestore
-  Future<bool> checkUserData() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      return userDoc.exists;
-    }
-    return false;
-  } */
-
   // Function to check if the current user is an admin or not in Firestore
   Future<bool> checkUserRole() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -49,17 +36,12 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
 
   // Function to check user role and redirect accordingly
   Future<Widget> checkAndRedirect() async {
-    /*bool oldUser = await checkUserData();
-    if (!oldUser && context.mounted) {
-      return const NewUserPage();
-    } else { */
-      bool isAdmin = await checkUserRole();
-      if (isAdmin) {
-        return const AdminNavigationPage();
-      } else {
-        return const NavigationPage();
-      }
-    //}
+    bool isAdmin = await checkUserRole();
+    if (isAdmin) {
+      return const AdminNavigationPage();
+    } else {
+      return const NavigationPage();
+    }
   }
 
   @override
