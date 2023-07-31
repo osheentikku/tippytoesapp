@@ -39,10 +39,10 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
-    if (firstNameController.text.isEmpty ||
-        lastNameController.text.isEmpty ||
-        emailController.text.isEmpty ||
-        passwordController.text.isEmpty) {
+    if (firstNameController.text.trim().isEmpty ||
+        lastNameController.text.trim().isEmpty ||
+        emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty) {
       showErrorMessage("Please fill out all fields.");
     }
 
