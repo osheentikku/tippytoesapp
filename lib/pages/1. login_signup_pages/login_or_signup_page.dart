@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/login_signup_pages/login_page.dart';
-import 'package:tippytoesapp/pages/login_signup_pages/signup_page.dart';
+import 'package:tippytoesapp/pages/1.%20login_signup_pages/login_page.dart';
+import 'package:tippytoesapp/pages/1.%20login_signup_pages/signup_page.dart';
 
 class LoginOrSignupPage extends StatefulWidget {
   const LoginOrSignupPage({super.key});

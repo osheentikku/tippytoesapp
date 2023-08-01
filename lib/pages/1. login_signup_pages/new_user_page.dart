@@ -30,7 +30,7 @@ class _NewUserPageState extends State<NewUserPage> {
     }
     //add user details
     try {
-      User user = await FirebaseAuth.instance.currentUser!;
+      User user = FirebaseAuth.instance.currentUser!;
 
       addUserDetails(
         firstNameController.text.trim().toCapitalCase(),

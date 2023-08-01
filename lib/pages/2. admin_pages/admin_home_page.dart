@@ -10,10 +10,6 @@ class AdminHomePage extends StatefulWidget {
 
 class _AdminHomePageState extends State<AdminHomePage> {
   final user = FirebaseAuth.instance.currentUser!;
-  //for testing purposes
-  void userLogout() {
-    FirebaseAuth.instance.signOut();
-  }
 
   @override
   Widget build(BuildContext context) {
