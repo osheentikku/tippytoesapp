@@ -18,13 +18,13 @@ class _UnapprovedPageState extends State<UnapprovedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
+        actions: const [
+          IconButton(onPressed: userLogout, icon: Icon(Icons.logout)),
         ],
         backgroundColor: const Color(0xffFECD08),
         elevation: 0,
       ),
-      body: Center(child: Text("Your account is still pending approval.")),
+      body: const Center(child: Text("Your account is still pending approval.")),
     );
   }
 }

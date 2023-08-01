@@ -14,17 +14,19 @@ class AdminManagementPage extends StatefulWidget {
 class _AdminManagementPageState extends State<AdminManagementPage> {
   //text controllers
   TextEditingController studentNameController = TextEditingController();
-  final TextEditingController parentContoller = TextEditingController();
+  TextEditingController parentContoller = TextEditingController();
+  TextEditingController staffContoller = TextEditingController();
 
   //load student roster
   List<String> currentStudents = [];
   //load parents
   List<String> allParents = [];
-  List<String> allEmails = [];
-
-  //edit current student info
   List<String> currentParents = [];
-  List<String> currentEmails = [];
+  List<String> currentParentEmails = [];
+
+  //currentStaff
+  List<String> allStaff = [];
+  List<String> currentStaff = [];
 
   //edit/add mode
   bool isNew = true;
@@ -32,18 +34,18 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
   @override
   void initState() {
     super.initState();
-    loadCurrentStudents();
+    loadFromFirestore();
   }
 
-  //load student and parent data from Firestore
-  Future loadCurrentStudents() async {
+  //load student, parent, and staff data from Firestore
+  Future loadFromFirestore() async {
     //get all students in Firestore
     QuerySnapshot studentSnapshot =
         await FirebaseFirestore.instance.collection('students').get();
 
     //if there are students in Firestore
     if (studentSnapshot.size > 0) {
-      //Add student to list of currentStudents
+      //Add the students to list of currentStudents
       for (QueryDocumentSnapshot docSnapshot in studentSnapshot.docs) {
         setState(() {
           currentStudents.add(docSnapshot['Name']);
@@ -55,7 +57,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       });
     }
 
-    //get all parents
+    //get all parents in Firestore
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("users")
         .where('Admin', isEqualTo: false)
@@ -63,8 +65,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
     //reset lists
     allParents.clear();
-    allEmails.clear();
-    currentEmails.clear();
+    currentParentEmails.clear();
     currentParents.clear();
 
     //loop through documents to get parent name/emails
@@ -74,8 +75,26 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
       allParents.add('$name: $email');
     }
+
+    //get all staff in Firestore
+    QuerySnapshot staffSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where('Admin', isEqualTo: true)
+        .get();
+
+    //reset lists
+    currentStaff.clear();
+
+    //loop through documents to get staff name/emails
+    for (QueryDocumentSnapshot docSnapshot in staffSnapshot.docs) {
+      String name = docSnapshot['First Name'] + " " + docSnapshot['Last Name'];
+      String email = docSnapshot["Email"];
+
+      allStaff.add('$name: $email');
+    }
   }
 
+  //set edit/add student mode
   String editOrAddStudent() {
     if (isNew) {
       return "Add a new student";
@@ -84,45 +103,89 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
-  //add parent for new student
-  void addParent(String parent) {
-    //check if parent is empty or has already been added
-    if (parent.isEmpty || currentParents.contains(parent)) {
-      return;
+  //populate fields with student data
+  Future populateStudent(String studentName) async {
+    //edit mode
+    isNew = false;
+
+    //set student name
+    studentNameController.text = studentName;
+
+    //get student document w/ parent information
+    try {
+      //student document from Firestore
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("students")
+          .where("Name", isEqualTo: studentName)
+          .get();
+
+      //update student
+      for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
+        setState(() {
+          currentParents =
+              List<String>.from(docSnapshot["ParentOrGuardian"] ?? []);
+        });
+      }
+
+      for (String parent in currentParents) {
+        int colonPosition = parent.indexOf(":");
+        String email = parent.substring(colonPosition + 2);
+        email = email.trim();
+        setState(() {
+          currentParentEmails.add(email);
+        });
+      }
+    } catch (e) {
+      print(e);
     }
-
-    //update currentParents
-    setState(() {
-      currentParents.add(parent);
-    });
-
-    //add parent's email to current emails
-    int colonPosition = parent.indexOf(":");
-    String email = parent.substring(colonPosition + 2);
-    email = email.trim();
-    setState(() {
-      currentEmails.add(email);
-    });
   }
 
-  //remove item from given list
-  void removeParent(String parent) {
-    int colonPosition = parent.indexOf(":");
-    String email = parent.substring(colonPosition + 2);
-    email = email.trim();
+  //save student data to Firestore
+  void saveStudent(String studentName) async {
+    //check if student already exists
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("students")
+        .where('Name', isEqualTo: studentName)
+        .get();
 
-    setState(() {
-      currentParents.remove(parent);
-      currentEmails.remove(email);
-    });
-  }
+    //fields need to be filled
+    if (studentNameController.text.trim().isEmpty || currentParents.isEmpty) {
+      showMessage("Please fill out all fields.");
+    } else {
+      //if student exists, remove their data
+      if (querySnapshot.docs.isNotEmpty) {
+        //unapprove its parents
+        await unapproveParents(studentName);
 
-  void clearFields() {
-    setState(() {
-      studentNameController.clear();
-      currentParents.clear();
-      currentEmails.clear();
-    });
+        //delete document
+        await FirebaseFirestore.instance
+            .collection("students")
+            .doc(studentName)
+            .delete();
+
+        //remove from current students
+        setState(() {
+          currentStudents.remove(studentName);
+        });
+      }
+
+      //add student to firestore
+      addStudentDetails(
+          studentNameController.text.trim().toCapitalCase(), currentParents);
+
+      //add new student to roster of current students
+      setState(() {
+        currentStudents.add(studentName);
+      });
+
+      //approve student's parents
+      await approveParents(currentParents);
+
+      //clear "add a new student" fields
+      clearFields();
+
+      isNew = true;
+    }
   }
 
   //remove student from given list
@@ -189,56 +252,56 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
-  //save student data to Firestore
-  void saveStudent(String studentName) async {
-    //check if student already exists
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //add student data to database
+  Future addStudentDetails(
+      String studentName, List<String> currentParents) async {
+    await FirebaseFirestore.instance
         .collection("students")
-        .where('Name', isEqualTo: studentName)
-        .get();
-
-    //fields need to be filled
-    if (studentNameController.text.trim().isEmpty || currentParents.isEmpty) {
-      showMessage("Please fill out all fields.");
-    } else {
-      //if student exists, remove their data
-      if (querySnapshot.docs.isNotEmpty) {
-        //unapprove its parents
-        await unapproveParents(studentName);
-
-        //delete document
-        await FirebaseFirestore.instance
-            .collection("students")
-            .doc(studentName)
-            .delete();
-
-        //remove from current students
-        setState(() {
-          currentStudents.remove(studentName);
-        });
-      }
-
-      //add student to firestore
-      addStudentDetails(
-          studentNameController.text.trim().toCapitalCase(), currentParents);
-
-      //add new student to roster of current students
-      setState(() {
-        currentStudents.add(studentName);
-      });
-
-      //approve student's parents
-      await approveParents(currentParents);
-
-      //clear "add a new student" fields
-      clearFields();
-    }
+        .doc(studentName)
+        .set({
+      'Name': studentName,
+      'ParentOrGuardian': currentParents,
+    });
   }
 
+  //add parent for new student
+  void addParent(String parent) {
+    //check if parent is empty or has already been added
+    if (parent.isEmpty || currentParents.contains(parent)) {
+      return;
+    }
+
+    //update currentParents
+    setState(() {
+      currentParents.add(parent);
+    });
+
+    //add parent's email to current emails
+    int colonPosition = parent.indexOf(":");
+    String email = parent.substring(colonPosition + 2);
+    email = email.trim();
+    setState(() {
+      currentParentEmails.add(email);
+    });
+  }
+
+  //remove parent from current lists
+  void removeParent(String parent) {
+    int colonPosition = parent.indexOf(":");
+    String email = parent.substring(colonPosition + 2);
+    email = email.trim();
+
+    setState(() {
+      currentParents.remove(parent);
+      currentParentEmails.remove(email);
+    });
+  }
+
+  //approve all parents in currentParents list
   Future approveParents(List<String> currentParents) async {
     try {
       //get current parents docs
-      for (String email in currentEmails) {
+      for (String email in currentParentEmails) {
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection("users")
             .where('Email', isEqualTo: email)
@@ -257,6 +320,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
+  //unapprove parents associated with given studentName
   Future unapproveParents(String studentName) async {
     try {
       //get student's parents
@@ -302,49 +366,82 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
-  Future addStudentDetails(
-      String studentName, List<String> currentParents) async {
-    await FirebaseFirestore.instance
-        .collection("students")
-        .doc(studentName)
-        .set({
-      'Name': studentName,
-      'ParentOrGuardian': currentParents,
+  //add staff to current list
+  void addStaff(String staff) {
+    //check if staff is empty or has already been added
+    if (staff.isEmpty || currentStaff.contains(staff)) {
+      return;
+    }
+
+    //update currentStaff
+    setState(() {
+      currentStaff.add(staff);
     });
+
+    approveStaff(staff);
   }
 
-  Future populateStudent(String studentName) async {
-    isNew = false;
+  //remove given staff
+  void removeStaff(String staff) async {
+    int colonPosition = staff.indexOf(":");
+    String email = staff.substring(colonPosition + 2);
+    email = email.trim();
 
-    //set student name
-    studentNameController.text = studentName;
+    setState(() {
+      currentStaff.remove(staff);
+    });
 
-    //get student document w/ parent information
     try {
-      //student document from Firestore
+      //get current staff docs
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection("students")
-          .where("Name", isEqualTo: studentName)
+          .collection("users")
+          .where('Email', isEqualTo: email)
           .get();
 
-      for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
-        setState(() {
-          currentParents =
-              List<String>.from(docSnapshot["ParentOrGuardian"] ?? []);
-        });
-      }
-
-      for (String parent in currentParents) {
-        int colonPosition = parent.indexOf(":");
-        String email = parent.substring(colonPosition + 2);
-        email = email.trim();
-        setState(() {
-          currentEmails.add(email);
-        });
+      //approve staff
+      for (DocumentSnapshot doc in querySnapshot.docs) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(doc.id)
+            .update({'Approved': false});
       }
     } catch (e) {
       print(e);
     }
+  }
+
+  //approve given staff member
+  Future approveStaff(String staff) async {
+    int colonPosition = staff.indexOf(":");
+    String email = staff.substring(colonPosition + 2);
+    email = email.trim();
+
+    try {
+      //get current staff docs
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .where('Email', isEqualTo: email)
+          .get();
+
+      //approve staff
+      for (DocumentSnapshot doc in querySnapshot.docs) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(doc.id)
+            .update({'Approved': true});
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+//clear fiekds
+  void clearFields() {
+    setState(() {
+      studentNameController.clear();
+      currentParents.clear();
+      currentParentEmails.clear();
+    });
   }
 
 //message popup
@@ -547,6 +644,84 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     ],
                   ),
                 ),
+
+                //padding
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Color.fromARGB(255, 116, 97, 97),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+
+                //title
+                const Text(
+                  "Manage Staff",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                ),
+
+                //padding
+                SizedBox(
+                  height: screenHeight * 0.02,
+                ),
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Color.fromARGB(255, 116, 97, 97),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                //padding
+                SizedBox(
+                  height: screenHeight * 0.02,
+                ),
+
+                //Add Staff
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  child: const Text(
+                    "Add Staff",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                //padding
+                SizedBox(height: screenHeight * 0.02),
+
+                //staff selector
+                bulletedListStaff(currentStaff, screenHeight, screenWidth),
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+                staffSelection(
+                    staffContoller, allStaff, screenHeight, screenWidth),
+
+                //padding
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
               ],
             ),
           ),
@@ -654,6 +829,105 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
+  Widget staffSelection(TextEditingController controller, List<String> staff,
+      double screenHeight, double screenWidth) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Autocomplete<String>(
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              return staff
+                  .where((item) => item.contains(textEditingValue.text))
+                  .toList();
+            },
+            onSelected: (String selectedValue) {
+              controller.text = selectedValue;
+            },
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
+              controller = textEditingController;
+              return TextField(
+                controller: controller,
+                focusNode: focusNode,
+                decoration: InputDecoration(
+                  //border
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: const Color(0xffFECD08),
+                      width: screenHeight * 0.002,
+                    ),
+                  ),
+                  labelText: 'Select staff',
+                  labelStyle: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.black54,
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black54),
+                  ),
+                ),
+              );
+            },
+            optionsViewBuilder: (BuildContext context,
+                AutocompleteOnSelected<String> onSelected,
+                Iterable<String> options) {
+              return Align(
+                alignment: Alignment.topLeft,
+                child: Material(
+                  elevation: 4,
+                  child: Container(
+                    //set max height for large lists
+                    constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
+                    width: screenWidth * 0.7,
+                    child: MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      removeBottom: true,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: options.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final String option = options.elementAt(index);
+                          return GestureDetector(
+                            onTap: () {
+                              onSelected(option);
+                            },
+                            child: ListTile(
+                              title: Text(option),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: screenHeight * 0.01),
+
+          //add item button
+          MaterialButton(
+            onPressed: () {
+              addStaff(controller.text);
+              controller.clear();
+            },
+            color: const Color(0xffFECD08),
+            elevation: 1,
+            child: const Text(
+              'Add Staff',
+              style: TextStyle(fontSize: 17),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget bulletedListRoster(
       List<String> list, double screenHeight, double screenWidth) {
     return Container(
@@ -714,6 +988,49 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 SizedBox(height: screenHeight * 0.02),
                 GestureDetector(
                   onTap: () => removeParent(str),
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 25,
+                  ),
+                ),
+                SizedBox(
+                  width: screenWidth * 0.005,
+                ),
+                Expanded(
+                  child: Text(
+                    str,
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget bulletedListStaff(
+      List<String> list, double screenHeight, double screenWidth) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: list.map((str) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.008),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: screenHeight * 0.02),
+                GestureDetector(
+                  onTap: () => removeStaff(str),
                   child: const Icon(
                     Icons.close,
                     color: Colors.red,

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/pages/1.%20login_signup_pages/login_or_signup_page.dart';
 import 'package:tippytoesapp/pages/check_approval_page.dart';
-import 'package:tippytoesapp/pages/rolebased_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
