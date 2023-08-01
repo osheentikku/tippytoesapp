@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-class LoginSignUpTextField extends StatelessWidget {
+class ManagementTextField extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
-  final bool obscure;
 
-  const LoginSignUpTextField({
+  const ManagementTextField({
     super.key,
     required this.controller,
     required this.hintText,
-    required this.obscure,
     required this.screenHeight,
     required this.screenWidth,
   });
@@ -22,21 +20,22 @@ class LoginSignUpTextField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
       child: TextField(
         controller: controller,
-        obscureText: obscure,
         decoration: InputDecoration(
           //border
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide: const BorderSide(color: Colors.white),
+            borderSide: BorderSide(
+              color: const Color(0xffFECD08),
+              width: screenHeight * 0.003,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide: const BorderSide(color: Colors.white),
+            borderSide: BorderSide(
+              color: const Color(0xffFECD08),
+              width: screenHeight * 0.003,
+            ),
           ),
 
           //filled color
-          fillColor: Colors.white,
-          filled: true,
 
           //hints
           labelText: hintText,

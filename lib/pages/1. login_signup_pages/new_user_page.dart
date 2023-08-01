@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
-import 'package:tippytoesapp/components/login_signup_textfield.dart';
+import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:change_case/change_case.dart';
 
 class NewUserPage extends StatefulWidget {
@@ -127,12 +127,11 @@ class _NewUserPageState extends State<NewUserPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //first name
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: firstNameController,
                   hintText: "First Name",
-                  obscure: false,
                 ),
 
                 //padding
@@ -141,12 +140,11 @@ class _NewUserPageState extends State<NewUserPage> {
                 ),
 
                 //last name
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: lastNameController,
                   hintText: "Last Name",
-                  obscure: false,
                 ),
 
                 //padding

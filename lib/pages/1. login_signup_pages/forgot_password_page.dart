@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
-
+import 'package:tippytoesapp/components/login_icon_textfield.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -119,12 +118,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
 
                 //padding
-                LoginSignUpIconTextField(
+                LoginIconTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
                   hintText: "Email",
-                  obscure: false,
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
                     color: Colors.black,

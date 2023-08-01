@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
-import 'package:tippytoesapp/components/login_signup_textfield.dart';
+import 'package:tippytoesapp/components/signup_password_textfield.dart';
+import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 import 'package:change_case/change_case.dart';
 
@@ -166,12 +167,11 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //first name
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: firstNameController,
                   hintText: "First Name",
-                  obscure: false,
                 ),
 
                 //padding
@@ -180,12 +180,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //last name
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: lastNameController,
                   hintText: "Last Name",
-                  obscure: false,
                 ),
 
                 //padding
@@ -194,12 +193,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //email
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
                   hintText: "Email",
-                  obscure: false,
                 ),
 
                 //padding
@@ -208,12 +206,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //password
-                LoginSignUpTextField(
+                SignUpPasswordTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: passwordController,
                   hintText: "Password",
-                  obscure: true,
                 ),
 
                 //padding
@@ -222,12 +219,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //confirm password
-                LoginSignUpTextField(
+                SignUpPasswordTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: confirmPasswordController,
                   hintText: "Confirm Password",
-                  obscure: true,
                 ),
 
                 //padding

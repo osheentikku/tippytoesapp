@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
-import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
+import 'package:tippytoesapp/components/login_icon_textfield.dart';
 import 'package:tippytoesapp/pages/1.%20login_signup_pages/forgot_password_page.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
+
+import '../../components/login_icon_password_textfield.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -109,12 +111,11 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //email
-                LoginSignUpIconTextField(
+                LoginIconTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
                   hintText: "Email",
-                  obscure: false,
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
                     color: Colors.black,
@@ -128,12 +129,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //password
-                LoginSignUpIconTextField(
+                LoginIconPasswordTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: passwordController,
                   hintText: "Password",
-                  obscure: true,
                   preIcon: Icon(
                     Icons.lock_outline_rounded,
                     color: Colors.black,

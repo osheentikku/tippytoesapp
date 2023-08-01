@@ -441,6 +441,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       studentNameController.clear();
       currentParents.clear();
       currentParentEmails.clear();
+      isNew = true;
     });
   }
 
