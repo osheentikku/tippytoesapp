@@ -8,6 +8,8 @@ import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 import 'package:change_case/change_case.dart';
 
+import '../../components/show_message.dart';
+
 class SignupPage extends StatefulWidget {
   final Function()? onTap;
   const SignupPage({super.key, required this.onTap});
@@ -44,14 +46,14 @@ class _SignupPageState extends State<SignupPage> {
         lastNameController.text.trim().isEmpty ||
         emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
-      showErrorMessage("Please fill out all fields.");
+      showMessage(context, "Please fill out all fields.");
     }
 
     //check if password is confirmed
     if (passwordController.text.trim() !=
         confirmPasswordController.text.trim()) {
       Navigator.pop(context);
-      showErrorMessage("Passwords don't match. Please try again.");
+      showMessage(context, "Passwords don't match. Please try again.");
       return;
     }
 
@@ -79,7 +81,7 @@ class _SignupPageState extends State<SignupPage> {
       //pop loading circle
       Navigator.pop(context);
       //wrong login info
-      showErrorMessage(e.message.toString());
+      showMessage(context, e.message.toString());
     }
   }
 
@@ -103,29 +105,6 @@ class _SignupPageState extends State<SignupPage> {
       'Admin': isAdmin,
       'Approved': isApproved,
     });
-  }
-
-  //error message popup
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void setAdmin(bool? selectedValue) {

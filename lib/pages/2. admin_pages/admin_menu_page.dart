@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../components/show_message.dart';
+
 class AdminMenuPage extends StatefulWidget {
   const AdminMenuPage({super.key});
 
@@ -101,34 +103,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     }).then((value) {
       // Menu successfully set for today.
       // You can show a confirmation dialog or a snackbar.
-      showMessage("Menu successfully updated.");
+      showMessage(context, "Menu successfully updated.");
     }).catchError((e) {
       // Handle errors here.
     });
   }
 
-  //error message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   void removeItem(List<String> list, String item) {
     setState(() {
@@ -143,6 +123,15 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     setState(() {
       list.add(item);
     });
+  }
+
+  //dispose
+  @override
+  void dispose() {
+    super.dispose();
+    breakfastController.dispose();
+    lunchController.dispose();
+    snackController.dispose();
   }
 
   @override
@@ -164,7 +153,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //Date
                 Text(
                   DateFormat.yMMMEd().format(DateTime.now()),
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30),
                 ),
 
                 //Padding

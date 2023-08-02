@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/login_icon_textfield.dart';
 
+import '../../components/show_message.dart';
+
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
@@ -33,13 +35,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       }
 
       //successful reset
-      showMessage(
-          "Password reset link sent to ${emailController.text.trim()}. Check your email.");
+      if (mounted) {
+        showMessage(context,
+            "Password reset link sent to ${emailController.text.trim()}. Check your email.");
+      }
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);
 
-      showMessage(e.message.toString());
+      showMessage(context, e.message.toString());
     }
   }
 
@@ -47,29 +51,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void dispose() {
     emailController.dispose();
     super.dispose();
-  }
-
-  //error message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   @override

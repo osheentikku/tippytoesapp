@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/add_student_textfield.dart';
+import '../../components/show_message.dart';
 
 class AdminManagementPage extends StatefulWidget {
   const AdminManagementPage({super.key});
@@ -150,7 +151,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
     //fields need to be filled
     if (studentNameController.text.trim().isEmpty || currentParents.isEmpty) {
-      showMessage("Please fill out all fields.");
+      if (mounted) {
+        showMessage(context, "Please fill out all fields.");
+      }
     } else {
       //if student exists, remove their data
       if (querySnapshot.docs.isNotEmpty) {
@@ -180,6 +183,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
       //approve student's parents
       await approveParents(currentParents);
+
+      //add student to parents doc
+      await connectStudent(studentName);
 
       //clear "add a new student" fields
       clearFields();
@@ -234,8 +240,8 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 if (mounted) {
                   Navigator.of(context).pop();
+                  showMessage(context, "$item successfully deleted.");
                 }
-                showMessage("$item successfully deleted.");
               },
               child: const Text("Yes"),
             ),
@@ -366,6 +372,30 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
+  //add student to parents
+
+  Future connectStudent(String studentName) async {
+    try {
+      //get current parents docs
+      for (String email in currentParentEmails) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .where('Email', isEqualTo: email)
+            .get();
+
+        //approve current parents
+        for (DocumentSnapshot doc in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(doc.id)
+              .update({'Student': studentName});
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   //add staff to current list
   void addStaff(String staff) {
     //check if staff is empty or has already been added
@@ -435,7 +465,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
-//clear fiekds
+  //clear fiekds
   void clearFields() {
     setState(() {
       studentNameController.clear();
@@ -445,27 +475,13 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     });
   }
 
-//message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  //dispose
+  @override
+  void dispose() {
+    super.dispose();
+    studentNameController.dispose();
+    parentContoller.dispose();
+    staffContoller.dispose();
   }
 
   @override
@@ -495,6 +511,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   height: screenHeight * 0.02,
                 ),
 
+                //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: const Row(
@@ -602,44 +619,40 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () => clearFields(),
-                        child: Container(
-                          padding: EdgeInsets.all(screenHeight * 0.01),
-                          color: const Color(0xffFECD08),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.restart_alt_rounded),
-                              Text(
-                                "Clear",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                      MaterialButton(
+                        onPressed: () => clearFields(),
+                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        color: const Color(0xffFECD08),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.restart_alt_rounded),
+                            Text(
+                              "Clear",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
                         width: screenWidth * 0.03,
                       ),
-                      GestureDetector(
-                        onTap: () => saveStudent(
+                      MaterialButton(
+                        onPressed: () => saveStudent(
                             studentNameController.text.trim().toCapitalCase()),
-                        child: Container(
-                          padding: EdgeInsets.all(screenHeight * 0.01),
-                          color: const Color(0xffFECD08),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add),
-                              Text(
-                                "Save student",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        color: const Color(0xffFECD08),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            Text(
+                              "Save student",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -957,9 +970,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                GestureDetector(
-                  onTap: () => removeStudent(list, str),
-                  child: const Icon(
+                IconButton(
+                  onPressed: () => removeStudent(list, str),
+                  icon: const Icon(
                     Icons.close,
                     color: Colors.red,
                     size: 25,

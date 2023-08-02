@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/managment_password_textfield.dart';
 import 'package:tippytoesapp/components/managment_textfield.dart';
 
+import '../../components/show_message.dart';
+
 class ManagementPage extends StatefulWidget {
   const ManagementPage({super.key});
 
@@ -64,7 +66,7 @@ class _ManagementPageState extends State<ManagementPage> {
     if (firstNameController.text.trim().isEmpty ||
         lastNameController.text.trim().isEmpty ||
         emailController.text.trim().isEmpty) {
-      showMessage("Please fill out all fields.");
+      showMessage(context, "Please fill out all fields.");
     } else {
       try {
         //changing email
@@ -87,35 +89,22 @@ class _ManagementPageState extends State<ManagementPage> {
         if (mounted) {
           Navigator.pop(context);
         }
-        print(e.message);
-        showMessage(e.message.toString());
+        showMessage(context, e.message.toString());
       }
     }
-    showMessage("Changes made succesfully");
+    if (mounted) {
+      showMessage(context, "Changes made succesfully");
+    }
     populateFields();
   }
 
-//message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  //dispose
+  @override
+  void dispose() {
+    super.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
   }
 
   @override

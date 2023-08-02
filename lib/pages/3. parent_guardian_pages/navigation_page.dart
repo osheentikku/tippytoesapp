@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/updates_page.dart';
+import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/reports_page.dart';
 
 import 'home_page.dart';
 import 'management_page.dart';
@@ -17,7 +17,7 @@ class _NavigationPageState extends State<NavigationPage> {
   List pages = [
     const HomePage(),
     const MenuPage(),
-    const UpdatesPage(),
+    const ReportsPage(),
     const ManagementPage(),
   ];
 
@@ -50,7 +50,8 @@ class _NavigationPageState extends State<NavigationPage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
-          BottomNavigationBarItem(icon: Icon(Icons.schedule), label: "Updates"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.description), label: "Reports"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
         ],
         currentIndex: currentIndex,

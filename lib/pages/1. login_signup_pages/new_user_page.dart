@@ -5,6 +5,8 @@ import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:change_case/change_case.dart';
 
+import '../../components/show_message.dart';
+
 class NewUserPage extends StatefulWidget {
   const NewUserPage({
     super.key,
@@ -26,7 +28,7 @@ class _NewUserPageState extends State<NewUserPage> {
   //user signup method
   Future userSignup() async {
     if (firstNameController.text.isEmpty || lastNameController.text.isEmpty) {
-      showErrorMessage("Please fill out all fields.");
+      showMessage(context, "Please fill out all fields.");
     }
     //add user details
     try {
@@ -42,32 +44,10 @@ class _NewUserPageState extends State<NewUserPage> {
 
       FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
-      showErrorMessage(e.message.toString());
+      showMessage(context, e.message.toString());
     }
   }
 
-  //error message popup
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   void dispose() {
