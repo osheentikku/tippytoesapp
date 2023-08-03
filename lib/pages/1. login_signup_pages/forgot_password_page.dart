@@ -60,11 +60,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        leading: BackButton(color: Theme.of(context).primaryIconTheme.color),
         toolbarHeight: screenHeight * 0.05,
       ),
       body: SafeArea(
@@ -75,7 +75,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               children: [
                 //logo
                 CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).secondaryHeaderColor,
                   radius: screenWidth * 0.33,
                   backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
@@ -106,7 +106,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   hintText: "Email",
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
                 ),
@@ -125,7 +125,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(screenWidth * 0.05),
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).secondaryHeaderColor,
                     child: const Text(
                       "Reset Password",
                       style: TextStyle(

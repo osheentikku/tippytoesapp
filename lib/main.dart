@@ -22,6 +22,11 @@ class MyApp extends StatelessWidget {
       title: 'Tippy Toes Daycare',
       theme: ThemeData(
         fontFamily: 'Inter',
+        primaryColor: const Color(0xffFECD08),
+        secondaryHeaderColor: Colors.white,
+        primaryIconTheme: const IconThemeData(color: Colors.black),
+        dividerColor: const Color.fromARGB(255, 78, 64, 64),
+        hintColor: Colors.black54
       ),
       debugShowCheckedModeBanner: false,
       home: const AuthPage(),

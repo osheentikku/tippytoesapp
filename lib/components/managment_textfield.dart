@@ -24,13 +24,13 @@ class ManagementTextField extends StatelessWidget {
           //border
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xffFECD08),
+              color: Theme.of(context).primaryColor,
               width: screenHeight * 0.003,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xffFECD08),
+              color: Theme.of(context).primaryColor,
               width: screenHeight * 0.003,
             ),
           ),
@@ -39,9 +39,9 @@ class ManagementTextField extends StatelessWidget {
 
           //hints
           labelText: hintText,
-          labelStyle: const TextStyle(
+          labelStyle: TextStyle(
             fontSize: 20,
-            color: Colors.black54,
+            color: Theme.of(context).hintColor,
           ),
         ),
       ),

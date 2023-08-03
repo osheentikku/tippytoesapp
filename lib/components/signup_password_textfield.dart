@@ -15,7 +15,8 @@ class SignUpPasswordTextField extends StatefulWidget {
   });
 
   @override
-  State<SignUpPasswordTextField> createState() => _SignUpPasswordTextFieldState();
+  State<SignUpPasswordTextField> createState() =>
+      _SignUpPasswordTextFieldState();
 }
 
 class _SignUpPasswordTextFieldState extends State<SignUpPasswordTextField> {
@@ -31,22 +32,24 @@ class _SignUpPasswordTextFieldState extends State<SignUpPasswordTextField> {
           //border
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(widget.screenWidth * 0.05),
-            borderSide: const BorderSide(color: Colors.white),
+            borderSide:
+                BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(widget.screenWidth * 0.05),
-            borderSide: const BorderSide(color: Colors.white),
+            borderSide:
+                BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
 
           //filled color
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).secondaryHeaderColor,
           filled: true,
 
           //hints
           labelText: widget.hintText,
-          labelStyle: const TextStyle(
+          labelStyle: TextStyle(
             fontSize: 20,
-            color: Colors.black54,
+            color: Theme.of(context).hintColor,
           ),
 
           //hide/view

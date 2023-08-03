@@ -123,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -219,36 +219,39 @@ class _SignupPageState extends State<SignupPage> {
                         value: true,
                         child: Text(
                           "Admin",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                       DropdownMenuItem(
                         value: false,
                         child: Text(
                           "Parent/Guardian",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                     ],
                     onChanged: setAdmin,
-                    hint: const Text(
+                    hint: Text(
                       "Select account type",
-                      style: TextStyle(fontSize: 20, color: Colors.black54),
+                      style: TextStyle(
+                          fontSize: 20, color: Theme.of(context).hintColor),
                     ),
                     iconSize: 20,
                     decoration: InputDecoration(
                       //border
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).secondaryHeaderColor),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).secondaryHeaderColor),
                       ),
 
                       //filled color
-                      fillColor: Colors.white,
+                      fillColor: Theme.of(context).secondaryHeaderColor,
                       filled: true,
                     ),
                   ),
@@ -277,26 +280,26 @@ class _SignupPageState extends State<SignupPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03),
-                        child: const Text(
+                        child: Text(
                           'Or continue with',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 87, 73, 73),
+                            color: Theme.of(context).dividerColor,
                           ),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],

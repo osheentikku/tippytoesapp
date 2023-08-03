@@ -21,7 +21,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
     const AdminManagementPage(),
   ];
 
-  int currentIndex = 2;
+  int currentIndex = 3;
   void onTap(int index) {
     setState(() {
       currentIndex = index;
@@ -43,7 +43,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         actions: [
           IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
         ],
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -56,10 +56,10 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         ],
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         iconSize: 35,
-        unselectedItemColor: Colors.black54,
-        selectedItemColor: Colors.black,
+        unselectedItemColor: Theme.of(context).hintColor,
+        selectedItemColor: Theme.of(context).hintColor,
         onTap: onTap,
       ),
     );

@@ -123,11 +123,11 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 CircleAvatar(
-                  backgroundColor: const Color(0xffFECD08),
+                  backgroundColor: Theme.of(context).primaryColor,
                   radius: screenWidth * 0.2,
                   child: Icon(
                     Icons.person,
-                    color: Colors.white,
+                    color: Theme.of(context).secondaryHeaderColor,
                     size: screenWidth * 0.3,
                   ),
                 ),
@@ -186,7 +186,7 @@ class _ManagementPageState extends State<ManagementPage> {
                   child: MaterialButton(
                     onPressed: () => saveProfile(),
                     padding: EdgeInsets.all(screenHeight * 0.01),
-                    color: const Color(0xffFECD08),
+                    color: Theme.of(context).primaryColor,
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

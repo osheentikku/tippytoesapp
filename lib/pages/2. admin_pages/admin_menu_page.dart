@@ -109,7 +109,6 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     });
   }
 
-
   void removeItem(List<String> list, String item) {
     setState(() {
       list.remove(item);
@@ -175,12 +174,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -266,7 +265,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 MaterialButton(
                   onPressed: setTodayMenu,
-                  color: const Color(0xffFECD08),
+                  color: Theme.of(context).primaryColor,
                   elevation: 1,
                   child: const Text(
                     'Save Menu',
@@ -316,9 +315,10 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 focusNode: focusNode,
                 decoration: InputDecoration(
                     labelText: 'Add Items for $mealName',
-                    labelStyle: const TextStyle(color: Colors.black54),
-                    focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black54))),
+                    labelStyle: TextStyle(color: Theme.of(context).hintColor),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Theme.of(context).hintColor))),
               );
             },
             optionsViewBuilder: (BuildContext context,
@@ -365,7 +365,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
               addMealItem(list, mealName, controller.text);
               controller.clear();
             },
-            color: const Color(0xffFECD08),
+            color: Theme.of(context).primaryColor,
             elevation: 1,
             child: const Text('Add Item'),
           ),

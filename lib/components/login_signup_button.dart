@@ -23,7 +23,7 @@ class LoginSignupButton extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(screenWidth * 0.05),
-          color: Colors.white,
+          color: Theme.of(context).secondaryHeaderColor,
         ),
         child: Center(
           child: Text(

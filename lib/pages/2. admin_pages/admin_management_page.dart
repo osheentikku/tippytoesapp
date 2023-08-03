@@ -200,27 +200,28 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Center(
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          title: Center(
             child: Text(
               "Confirmation",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
+                color: Theme.of(context).dividerColor,
               ),
             ),
           ),
           content: Text(
-            "Are you sure you want to delete $item",
+            "Are you sure you want to delete $item?",
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 107, 95, 95),
+              color: Theme.of(context).dividerColor,
             ),
           ),
+          actionsPadding: EdgeInsets.zero,
           actions: [
             TextButton(
               onPressed: () async {
@@ -243,7 +244,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   showMessage(context, "$item successfully deleted.");
                 }
               },
-              child: const Text("Yes"),
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             TextButton(
                 onPressed: () {
@@ -251,7 +255,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     Navigator.of(context).pop();
                   }
                 },
-                child: const Text("No"))
+                child: const Text(
+                  "No",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
           ],
         );
       },
@@ -514,12 +521,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -558,12 +565,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -622,7 +629,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                       MaterialButton(
                         onPressed: () => clearFields(),
                         padding: EdgeInsets.all(screenHeight * 0.01),
-                        color: const Color(0xffFECD08),
+                        color: Theme.of(context).primaryColor,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -642,7 +649,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                         onPressed: () => saveStudent(
                             studentNameController.text.trim().toCapitalCase()),
                         padding: EdgeInsets.all(screenHeight * 0.01),
-                        color: const Color(0xffFECD08),
+                        color: Theme.of(context).primaryColor,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -666,12 +673,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -695,12 +702,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -772,17 +779,17 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   //border
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: const Color(0xffFECD08),
+                      color: Theme.of(context).primaryColor,
                       width: screenHeight * 0.002,
                     ),
                   ),
                   labelText: 'Select parent/guardian',
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 20,
-                    color: Colors.black54,
+                    color: Theme.of(context).hintColor,
                   ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).hintColor),
                   ),
                 ),
               );
@@ -831,7 +838,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               addParent(controller.text);
               controller.clear();
             },
-            color: const Color(0xffFECD08),
+            color: Theme.of(context).primaryColor,
             elevation: 1,
             child: const Text(
               'Add Parent',
@@ -871,17 +878,17 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   //border
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: const Color(0xffFECD08),
+                      color: Theme.of(context).primaryColor,
                       width: screenHeight * 0.002,
                     ),
                   ),
                   labelText: 'Select staff',
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 20,
-                    color: Colors.black54,
+                    color: Theme.of(context).hintColor,
                   ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).hintColor),
                   ),
                 ),
               );
@@ -930,7 +937,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               addStaff(controller.text);
               controller.clear();
             },
-            color: const Color(0xffFECD08),
+            color: Theme.of(context).primaryColor,
             elevation: 1,
             child: const Text(
               'Add Staff',
@@ -955,7 +962,6 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
                 Expanded(
                   child: GestureDetector(
                     onTap: () => populateStudent(str),
@@ -969,10 +975,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.02),
-                IconButton(
-                  onPressed: () => removeStudent(list, str),
-                  icon: const Icon(
+                GestureDetector(
+                  onTap: () => removeStudent(list, str),
+                  child: const Icon(
                     Icons.close,
                     color: Colors.red,
                     size: 25,

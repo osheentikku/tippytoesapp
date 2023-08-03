@@ -25,23 +25,21 @@ class ReportTextField extends StatelessWidget {
           //border
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xffFECD08),
+              color: Theme.of(context).primaryColor,
               width: screenHeight * 0.003,
             ),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xffFECD08),
+              color: Theme.of(context).primaryColor,
               width: screenHeight * 0.003,
             ),
           ),
 
           //hints
           labelText: hintText,
-          labelStyle: const TextStyle(
-            fontSize: 20,
-            color: Colors.black54,
-          ),
+          labelStyle:
+              TextStyle(fontSize: 20, color: Theme.of(context).hintColor),
         ),
       ),
     );

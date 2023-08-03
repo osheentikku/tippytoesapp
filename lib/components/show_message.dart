@@ -5,15 +5,15 @@ void showMessage(BuildContext context, String message) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
         title: Center(
           child: Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 107, 95, 95),
+              color: Theme.of(context).dividerColor,
             ),
           ),
         ),

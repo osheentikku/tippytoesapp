@@ -169,12 +169,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -192,12 +192,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -218,12 +218,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -407,7 +407,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       MaterialButton(
                         onPressed: () => clearFields(),
                         padding: EdgeInsets.all(screenHeight * 0.01),
-                        color: const Color(0xffFECD08),
+                        color: Theme.of(context).primaryColor,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -426,7 +426,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       MaterialButton(
                         onPressed: () => saveReport(),
                         padding: EdgeInsets.all(screenHeight * 0.01),
-                        color: const Color(0xffFECD08),
+                        color: Theme.of(context).primaryColor,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

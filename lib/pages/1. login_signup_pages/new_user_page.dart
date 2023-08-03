@@ -48,7 +48,6 @@ class _NewUserPageState extends State<NewUserPage> {
     }
   }
 
-
   @override
   void dispose() {
     firstNameController.dispose();
@@ -84,7 +83,7 @@ class _NewUserPageState extends State<NewUserPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -141,36 +140,41 @@ class _NewUserPageState extends State<NewUserPage> {
                         value: true,
                         child: Text(
                           "Admin",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                       DropdownMenuItem(
                         value: false,
                         child: Text(
                           "Parent/Guardian",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                     ],
                     onChanged: setAdmin,
-                    hint: const Text(
+                    hint: Text(
                       "Select account type",
-                      style: TextStyle(fontSize: 20, color: Colors.black54),
+                      style: TextStyle(
+                          fontSize: 20, color: Theme.of(context).hintColor),
                     ),
                     iconSize: 20,
                     decoration: InputDecoration(
                       //border
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).secondaryHeaderColor,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).secondaryHeaderColor,
+                        ),
                       ),
 
                       //filled color
-                      fillColor: Colors.white,
+                      fillColor: Theme.of(context).secondaryHeaderColor,
                       filled: true,
                     ),
                   ),

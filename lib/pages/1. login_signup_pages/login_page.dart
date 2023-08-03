@@ -61,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     //get screen height and width
@@ -69,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -81,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //logo
                 CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).secondaryHeaderColor,
                   radius: screenWidth * 0.33,
                   backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
@@ -97,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Email",
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
                 ),
@@ -115,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Password",
                   preIcon: Icon(
                     Icons.lock_outline_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
                 ),
@@ -172,26 +171,26 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03),
-                        child: const Text(
+                        child: Text(
                           'Or continue with',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 87, 73, 73),
+                            color: Theme.of(context).dividerColor,
                           ),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],

@@ -34,13 +34,13 @@ class _ManagementPasswordTextFieldState
           //border
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xffFECD08),
+              color: Theme.of(context).primaryColor,
               width: widget.screenHeight * 0.003,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xffFECD08),
+              color: Theme.of(context).primaryColor,
               width: widget.screenHeight * 0.003,
             ),
           ),
@@ -49,9 +49,9 @@ class _ManagementPasswordTextFieldState
 
           //hints
           labelText: widget.hintText,
-          labelStyle: const TextStyle(
+          labelStyle: TextStyle(
             fontSize: 20,
-            color: Colors.black54,
+            color: Theme.of(context).hintColor,
           ),
 
           //hide/view
