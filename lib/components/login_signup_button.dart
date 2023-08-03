@@ -29,9 +29,9 @@ class LoginSignupButton extends StatelessWidget {
           child: Text(
             text,
             style: const TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95)),
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

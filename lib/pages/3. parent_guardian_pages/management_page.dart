@@ -2,7 +2,6 @@ import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/components/managment_password_textfield.dart';
 import 'package:tippytoesapp/components/managment_textfield.dart';
 
 import '../../components/show_message.dart';

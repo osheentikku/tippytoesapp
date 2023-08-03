@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/components/managment_textfield.dart';
 import 'package:tippytoesapp/components/report_textfield.dart';
 
 import '../../components/show_message.dart';
@@ -31,7 +30,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
     loadFromFirestore();
   }
 
-  //load student, parent, and staff data from Firestore
+  //load student data from Firestore
   Future loadFromFirestore() async {
     //get all students in Firestore
     QuerySnapshot studentSnapshot =
@@ -212,7 +211,8 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //student
                 Text(
                   displayCurrentStudent(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 25),
                 ),
 
                 //divider
@@ -243,7 +243,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       Text(
                         "Diaper Changes",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
@@ -308,7 +308,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       Text(
                         "Nap",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
@@ -332,7 +332,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       Text(
                         "Mood AM",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
@@ -357,7 +357,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       Text(
                         "Mood PM",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
@@ -382,7 +382,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       Text(
                         "Health",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
