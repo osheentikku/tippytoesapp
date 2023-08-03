@@ -22,7 +22,7 @@ class GoogleAppleLogin extends StatelessWidget {
         padding: EdgeInsets.all(screenHeight * 0.01),
         height: 65,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).secondaryHeaderColor,
             borderRadius: BorderRadius.circular(screenHeight * 0.01)),
         child: Image.asset(imagePath),
       ),

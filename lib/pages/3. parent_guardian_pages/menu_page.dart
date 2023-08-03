@@ -98,7 +98,8 @@ class _MenuPageState extends State<MenuPage> {
               //Date
               Text(
                 DateFormat.yMMMEd().format(DateTime.now()),
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
 
               //Padding
@@ -119,12 +120,12 @@ class _MenuPageState extends State<MenuPage> {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                child: const Row(
+                child: Row(
                   children: [
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: Color.fromARGB(255, 116, 97, 97),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                   ],

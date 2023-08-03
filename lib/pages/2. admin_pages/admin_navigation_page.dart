@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'admin_home_page.dart';
 import 'admin_management_page.dart';
 import 'admin_menu_page.dart';
-import 'admin_updates_page.dart';
+import 'admin_reports_page.dart';
 
 class AdminNavigationPage extends StatefulWidget {
   const AdminNavigationPage({super.key});
@@ -17,7 +17,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
   List pages = [
     const AdminHomePage(),
     const AdminMenuPage(),
-    const AdminUpdatesPage(),
+    const AdminReportsPage(),
     const AdminManagementPage(),
   ];
 
@@ -43,22 +43,23 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         actions: [
           IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
         ],
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
-          BottomNavigationBarItem(icon: Icon(Icons.schedule), label: "Updates"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.description), label: "Reports"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
         ],
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         iconSize: 35,
-        unselectedItemColor: Colors.black54,
-        selectedItemColor: Colors.black,
+        unselectedItemColor: Theme.of(context).hintColor,
+        selectedItemColor: Theme.of(context).hintColor,
         onTap: onTap,
       ),
     );

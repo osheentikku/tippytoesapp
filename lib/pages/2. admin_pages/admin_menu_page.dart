@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../components/show_message.dart';
+
 class AdminMenuPage extends StatefulWidget {
   const AdminMenuPage({super.key});
 
@@ -101,33 +103,10 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     }).then((value) {
       // Menu successfully set for today.
       // You can show a confirmation dialog or a snackbar.
-      showMessage("Menu successfully updated.");
+      showMessage(context, "Menu successfully updated.");
     }).catchError((e) {
       // Handle errors here.
     });
-  }
-
-  //error message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void removeItem(List<String> list, String item) {
@@ -143,6 +122,15 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     setState(() {
       list.add(item);
     });
+  }
+
+  //dispose
+  @override
+  void dispose() {
+    super.dispose();
+    breakfastController.dispose();
+    lunchController.dispose();
+    snackController.dispose();
   }
 
   @override
@@ -164,7 +152,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //Date
                 Text(
                   DateFormat.yMMMEd().format(DateTime.now()),
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30),
                 ),
 
                 //Padding
@@ -185,12 +174,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -276,7 +265,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 MaterialButton(
                   onPressed: setTodayMenu,
-                  color: const Color(0xffFECD08),
+                  color: Theme.of(context).primaryColor,
                   elevation: 1,
                   child: const Text(
                     'Save Menu',
@@ -326,9 +315,10 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 focusNode: focusNode,
                 decoration: InputDecoration(
                     labelText: 'Add Items for $mealName',
-                    labelStyle: const TextStyle(color: Colors.black54),
-                    focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black54))),
+                    labelStyle: TextStyle(color: Theme.of(context).hintColor),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Theme.of(context).hintColor))),
               );
             },
             optionsViewBuilder: (BuildContext context,
@@ -375,7 +365,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
               addMealItem(list, mealName, controller.text);
               controller.clear();
             },
-            color: const Color(0xffFECD08),
+            color: Theme.of(context).primaryColor,
             elevation: 1,
             child: const Text('Add Item'),
           ),

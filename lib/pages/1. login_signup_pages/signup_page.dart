@@ -3,9 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
-import 'package:tippytoesapp/components/login_signup_textfield.dart';
+import 'package:tippytoesapp/components/signup_password_textfield.dart';
+import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 import 'package:change_case/change_case.dart';
+
+import '../../components/show_message.dart';
 
 class SignupPage extends StatefulWidget {
   final Function()? onTap;
@@ -43,14 +46,14 @@ class _SignupPageState extends State<SignupPage> {
         lastNameController.text.trim().isEmpty ||
         emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
-      showErrorMessage("Please fill out all fields.");
+      showMessage(context, "Please fill out all fields.");
     }
 
     //check if password is confirmed
     if (passwordController.text.trim() !=
         confirmPasswordController.text.trim()) {
       Navigator.pop(context);
-      showErrorMessage("Passwords don't match. Please try again.");
+      showMessage(context, "Passwords don't match. Please try again.");
       return;
     }
 
@@ -78,7 +81,7 @@ class _SignupPageState extends State<SignupPage> {
       //pop loading circle
       Navigator.pop(context);
       //wrong login info
-      showErrorMessage(e.message.toString());
+      showMessage(context, e.message.toString());
     }
   }
 
@@ -104,29 +107,6 @@ class _SignupPageState extends State<SignupPage> {
     });
   }
 
-  //error message popup
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void setAdmin(bool? selectedValue) {
     if (selectedValue is bool) {
       setState(
@@ -143,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -166,12 +146,11 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //first name
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: firstNameController,
                   hintText: "First Name",
-                  obscure: false,
                 ),
 
                 //padding
@@ -180,12 +159,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //last name
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: lastNameController,
                   hintText: "Last Name",
-                  obscure: false,
                 ),
 
                 //padding
@@ -194,12 +172,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //email
-                LoginSignUpTextField(
+                SignUpTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
                   hintText: "Email",
-                  obscure: false,
                 ),
 
                 //padding
@@ -208,12 +185,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //password
-                LoginSignUpTextField(
+                SignUpPasswordTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: passwordController,
                   hintText: "Password",
-                  obscure: true,
                 ),
 
                 //padding
@@ -222,12 +198,11 @@ class _SignupPageState extends State<SignupPage> {
                 ),
 
                 //confirm password
-                LoginSignUpTextField(
+                SignUpPasswordTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: confirmPasswordController,
                   hintText: "Confirm Password",
-                  obscure: true,
                 ),
 
                 //padding
@@ -244,36 +219,39 @@ class _SignupPageState extends State<SignupPage> {
                         value: true,
                         child: Text(
                           "Admin",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                       DropdownMenuItem(
                         value: false,
                         child: Text(
                           "Parent/Guardian",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                     ],
                     onChanged: setAdmin,
-                    hint: const Text(
+                    hint: Text(
                       "Select account type",
-                      style: TextStyle(fontSize: 20, color: Colors.black54),
+                      style: TextStyle(
+                          fontSize: 20, color: Theme.of(context).hintColor),
                     ),
                     iconSize: 20,
                     decoration: InputDecoration(
                       //border
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).secondaryHeaderColor),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).secondaryHeaderColor),
                       ),
 
                       //filled color
-                      fillColor: Colors.white,
+                      fillColor: Theme.of(context).secondaryHeaderColor,
                       filled: true,
                     ),
                   ),
@@ -302,26 +280,26 @@ class _SignupPageState extends State<SignupPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03),
-                        child: const Text(
+                        child: Text(
                           'Or continue with',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 87, 73, 73),
+                            color: Theme.of(context).dividerColor,
                           ),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],

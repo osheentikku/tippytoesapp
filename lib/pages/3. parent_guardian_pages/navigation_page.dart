@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/updates_page.dart';
+import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/reports_page.dart';
 
 import 'home_page.dart';
 import 'management_page.dart';
@@ -17,11 +17,11 @@ class _NavigationPageState extends State<NavigationPage> {
   List pages = [
     const HomePage(),
     const MenuPage(),
-    const UpdatesPage(),
+    const ReportsPage(),
     const ManagementPage(),
   ];
 
-  int currentIndex = 3;
+  int currentIndex = 2;
   void onTap(int index) {
     setState(() {
       currentIndex = index;
@@ -43,22 +43,23 @@ class _NavigationPageState extends State<NavigationPage> {
         actions: [
           IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
         ],
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
-          BottomNavigationBarItem(icon: Icon(Icons.schedule), label: "Updates"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.description), label: "Reports"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
         ],
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         iconSize: 35,
-        unselectedItemColor: Colors.black54,
-        selectedItemColor: Colors.black,
+        unselectedItemColor: Theme.of(context).hintColor,
+        selectedItemColor: Theme.of(context).hintColor,
         onTap: onTap,
       ),
     );

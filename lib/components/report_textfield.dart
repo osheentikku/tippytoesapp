@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AddStudentTextField extends StatelessWidget {
+class ReportTextField extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
 
-  const AddStudentTextField({
+  const ReportTextField({
     super.key,
     required this.controller,
     required this.hintText,
@@ -17,32 +17,29 @@ class AddStudentTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, screenWidth * 0.07),
       child: TextField(
         controller: controller,
+        maxLines: null,
         decoration: InputDecoration(
           //border
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: screenHeight * 0.002,
+              width: screenHeight * 0.003,
             ),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: screenHeight * 0.002,
+              width: screenHeight * 0.003,
             ),
           ),
-
-          //filled color
 
           //hints
           labelText: hintText,
-          labelStyle: TextStyle(
-            fontSize: 20,
-            color: Theme.of(context).hintColor,
-          ),
+          labelStyle:
+              TextStyle(fontSize: 20, color: Theme.of(context).hintColor),
         ),
       ),
     );

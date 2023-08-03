@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/add_student_textfield.dart';
+import '../../components/show_message.dart';
 
 class AdminManagementPage extends StatefulWidget {
   const AdminManagementPage({super.key});
@@ -150,7 +151,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
     //fields need to be filled
     if (studentNameController.text.trim().isEmpty || currentParents.isEmpty) {
-      showMessage("Please fill out all fields.");
+      if (mounted) {
+        showMessage(context, "Please fill out all fields.");
+      }
     } else {
       //if student exists, remove their data
       if (querySnapshot.docs.isNotEmpty) {
@@ -181,6 +184,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       //approve student's parents
       await approveParents(currentParents);
 
+      //add student to parents doc
+      await connectStudent(studentName);
+
       //clear "add a new student" fields
       clearFields();
 
@@ -194,27 +200,28 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Center(
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          title: Center(
             child: Text(
               "Confirmation",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
+                color: Theme.of(context).dividerColor,
               ),
             ),
           ),
           content: Text(
-            "Are you sure you want to delete $item",
+            "Are you sure you want to delete $item?",
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 107, 95, 95),
+              color: Theme.of(context).dividerColor,
             ),
           ),
+          actionsPadding: EdgeInsets.zero,
           actions: [
             TextButton(
               onPressed: () async {
@@ -234,10 +241,13 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 if (mounted) {
                   Navigator.of(context).pop();
+                  showMessage(context, "$item successfully deleted.");
                 }
-                showMessage("$item successfully deleted.");
               },
-              child: const Text("Yes"),
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             TextButton(
                 onPressed: () {
@@ -245,7 +255,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     Navigator.of(context).pop();
                   }
                 },
-                child: const Text("No"))
+                child: const Text(
+                  "No",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
           ],
         );
       },
@@ -366,6 +379,30 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
+  //add student to parents
+
+  Future connectStudent(String studentName) async {
+    try {
+      //get current parents docs
+      for (String email in currentParentEmails) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .where('Email', isEqualTo: email)
+            .get();
+
+        //approve current parents
+        for (DocumentSnapshot doc in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(doc.id)
+              .update({'Student': studentName});
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   //add staff to current list
   void addStaff(String staff) {
     //check if staff is empty or has already been added
@@ -435,36 +472,23 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     }
   }
 
-//clear fiekds
+  //clear fiekds
   void clearFields() {
     setState(() {
       studentNameController.clear();
       currentParents.clear();
       currentParentEmails.clear();
+      isNew = true;
     });
   }
 
-//message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  //dispose
+  @override
+  void dispose() {
+    super.dispose();
+    studentNameController.dispose();
+    parentContoller.dispose();
+    staffContoller.dispose();
   }
 
   @override
@@ -494,14 +518,15 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   height: screenHeight * 0.02,
                 ),
 
+                //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -540,12 +565,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -601,44 +626,40 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () => clearFields(),
-                        child: Container(
-                          padding: EdgeInsets.all(screenHeight * 0.01),
-                          color: const Color(0xffFECD08),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.restart_alt_rounded),
-                              Text(
-                                "Clear",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                      MaterialButton(
+                        onPressed: () => clearFields(),
+                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        color: Theme.of(context).primaryColor,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.restart_alt_rounded),
+                            Text(
+                              "Clear",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
                         width: screenWidth * 0.03,
                       ),
-                      GestureDetector(
-                        onTap: () => saveStudent(
+                      MaterialButton(
+                        onPressed: () => saveStudent(
                             studentNameController.text.trim().toCapitalCase()),
-                        child: Container(
-                          padding: EdgeInsets.all(screenHeight * 0.01),
-                          color: const Color(0xffFECD08),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add),
-                              Text(
-                                "Save student",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        color: Theme.of(context).primaryColor,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            Text(
+                              "Save student",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -652,12 +673,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -681,12 +702,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],
@@ -758,17 +779,17 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   //border
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: const Color(0xffFECD08),
+                      color: Theme.of(context).primaryColor,
                       width: screenHeight * 0.002,
                     ),
                   ),
                   labelText: 'Select parent/guardian',
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 20,
-                    color: Colors.black54,
+                    color: Theme.of(context).hintColor,
                   ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).hintColor),
                   ),
                 ),
               );
@@ -817,7 +838,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               addParent(controller.text);
               controller.clear();
             },
-            color: const Color(0xffFECD08),
+            color: Theme.of(context).primaryColor,
             elevation: 1,
             child: const Text(
               'Add Parent',
@@ -857,17 +878,17 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   //border
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: const Color(0xffFECD08),
+                      color: Theme.of(context).primaryColor,
                       width: screenHeight * 0.002,
                     ),
                   ),
                   labelText: 'Select staff',
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 20,
-                    color: Colors.black54,
+                    color: Theme.of(context).hintColor,
                   ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).hintColor),
                   ),
                 ),
               );
@@ -916,7 +937,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               addStaff(controller.text);
               controller.clear();
             },
-            color: const Color(0xffFECD08),
+            color: Theme.of(context).primaryColor,
             elevation: 1,
             child: const Text(
               'Add Staff',
@@ -941,7 +962,6 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
                 Expanded(
                   child: GestureDetector(
                     onTap: () => populateStudent(str),
@@ -955,7 +975,6 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.02),
                 GestureDetector(
                   onTap: () => removeStudent(list, str),
                   child: const Icon(

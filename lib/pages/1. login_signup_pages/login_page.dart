@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/apple_google_background.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
-import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
+import 'package:tippytoesapp/components/login_icon_textfield.dart';
+import 'package:tippytoesapp/components/show_message.dart';
 import 'package:tippytoesapp/pages/1.%20login_signup_pages/forgot_password_page.dart';
 import 'package:tippytoesapp/services/auth_service/auth_service.dart';
+
+import '../../components/login_icon_password_textfield.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -47,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
 
       //wrong login info
-      showErrorMessage(e.message.toString());
+      showMessage(context, e.message.toString());
     }
   }
 
@@ -58,29 +61,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  //error message popup
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     //get screen height and width
@@ -88,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -100,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //logo
                 CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).secondaryHeaderColor,
                   radius: screenWidth * 0.33,
                   backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
@@ -109,15 +89,14 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: screenHeight * 0.03),
 
                 //email
-                LoginSignUpIconTextField(
+                LoginIconTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
                   hintText: "Email",
-                  obscure: false,
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
                 ),
@@ -128,15 +107,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //password
-                LoginSignUpIconTextField(
+                LoginIconPasswordTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: passwordController,
                   hintText: "Password",
-                  obscure: true,
                   preIcon: Icon(
                     Icons.lock_outline_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
                 ),
@@ -193,26 +171,26 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03),
-                        child: const Text(
+                        child: Text(
                           'Or continue with',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 87, 73, 73),
+                            color: Theme.of(context).dividerColor,
                           ),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Color.fromARGB(255, 116, 97, 97),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ],

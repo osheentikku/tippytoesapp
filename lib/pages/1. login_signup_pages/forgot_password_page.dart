@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/components/login_signup_icon_textfield.dart';
+import 'package:tippytoesapp/components/login_icon_textfield.dart';
 
+import '../../components/show_message.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -34,13 +35,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       }
 
       //successful reset
-      showMessage(
-          "Password reset link sent to ${emailController.text.trim()}. Check your email.");
+      if (mounted) {
+        showMessage(context,
+            "Password reset link sent to ${emailController.text.trim()}. Check your email.");
+      }
     } on FirebaseAuthException catch (e) {
       //pop loading circle
       Navigator.pop(context);
 
-      showMessage(e.message.toString());
+      showMessage(context, e.message.toString());
     }
   }
 
@@ -50,29 +53,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     super.dispose();
   }
 
-  //error message popup
-  void showMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 107, 95, 95),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     //get screen height and width
@@ -80,11 +60,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFECD08),
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        leading: BackButton(color: Theme.of(context).primaryIconTheme.color),
         toolbarHeight: screenHeight * 0.05,
       ),
       body: SafeArea(
@@ -95,7 +75,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               children: [
                 //logo
                 CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).secondaryHeaderColor,
                   radius: screenWidth * 0.33,
                   backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
@@ -119,15 +99,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
 
                 //padding
-                LoginSignUpIconTextField(
+                LoginIconTextField(
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   controller: emailController,
                   hintText: "Email",
-                  obscure: false,
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
                 ),
@@ -146,7 +125,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(screenWidth * 0.05),
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).secondaryHeaderColor,
                     child: const Text(
                       "Reset Password",
                       style: TextStyle(

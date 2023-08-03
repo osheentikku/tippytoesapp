@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AddStudentTextField extends StatelessWidget {
+class ManagementTextField extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
 
-  const AddStudentTextField({
+  const ManagementTextField({
     super.key,
     required this.controller,
     required this.hintText,
@@ -25,13 +25,13 @@ class AddStudentTextField extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: screenHeight * 0.002,
+              width: screenHeight * 0.003,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: screenHeight * 0.002,
+              width: screenHeight * 0.003,
             ),
           ),
 

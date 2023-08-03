@@ -21,10 +21,11 @@ class _UnapprovedPageState extends State<UnapprovedPage> {
         actions: const [
           IconButton(onPressed: userLogout, icon: Icon(Icons.logout)),
         ],
-        backgroundColor: const Color(0xffFECD08),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
-      body: const Center(child: Text("Your account is still pending approval.")),
+      body:
+          const Center(child: Text("Your account is still pending approval.")),
     );
   }
 }
