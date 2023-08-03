@@ -58,12 +58,12 @@ class _ReportsPageState extends State<ReportsPage> {
       if (documentSnapshot.exists) {
         //current student updates
         setState(() {
-          diaperBM = documentSnapshot['bm'] ?? "N/A";
-          diaperWet = documentSnapshot['wet'] ?? "N/A";
+          diaperBM = documentSnapshot['bm'] ?? "";
+          diaperWet = documentSnapshot['wet'] ?? "";
           nap = documentSnapshot['nap'] ?? "";
-          moodAM = documentSnapshot['moodAM'] ?? "N/A";
-          moodPM = documentSnapshot['moodPM'] ?? "N/A";
-          health = documentSnapshot['health'] ?? "N/A";
+          moodAM = documentSnapshot['moodAM'] ?? "";
+          moodPM = documentSnapshot['moodPM'] ?? "";
+          health = documentSnapshot['health'] ?? "";
         });
       } else {
         setState(() {
@@ -80,9 +80,15 @@ class _ReportsPageState extends State<ReportsPage> {
     }
   }
 
-  Widget displayText(String report, double padding) {
+  Widget displayText(String report, double padding, double screenWidth) {
+    if (report.isEmpty) {
+      setState(() {
+        report = "N/A";
+      });
+    }
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding),
+      padding: EdgeInsets.symmetric(
+          horizontal: padding, vertical: screenWidth * 0.007),
       child: Row(
         children: [
           Expanded(
@@ -176,7 +182,7 @@ class _ReportsPageState extends State<ReportsPage> {
                   ),
                 ),
 
-                displayText(diaperBM, screenWidth * 0.1),
+                displayText(diaperBM, screenWidth * 0.1, screenWidth),
 
                 SizedBox(
                   height: screenHeight * 0.02,
@@ -195,7 +201,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     ],
                   ),
                 ),
-                displayText(diaperWet, screenWidth * 0.1),
+                displayText(diaperWet, screenWidth * 0.1, screenWidth),
 
                 SizedBox(
                   height: screenHeight * 0.02,
@@ -214,7 +220,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     ],
                   ),
                 ),
-                displayText(nap, screenWidth * 0.07),
+                displayText(nap, screenWidth * 0.07, screenWidth),
 
                 SizedBox(
                   height: screenHeight * 0.02,
@@ -233,7 +239,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     ],
                   ),
                 ),
-                displayText(moodAM, screenWidth * 0.07),
+                displayText(moodAM, screenWidth * 0.07, screenWidth),
 
                 SizedBox(
                   height: screenHeight * 0.02,
@@ -253,7 +259,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     ],
                   ),
                 ),
-                displayText(moodPM, screenWidth * 0.07),
+                displayText(moodPM, screenWidth * 0.07, screenWidth),
 
                 SizedBox(
                   height: screenHeight * 0.02,
@@ -273,7 +279,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     ],
                   ),
                 ),
-                displayText(health, screenWidth * 0.07),
+                displayText(health, screenWidth * 0.07, screenWidth),
 
                 SizedBox(
                   height: screenHeight * 0.03,
