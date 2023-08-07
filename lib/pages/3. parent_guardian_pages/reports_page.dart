@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ReportsPage extends StatefulWidget {
   const ReportsPage({super.key});
@@ -288,6 +289,17 @@ class _ReportsPageState extends State<ReportsPage> {
                 //title
                 Text(
                   "$studentName's Report",
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+
+                //padding
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+
+                Text(
+                  //get today's date
+                  DateFormat.yMMMEd().format(DateTime.now()),
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
 
