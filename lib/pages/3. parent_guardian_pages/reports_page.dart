@@ -21,6 +21,8 @@ class _ReportsPageState extends State<ReportsPage> {
   String moodPM = "";
   String health = "";
 
+  bool reportExists = true;
+
   @override
   void initState() {
     super.initState();
@@ -64,15 +66,17 @@ class _ReportsPageState extends State<ReportsPage> {
           moodAM = documentSnapshot['moodAM'] ?? "";
           moodPM = documentSnapshot['moodPM'] ?? "";
           health = documentSnapshot['health'] ?? "";
+          reportExists = true;
         });
       } else {
         setState(() {
-          diaperBM = "The report for today has not been updated.";
-          diaperWet = "The report for today has not been updated.";
-          nap = "The report for today has not been updated.";
-          moodAM = "The report for today has not been updated.";
-          moodPM = "The report for today has not been updated.";
-          health = "The report for today has not been updated.";
+          diaperBM = "";
+          diaperWet = "";
+          nap = "";
+          moodAM = "";
+          moodPM = "";
+          health = "";
+          reportExists = false;
         });
       }
     } catch (e) {
@@ -102,6 +106,169 @@ class _ReportsPageState extends State<ReportsPage> {
     );
   }
 
+  Widget displayReport(double screenWidth, double screenHeight) {
+    if (reportExists) {
+      return Column(children: [
+        displayDiaper(screenWidth, screenHeight),
+        displayMainReport(screenWidth, screenHeight)
+      ]);
+    } else {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+        child: Text(
+          "The report for today has not been updated.",
+          style: Theme.of(context).textTheme.displayLarge,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+  }
+
+  Widget displayDiaper(double screenWidth, double screenHeight) {
+    if (diaperBM == "N/A" && diaperWet == "N/A") {
+      return Column(
+        children: [
+          //diaper changes
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Diaper Changes:",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+
+          //bm
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+            child: const Row(
+              children: [
+                Text(
+                  "Bowel Movements",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+
+          displayText(diaperBM, screenWidth * 0.1, screenWidth),
+
+          SizedBox(
+            height: screenHeight * 0.02,
+          ),
+
+          //wet
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+            child: const Row(
+              children: [
+                Text(
+                  "Wet",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+          displayText(diaperWet, screenWidth * 0.1, screenWidth),
+
+          SizedBox(
+            height: screenHeight * 0.02,
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget displayMainReport(double screenWidth, double screenHeight) {
+    return Column(
+      children: [
+        //nap
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+          child: const Row(
+            children: [
+              Text(
+                "Nap",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        displayText(nap, screenWidth * 0.07, screenWidth),
+
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        //mood AM
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+          child: const Row(
+            children: [
+              Text(
+                "Mood AM",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        displayText(moodAM, screenWidth * 0.07, screenWidth),
+
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        //mood pm
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                "Mood PM",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        displayText(moodPM, screenWidth * 0.07, screenWidth),
+
+        SizedBox(
+          height: screenHeight * 0.02,
+        ),
+
+        //health
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                "Health",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        displayText(health, screenWidth * 0.07, screenWidth),
+
+        SizedBox(
+          height: screenHeight * 0.03,
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -121,8 +288,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 //title
                 Text(
                   "$studentName's Report",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 30),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
 
                 //padding
@@ -149,141 +315,7 @@ class _ReportsPageState extends State<ReportsPage> {
                   height: screenHeight * 0.004,
                 ),
 
-                //diaper changes
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Diaper Changes:",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(
-                  height: screenHeight * 0.01,
-                ),
-
-                //bm
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Bowel Movements",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-
-                displayText(diaperBM, screenWidth * 0.1, screenWidth),
-
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-
-                //wet
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Wet",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                displayText(diaperWet, screenWidth * 0.1, screenWidth),
-
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-
-                //nap
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Nap",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                displayText(nap, screenWidth * 0.07, screenWidth),
-
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-
-                //mood AM
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Mood AM",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                displayText(moodAM, screenWidth * 0.07, screenWidth),
-
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-
-                //mood pm
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Mood PM",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                displayText(moodPM, screenWidth * 0.07, screenWidth),
-
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-
-                //health
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Health",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                displayText(health, screenWidth * 0.07, screenWidth),
-
-                SizedBox(
-                  height: screenHeight * 0.03,
-                )
+                displayReport(screenWidth, screenHeight)
               ],
             ),
           ),

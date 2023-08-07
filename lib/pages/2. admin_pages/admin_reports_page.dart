@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/number_symbols_data.dart';
 import 'package:tippytoesapp/components/report_textfield.dart';
 
 import '../../components/show_message.dart';
