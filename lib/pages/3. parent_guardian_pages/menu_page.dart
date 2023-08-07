@@ -63,7 +63,7 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(height: screenHeight * 0.02),
               const Expanded(
                 child: Text(
-                  "The menu for today has not been set.",
+                  "Oops! The menu willy be updated soon.",
                   textAlign: TextAlign.left,
                   softWrap: true,
                   style: TextStyle(
@@ -187,10 +187,24 @@ class _MenuPageState extends State<MenuPage> {
                 child: const Row(
                   children: [
                     Text(
-                      'Snack - 3:00 PM',
+                      'Snack - *3:00 PM',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                child: const Row(
+                  children: [
+                    Text(
+                      '(*Or when child wakes up from nap)',
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20,
                       ),
                     ),
                   ],

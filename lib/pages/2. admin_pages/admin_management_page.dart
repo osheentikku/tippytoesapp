@@ -508,14 +508,14 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 //title
-                const Text(
+                Text(
                   "Manage Students",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 //divider
@@ -535,28 +535,23 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 //current roster
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Text(
-                        'Current Roster',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Text('Current Roster',
+                          style: Theme.of(context).textTheme.displayLarge),
                     ],
                   ),
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 //display current roster
@@ -578,7 +573,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.003,
+                  height: screenHeight * 0.01,
                 ),
 
                 //add/edit a new student
@@ -586,13 +581,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: Text(
                     editOrAddStudent(),
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: screenHeight * 0.01),
 
                 //name
                 AddStudentTextField(
@@ -617,7 +611,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //clear and save button
@@ -668,7 +662,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.01,
                 ),
 
                 Padding(
@@ -686,18 +680,18 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.01,
                 ),
 
                 //title
-                const Text(
+                Text(
                   "Manage Staff",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 Padding(
@@ -716,7 +710,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 //Add Staff
@@ -729,7 +723,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: screenHeight * 0.01),
 
                 //staff selector
                 bulletedListStaff(currentStaff, screenHeight, screenWidth),
@@ -842,7 +836,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             elevation: 1,
             child: const Text(
               'Add Parent',
-              style: TextStyle(fontSize: 17),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -941,7 +935,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             elevation: 1,
             child: const Text(
               'Add Staff',
-              style: TextStyle(fontSize: 17),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
           ),
         ],

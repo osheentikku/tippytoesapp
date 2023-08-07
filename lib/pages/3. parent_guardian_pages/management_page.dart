@@ -82,6 +82,7 @@ class _ManagementPageState extends State<ManagementPage> {
         //pop loading circle
         if (mounted) {
           Navigator.pop(context);
+          showMessage(context, "Changes made succesfully");
         }
       } on FirebaseAuthException catch (e) {
         //pop loading circle
@@ -90,9 +91,6 @@ class _ManagementPageState extends State<ManagementPage> {
         }
         showMessage(context, e.message.toString());
       }
-    }
-    if (mounted) {
-      showMessage(context, "Changes made succesfully");
     }
     populateFields();
   }

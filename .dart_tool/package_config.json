@@ -20,6 +20,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "calendar_date_picker2",
+      "rootUri": "file:///Users/osheentikku/.pub-cache/hosted/pub.dev/calendar_date_picker2-0.5.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "change_case",
       "rootUri": "file:///Users/osheentikku/.pub-cache/hosted/pub.dev/change_case-1.1.0",
       "packageUri": "lib/",
@@ -398,7 +404,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-07-26T22:35:08.237837Z",
+  "generated": "2023-08-06T20:59:43.783878Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }
