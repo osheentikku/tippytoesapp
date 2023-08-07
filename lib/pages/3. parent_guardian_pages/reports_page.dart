@@ -293,7 +293,7 @@ class _ReportsPageState extends State<ReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.004,
+                  height: screenHeight * 0.01,
                 ),
 
                 //divider
@@ -312,7 +312,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.004,
+                  height: screenHeight * 0.01,
                 ),
 
                 displayReport(screenWidth, screenHeight)

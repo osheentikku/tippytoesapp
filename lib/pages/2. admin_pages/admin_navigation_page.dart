@@ -59,7 +59,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         backgroundColor: Theme.of(context).primaryColor,
         iconSize: 35,
         unselectedItemColor: Theme.of(context).hintColor,
-        selectedItemColor: Theme.of(context).hintColor,
+        selectedItemColor: Colors.black,
         onTap: onTap,
       ),
     );
