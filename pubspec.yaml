@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.8.3
   change_case: ^1.1.0
   intl: ^0.18.1
+  calendar_date_picker2: ^0.5.2
 
 dev_dependencies:
   flutter_test:

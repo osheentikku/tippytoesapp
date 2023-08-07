@@ -32,6 +32,11 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
   //load student data from Firestore
   Future loadFromFirestore() async {
+    setState(() {
+      currentStudents.clear();
+      currentStudents.add("Select a student");
+      currentStudent = "Select a student";
+    });
     //get all students in Firestore
     QuerySnapshot studentSnapshot =
         await FirebaseFirestore.instance.collection('students').get();
@@ -44,14 +49,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
           currentStudents.add(docSnapshot['Name']);
         });
       }
-    } else {
-      setState(() {
-        currentStudents = [];
-      });
     }
-    setState(() {
-      currentStudent = "";
-    });
   }
 
   //populate fields with student data
@@ -92,7 +90,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
   }
 
   String displayCurrentStudent() {
-    if (currentStudent.isEmpty) {
+    if (currentStudent == "Select a student") {
       return "No student selected";
     } else {
       return "$currentStudent's Report";
@@ -135,7 +133,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
       moodAMController.clear();
       moodPMController.clear();
       healthController.clear();
-      currentStudent = "";
+      currentStudent = "Select a student";
     });
   }
 
@@ -156,14 +154,14 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 ),
 
                 //title
-                const Text(
+                Text(
                   "Student Reports",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 //divider
@@ -183,29 +181,36 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
-                //display current roster
-                bulletedListRoster(currentStudents, screenHeight, screenWidth),
-
-                //divider
+                //display roster in dropdown
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Theme.of(context).dividerColor,
+                  child: DropdownButtonFormField(
+                    items: currentStudents
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.black),
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
+                    value: currentStudent,
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        currentStudent = newValue;
+                        populateStudent(newValue);
+                      }
+                    },
                   ),
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.004,
+                  height: screenHeight * 0.02,
                 ),
 
                 //student

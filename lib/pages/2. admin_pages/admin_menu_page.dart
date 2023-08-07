@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,11 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
   List<String> lunchToday = [];
   List<String> snackToday = [];
 
+  //date
+  List<DateTime?> date = [];
+  DateTime dateToday = DateTime.now();
+  String dateTodayString = "";
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +40,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
   }
 
   Future loadMealsFromFirestore() async {
+    setState(() {
+      date.add(DateTime.now());
+      dateToday = DateTime.now();
+      dateTodayString = '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+    });
+
     CollectionReference menuCollection =
         FirebaseFirestore.instance.collection('menus');
 
@@ -62,11 +74,6 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       snackOptions = snackSet.toList();
     });
 
-    //get today's date
-    DateTime dateToday = DateTime.now();
-    String dateTodayString =
-        '${dateToday.month}-${dateToday.day}-${dateToday.year}';
-
     //get menu in firestore if doc exists
     DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
         .collection('menus')
@@ -90,11 +97,6 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
   }
 
   void setTodayMenu() {
-    //get today's date
-    DateTime dateToday = DateTime.now();
-    String dateTodayString =
-        '${dateToday.month}-${dateToday.day}-${dateToday.year}';
-
     //set menu in firestore
     FirebaseFirestore.instance.collection('menus').doc(dateTodayString).set({
       'breakfast': breakfastToday,
@@ -124,6 +126,51 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     });
   }
 
+  Future changeDate(double screenWidth, double screenHeight) async {
+    final values = await showCalendarDatePicker2Dialog(
+      context: context,
+      config: CalendarDatePicker2WithActionButtonsConfig(
+        calendarType: CalendarDatePicker2Type.single,
+        firstDate: DateTime.now().subtract(const Duration(days: 7)),
+        lastDate: DateTime.now().add(const Duration(days: 7)),
+      ),
+      dialogSize: Size(screenWidth * 0.8, screenHeight * 0.2),
+      borderRadius: BorderRadius.circular(15),
+      value: date,
+      dialogBackgroundColor: Colors.white,
+    );
+    if (values != null) {
+      setState(() {
+        date = values;
+        dateTodayString = '${date[0]!.month}-${date[0]!.day}-${date[0]!.year}';
+      });
+    }
+    await populateMenu();
+  }
+
+  Future populateMenu() async {
+    //get menu in firestore if doc exists
+    DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
+        .collection('menus')
+        .doc(dateTodayString)
+        .get();
+
+    if (menuTodaySnapshot.exists) {
+      setState(() {
+        breakfastToday =
+            List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
+        lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
+        snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
+      });
+    } else {
+      setState(() {
+        breakfastToday = [];
+        lunchToday = [];
+        snackToday = [];
+      });
+    }
+  }
+
   //dispose
   @override
   void dispose() {
@@ -150,26 +197,17 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 ),
 
                 //Date
-                Text(
-                  DateFormat.yMMMEd().format(DateTime.now()),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 30),
+                GestureDetector(
+                  onTap: () => changeDate(screenWidth, screenHeight),
+                  child: Text(
+                    DateFormat.yMMMEd().format(date[0]!),
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
                 ),
 
                 //Padding
                 SizedBox(
                   height: screenHeight * 0.01,
-                ),
-
-                //today's menu
-                const Text(
-                  "Today's Menu",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-
-                //padding
-                SizedBox(
-                  height: screenHeight * 0.02,
                 ),
 
                 Padding(
@@ -188,7 +226,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
 
                 //breakfast
@@ -245,10 +283,24 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                   child: const Row(
                     children: [
                       Text(
-                        'Snack - 3:00 PM',
+                        'Snack - *3:00PM',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  child: const Row(
+                    children: [
+                      Text(
+                        '(*Or when child wakes up from nap)',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
                         ),
                       ),
                     ],
@@ -367,7 +419,10 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
             },
             color: Theme.of(context).primaryColor,
             elevation: 1,
-            child: const Text('Add Item'),
+            child: const Text(
+              'Add Item',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

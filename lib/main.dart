@@ -26,7 +26,14 @@ class MyApp extends StatelessWidget {
         secondaryHeaderColor: Colors.white,
         primaryIconTheme: const IconThemeData(color: Colors.black),
         dividerColor: const Color.fromARGB(255, 78, 64, 64),
-        hintColor: Colors.black54
+        hintColor: Colors.black54,
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Colors.black,
+          ),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: const AuthPage(),

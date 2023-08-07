@@ -15,6 +15,10 @@ class _MenuPageState extends State<MenuPage> {
   List<String> lunchToday = [];
   List<String> snackToday = [];
 
+  bool isToday = true;
+  Color nextColor = Colors.black;
+  Color backColor = Colors.black54;
+
   @override
   void initState() {
     super.initState();
@@ -39,12 +43,18 @@ class _MenuPageState extends State<MenuPage> {
             List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
         lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
         snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
+        isToday = true;
+        nextColor = Colors.black;
+        backColor = Colors.black54;
       });
     } else {
       setState(() {
         breakfastToday = [];
         lunchToday = [];
         snackToday = [];
+        isToday = true;
+        nextColor = Colors.black;
+        backColor = Colors.black54;
       });
     }
   }
@@ -63,7 +73,7 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(height: screenHeight * 0.02),
               const Expanded(
                 child: Text(
-                  "The menu for today has not been set.",
+                  "Oops! The menu willy be updated soon.",
                   textAlign: TextAlign.left,
                   softWrap: true,
                   style: TextStyle(
@@ -77,6 +87,97 @@ class _MenuPageState extends State<MenuPage> {
       );
     } else {
       return bulletedList(list, screenHeight, screenWidth);
+    }
+  }
+
+  String displayDay() {
+    if (isToday) {
+      return "Today's Menu";
+    } else {
+      return "Tomorrow's Menu";
+    }
+  }
+
+  String displayDate() {
+    if (isToday) {
+      return DateFormat.yMMMEd().format(DateTime.now());
+    } else {
+      return DateFormat.yMMMEd()
+          .format(DateTime.now().add(const Duration(days: 1)));
+    }
+  }
+
+  Future goTomorrow() async {
+    setState(() {
+      isToday = false;
+      backColor = Colors.black;
+      nextColor = Colors.black54;
+    });
+    await populateReport();
+  }
+
+  Future goToday() async {
+    setState(() {
+      isToday = true;
+      backColor = Colors.black54;
+      nextColor = Colors.black;
+    });
+    await populateReport();
+  }
+
+  Future populateReport() async {
+    if (isToday) {
+      //get today's date
+      DateTime dateToday = DateTime.now();
+      String dateTodayString =
+          '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+
+      //get menu in firestore if doc exists
+      DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
+          .collection('menus')
+          .doc(dateTodayString)
+          .get();
+
+      if (menuTodaySnapshot.exists) {
+        setState(() {
+          breakfastToday =
+              List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
+          lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
+          snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
+        });
+      } else {
+        setState(() {
+          breakfastToday = [];
+          lunchToday = [];
+          snackToday = [];
+        });
+      }
+    } else {
+      //get today's date
+      DateTime dateToday = DateTime.now().add(const Duration(days: 1));
+      String dateTodayString =
+          '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+
+      //get menu in firestore if doc exists
+      DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
+          .collection('menus')
+          .doc(dateTodayString)
+          .get();
+
+      if (menuTodaySnapshot.exists) {
+        setState(() {
+          breakfastToday =
+              List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
+          lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
+          snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
+        });
+      } else {
+        setState(() {
+          breakfastToday = [];
+          lunchToday = [];
+          snackToday = [];
+        });
+      }
     }
   }
 
@@ -96,10 +197,30 @@ class _MenuPageState extends State<MenuPage> {
               ),
 
               //Date
-              Text(
-                DateFormat.yMMMEd().format(DateTime.now()),
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => goToday(),
+                    child: Icon(
+                      Icons.navigate_before,
+                      color: backColor,
+                      size: 30,
+                    ),
+                  ),
+                  Text(
+                    displayDate(),
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                  GestureDetector(
+                    onTap: () => goTomorrow(),
+                    child: Icon(
+                      Icons.navigate_next_sharp,
+                      color: nextColor,
+                      size: 30,
+                    ),
+                  )
+                ],
               ),
 
               //Padding
@@ -108,14 +229,14 @@ class _MenuPageState extends State<MenuPage> {
               ),
 
               //today's menu
-              const Text(
-                "Today's Menu",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              Text(
+                displayDay(),
+                style: Theme.of(context).textTheme.displayLarge,
               ),
 
               //padding
               SizedBox(
-                height: screenHeight * 0.02,
+                height: screenHeight * 0.01,
               ),
 
               Padding(
@@ -134,7 +255,7 @@ class _MenuPageState extends State<MenuPage> {
 
               //padding
               SizedBox(
-                height: screenHeight * 0.02,
+                height: screenHeight * 0.01,
               ),
 
               //breakfast
@@ -187,10 +308,24 @@ class _MenuPageState extends State<MenuPage> {
                 child: const Row(
                   children: [
                     Text(
-                      'Snack - 3:00 PM',
+                      'Snack - *3:00 PM',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                child: const Row(
+                  children: [
+                    Text(
+                      '(*Or when child wakes up from nap)',
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20,
                       ),
                     ),
                   ],

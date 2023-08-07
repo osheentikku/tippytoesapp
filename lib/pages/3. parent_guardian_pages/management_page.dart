@@ -82,6 +82,7 @@ class _ManagementPageState extends State<ManagementPage> {
         //pop loading circle
         if (mounted) {
           Navigator.pop(context);
+          showMessage(context, "Changes made succesfully");
         }
       } on FirebaseAuthException catch (e) {
         //pop loading circle
@@ -90,9 +91,6 @@ class _ManagementPageState extends State<ManagementPage> {
         }
         showMessage(context, e.message.toString());
       }
-    }
-    if (mounted) {
-      showMessage(context, "Changes made succesfully");
     }
     populateFields();
   }
@@ -132,16 +130,16 @@ class _ManagementPageState extends State<ManagementPage> {
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.02,
                 ),
 
-                const Text(
+                Text(
                   "Edit profile",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.02,
                 ),
 
                 //first name
