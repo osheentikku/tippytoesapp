@@ -71,7 +71,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
     //loop through documents to get parent name/emails
     for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
-      String name = docSnapshot['First Name'] + " " + docSnapshot['Last Name'];
+      String name = docSnapshot['Name'];
       String email = docSnapshot["Email"];
 
       allParents.add('$name: $email');
@@ -88,7 +88,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
     //loop through documents to get staff name/emails
     for (QueryDocumentSnapshot docSnapshot in staffSnapshot.docs) {
-      String name = docSnapshot['First Name'] + " " + docSnapshot['Last Name'];
+      String name = docSnapshot['Name'];
       String email = docSnapshot["Email"];
 
       allStaff.add('$name: $email');

@@ -46,8 +46,8 @@ class _SignUpPasswordTextFieldState extends State<SignUpPasswordTextField> {
           filled: true,
 
           //hints
-          labelText: widget.hintText,
-          labelStyle: TextStyle(
+          hintText: widget.hintText,
+          hintStyle: TextStyle(
             fontSize: 20,
             color: Theme.of(context).hintColor,
           ),

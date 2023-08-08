@@ -38,6 +38,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: pages[currentIndex],
       appBar: AppBar(
         actions: [
@@ -57,7 +58,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).primaryColor,
-        iconSize: 35,
+        iconSize: 20,
         unselectedItemColor: Theme.of(context).hintColor,
         selectedItemColor: Colors.black,
         onTap: onTap,

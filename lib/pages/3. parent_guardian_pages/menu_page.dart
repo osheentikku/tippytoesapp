@@ -322,7 +322,7 @@ class _MenuPageState extends State<MenuPage> {
                 child: const Row(
                   children: [
                     Text(
-                      '(*Or when child wakes up from nap)',
+                      '(*Or when child wakes from nap)',
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 20,

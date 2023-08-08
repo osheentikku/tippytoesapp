@@ -232,14 +232,11 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //breakfast
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Breakfast - 9:00 AM',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -256,14 +253,11 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //lunch
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Lunch - 11:45 AM',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -280,28 +274,22 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //snack
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Snack - *3:00PM',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
-                        '(*Or when child wakes up from nap)',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                        ),
+                        '(*Or when child wakes from nap)',
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -382,7 +370,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                   elevation: 4,
                   child: Container(
                     //set max height for large lists
-                    constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
+                    constraints: BoxConstraints(maxHeight: screenHeight * 0.2),
                     width: screenWidth * 0.7,
                     child: MediaQuery.removePadding(
                       context: context,

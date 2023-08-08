@@ -35,16 +35,18 @@ class _ManagementPageState extends State<ManagementPage> {
         .doc(user.uid)
         .get();
 
-    firstNameController.text = documentSnapshot["First Name"];
-    lastNameController.text = documentSnapshot["Last Name"];
+    String name = documentSnapshot['Name'];
+    int spacePosition = name.indexOf(" ");
+
+    firstNameController.text = name.substring(0, spacePosition);
+    lastNameController.text = name.substring(spacePosition + 1);
     emailController.text = documentSnapshot["Email"];
   }
 
   Future editUserDetails(
       String firstName, String lastName, String email) async {
     await FirebaseFirestore.instance.collection("users").doc(user.uid).update({
-      'First Name': firstName,
-      'Last Name': lastName,
+      'Name': '$firstName $lastName',
       'Email': email,
     });
   }
