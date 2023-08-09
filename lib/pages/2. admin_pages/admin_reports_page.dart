@@ -159,6 +159,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
     setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.1,
         screenWidth * 0.07);
     double dividerThickness = 0.5;
+    double textfieldBorder = screenHeight * 0.003;
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -289,10 +290,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: ReportTextField(
-                      controller: diaperBMController,
-                      hintText: "Update Timing",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: diaperBMController,
+                    hintText: "Update Timing",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //wet
@@ -312,10 +316,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: ReportTextField(
-                      controller: diaperWetController,
-                      hintText: "Update Timing",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: diaperWetController,
+                    hintText: "Update Timing",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //nap
@@ -339,6 +346,8 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     hintText: "Update Timing",
                     screenHeight: screenHeight,
                     screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
                   ),
                 ),
 
@@ -359,10 +368,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
-                      controller: moodAMController,
-                      hintText: "Update Mood",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: moodAMController,
+                    hintText: "Update Mood",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //mood pm
@@ -383,10 +395,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
-                      controller: moodPMController,
-                      hintText: "Update Mood",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: moodPMController,
+                    hintText: "Update Mood",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //health
@@ -407,10 +422,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
-                      controller: healthController,
-                      hintText: "Update Health",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: healthController,
+                    hintText: "Update Health",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //clear and save button
