@@ -203,25 +203,13 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
         return AlertDialog(
           backgroundColor: Theme.of(context).secondaryHeaderColor,
           title: Center(
-            child: Text(
-              "Confirmation",
+            child: Text("Confirmation",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium),
+          ),
+          content: Text("Are you sure you want to delete $item?",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).dividerColor,
-              ),
-            ),
-          ),
-          content: Text(
-            "Are you sure you want to delete $item?",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
+              style: Theme.of(context).textTheme.headlineMedium),
           actionsPadding: EdgeInsets.zero,
           actions: [
             TextButton(
@@ -497,11 +485,14 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
   double paddingSmall = 0;
   double horizontalPadding = 0;
   double paddingMedium = 0;
-  void setPadding(double small, double medium, double horizontal) {
+  double deleteSize = 0;
+  void setPadding(
+      double small, double medium, double horizontal, double deleteIcon) {
     setState(() {
       paddingSmall = small;
       paddingMedium = medium;
       horizontalPadding = horizontal;
+      deleteSize = deleteIcon;
     });
   }
 
@@ -509,7 +500,8 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07);
+    setPadding(
+        screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07, 25);
     double dividerThickness = 0.5;
     return Scaffold(
       body: SafeArea(
@@ -903,10 +895,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
                 GestureDetector(
                   onTap: () => removeStudent(list, str),
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     color: Colors.red,
-                    size: 25,
+                    size: deleteSize,
                   ),
                 ),
               ],
@@ -932,10 +924,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 SizedBox(height: paddingMedium),
                 GestureDetector(
                   onTap: () => removeParent(str),
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     color: Colors.red,
-                    size: 25,
+                    size: deleteSize,
                   ),
                 ),
                 SizedBox(
@@ -972,10 +964,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 SizedBox(height: paddingMedium),
                 GestureDetector(
                   onTap: () => removeStaff(str),
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     color: Colors.red,
-                    size: 25,
+                    size: deleteSize,
                   ),
                 ),
                 SizedBox(
