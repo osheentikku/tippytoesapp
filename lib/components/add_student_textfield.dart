@@ -5,19 +5,20 @@ class AddStudentTextField extends StatelessWidget {
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
+  final double horizontalPadding;
 
-  const AddStudentTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.screenHeight,
-    required this.screenWidth,
-  });
+  const AddStudentTextField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      required this.screenHeight,
+      required this.screenWidth,
+      required this.horizontalPadding});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -25,17 +26,13 @@ class AddStudentTextField extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: screenHeight * 0.002,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
-              width: screenHeight * 0.002,
             ),
           ),
-
-          //filled color
 
           //hints
           labelText: hintText,

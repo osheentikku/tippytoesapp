@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        
       ),
       debugShowCheckedModeBanner: false,
       home: const AuthPage(),

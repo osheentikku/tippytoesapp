@@ -479,6 +479,8 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       studentNameController.clear();
       currentParents.clear();
       currentParentEmails.clear();
+      parentContoller.clear();
+      staffContoller.clear();
       isNew = true;
     });
   }
@@ -492,10 +494,23 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     staffContoller.dispose();
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  void setPadding(double small, double medium, double horizontal) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      horizontalPadding = horizontal;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07);
+    double dividerThickness = 0.5;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -505,7 +520,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingMedium,
                 ),
 
                 //title
@@ -516,17 +531,17 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //divider
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -536,12 +551,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //current roster
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text('Current Roster',
@@ -552,20 +567,20 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //display current roster
-                bulletedListRoster(currentStudents, screenHeight, screenWidth),
+                bulletedListRoster(currentStudents),
 
                 //divider
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -574,12 +589,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //add/edit a new student
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Text(
                     editOrAddStudent(),
                     style: Theme.of(context).textTheme.displayLarge,
@@ -587,48 +602,49 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.005),
+                SizedBox(height: paddingSmall),
 
-                //name
+                //student name
                 AddStudentTextField(
                   controller: studentNameController,
                   hintText: "Student Name",
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
+                  horizontalPadding: horizontalPadding,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 //parent selector
-                bulletedListParent(currentParents, screenHeight, screenWidth),
+                bulletedListParent(currentParents),
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
                 parentSelection(
-                    parentContoller, allParents, screenHeight, screenWidth),
+                  parentContoller,
+                  allParents,
+                ),
 
                 //padding
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
+                SizedBox(height: paddingMedium),
 
                 //clear and save button
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MaterialButton(
                         onPressed: () => clearFields(),
-                        padding: EdgeInsets.all(screenHeight * 0.005),
+                        padding: EdgeInsets.all(paddingSmall),
                         color: Theme.of(context).primaryColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.restart_alt_rounded),
+                            const Icon(Icons.restart_alt_rounded),
                             Text(
                               "Clear",
                               style: Theme.of(context).textTheme.displayMedium,
@@ -637,17 +653,17 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                         ),
                       ),
                       SizedBox(
-                        width: screenWidth * 0.03,
+                        width: paddingMedium,
                       ),
                       MaterialButton(
                         onPressed: () => saveStudent(
                             studentNameController.text.trim().toCapitalCase()),
-                        padding: EdgeInsets.all(screenHeight * 0.005),
+                        padding: EdgeInsets.all(paddingSmall),
                         color: Theme.of(context).primaryColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add),
+                            const Icon(Icons.add),
                             Text(
                               "Save student",
                               style: Theme.of(context).textTheme.displayMedium,
@@ -661,16 +677,16 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -679,7 +695,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //title
@@ -690,16 +706,16 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -709,12 +725,12 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //Add Staff
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Text(
                     "Add Staff",
                     style: Theme.of(context).textTheme.displayLarge,
@@ -722,19 +738,18 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.005),
+                SizedBox(height: paddingSmall),
 
                 //staff selector
-                bulletedListStaff(currentStaff, screenHeight, screenWidth),
+                bulletedListStaff(currentStaff),
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
-                staffSelection(
-                    staffContoller, allStaff, screenHeight, screenWidth),
+                staffSelection(staffContoller, allStaff),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
               ],
             ),
@@ -744,10 +759,10 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
-  Widget parentSelection(TextEditingController controller, List<String> parents,
-      double screenHeight, double screenWidth) {
+  Widget parentSelection(
+      TextEditingController controller, List<String> parents) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -759,7 +774,6 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context).primaryColor,
-                    width: screenHeight * 0.002,
                   ),
                 ),
               ),
@@ -781,7 +795,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             hideOnEmpty: true,
             autoFlipDirection: true,
           ),
-          SizedBox(height: screenHeight * 0.005),
+          SizedBox(height: paddingSmall),
 
           //add item button
           MaterialButton(
@@ -801,10 +815,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
-  Widget staffSelection(TextEditingController controller, List<String> staff,
-      double screenHeight, double screenWidth) {
+  Widget staffSelection(TextEditingController controller, List<String> staff) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -816,7 +829,6 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context).primaryColor,
-                    width: screenHeight * 0.002,
                   ),
                 ),
               ),
@@ -838,7 +850,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             hideOnEmpty: true,
             autoFlipDirection: true,
           ),
-          SizedBox(height: screenHeight * 0.005),
+          SizedBox(height: paddingSmall),
 
           //add item button
           MaterialButton(
@@ -858,16 +870,15 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
-  Widget bulletedListRoster(
-      List<String> list, double screenHeight, double screenWidth) {
+  Widget bulletedListRoster(List<String> list) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.008),
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -900,20 +911,19 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
-  Widget bulletedListParent(
-      List<String> list, double screenHeight, double screenWidth) {
+  Widget bulletedListParent(List<String> list) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.008),
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
                 GestureDetector(
                   onTap: () => removeParent(str),
                   child: const Icon(
@@ -923,7 +933,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   ),
                 ),
                 SizedBox(
-                  width: screenWidth * 0.005,
+                  width: paddingSmall,
                 ),
                 Expanded(
                   child: Text(
@@ -943,20 +953,19 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
     );
   }
 
-  Widget bulletedListStaff(
-      List<String> list, double screenHeight, double screenWidth) {
+  Widget bulletedListStaff(List<String> list) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.008),
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
                 GestureDetector(
                   onTap: () => removeStaff(str),
                   child: const Icon(
@@ -966,7 +975,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                   ),
                 ),
                 SizedBox(
-                  width: screenWidth * 0.005,
+                  width: paddingSmall,
                 ),
                 Expanded(
                   child: Text(
