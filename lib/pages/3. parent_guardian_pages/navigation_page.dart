@@ -15,13 +15,13 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   List pages = [
-    const HomePage(),
+    //const HomePage(),
     const MenuPage(),
     const ReportsPage(),
     const ManagementPage(),
   ];
 
-  int currentIndex = 1;
+  int currentIndex = 0;
   void onTap(int index) {
     setState(() {
       currentIndex = index;

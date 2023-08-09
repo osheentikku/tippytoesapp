@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,9 +16,10 @@ class _MenuPageState extends State<MenuPage> {
   List<String> lunchToday = [];
   List<String> snackToday = [];
 
-  bool isToday = true;
-  Color nextColor = Colors.black;
-  Color backColor = Colors.black54;
+  //date
+  List<DateTime?> date = [];
+  DateTime dateToday = DateTime.now();
+  String dateTodayString = "";
 
   @override
   void initState() {
@@ -26,10 +28,11 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Future loadMealsFromFirestore() async {
-    //get today's date
-    DateTime dateToday = DateTime.now();
-    String dateTodayString =
-        '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+    setState(() {
+      date.add(DateTime.now());
+      dateToday = DateTime.now();
+      dateTodayString = '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+    });
 
     //get menu in firestore if doc exists
     DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
@@ -43,18 +46,12 @@ class _MenuPageState extends State<MenuPage> {
             List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
         lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
         snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
-        isToday = true;
-        nextColor = Colors.black;
-        backColor = Colors.black54;
       });
     } else {
       setState(() {
         breakfastToday = [];
         lunchToday = [];
         snackToday = [];
-        isToday = true;
-        nextColor = Colors.black;
-        backColor = Colors.black54;
       });
     }
   }
@@ -64,21 +61,19 @@ class _MenuPageState extends State<MenuPage> {
     if (list.isEmpty) {
       return Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: screenWidth * 0.007),
+          padding: EdgeInsets.symmetric(vertical: paddingSmall),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: screenHeight * 0.02),
-              const Expanded(
+              SizedBox(height: paddingMedium),
+              Expanded(
                 child: Text(
-                  "Oops! The menu willy be updated soon.",
+                  "Oops! The menu will be updated soon.",
                   textAlign: TextAlign.left,
                   softWrap: true,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             ],
@@ -90,101 +85,72 @@ class _MenuPageState extends State<MenuPage> {
     }
   }
 
-  String displayDay() {
-    if (isToday) {
-      return "Today's Menu";
+  Future populateMenu() async {
+    //get menu in firestore if doc exists
+    DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
+        .collection('menus')
+        .doc(dateTodayString)
+        .get();
+
+    if (menuTodaySnapshot.exists) {
+      setState(() {
+        breakfastToday =
+            List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
+        lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
+        snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
+      });
     } else {
-      return "Tomorrow's Menu";
+      setState(() {
+        breakfastToday = [];
+        lunchToday = [];
+        snackToday = [];
+      });
     }
   }
 
-  String displayDate() {
-    if (isToday) {
-      return DateFormat.yMMMEd().format(DateTime.now());
-    } else {
-      return DateFormat.yMMMEd()
-          .format(DateTime.now().add(const Duration(days: 1)));
+  Future changeDate(double screenWidth, double screenHeight) async {
+    final values = await showCalendarDatePicker2Dialog(
+      context: context,
+      config: CalendarDatePicker2WithActionButtonsConfig(
+        calendarType: CalendarDatePicker2Type.single,
+        firstDate: DateTime.now().subtract(const Duration(days: 7)),
+        lastDate: DateTime.now().add(const Duration(days: 1)),
+      ),
+      dialogSize: Size(screenWidth * 0.8, screenHeight * 0.2),
+      borderRadius: BorderRadius.circular(15),
+      value: date,
+      dialogBackgroundColor: Colors.white,
+    );
+    if (values != null) {
+      setState(() {
+        date = values;
+        dateTodayString = '${date[0]!.month}-${date[0]!.day}-${date[0]!.year}';
+      });
     }
+    await populateMenu();
   }
 
-  Future goTomorrow() async {
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double iconSize = 0;
+
+  void setPadding(double small, double medium, double horizontal, double icon) {
     setState(() {
-      isToday = false;
-      backColor = Colors.black;
-      nextColor = Colors.black54;
+      paddingSmall = small;
+      paddingMedium = medium;
+      horizontalPadding = horizontal;
+      iconSize = icon;
     });
-    await populateReport();
-  }
-
-  Future goToday() async {
-    setState(() {
-      isToday = true;
-      backColor = Colors.black54;
-      nextColor = Colors.black;
-    });
-    await populateReport();
-  }
-
-  Future populateReport() async {
-    if (isToday) {
-      //get today's date
-      DateTime dateToday = DateTime.now();
-      String dateTodayString =
-          '${dateToday.month}-${dateToday.day}-${dateToday.year}';
-
-      //get menu in firestore if doc exists
-      DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
-          .collection('menus')
-          .doc(dateTodayString)
-          .get();
-
-      if (menuTodaySnapshot.exists) {
-        setState(() {
-          breakfastToday =
-              List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
-          lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
-          snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
-        });
-      } else {
-        setState(() {
-          breakfastToday = [];
-          lunchToday = [];
-          snackToday = [];
-        });
-      }
-    } else {
-      //get today's date
-      DateTime dateToday = DateTime.now().add(const Duration(days: 1));
-      String dateTodayString =
-          '${dateToday.month}-${dateToday.day}-${dateToday.year}';
-
-      //get menu in firestore if doc exists
-      DocumentSnapshot menuTodaySnapshot = await FirebaseFirestore.instance
-          .collection('menus')
-          .doc(dateTodayString)
-          .get();
-
-      if (menuTodaySnapshot.exists) {
-        setState(() {
-          breakfastToday =
-              List<String>.from(menuTodaySnapshot['breakfast'] ?? []);
-          lunchToday = List<String>.from(menuTodaySnapshot['lunch'] ?? []);
-          snackToday = List<String>.from(menuTodaySnapshot['snack'] ?? []);
-        });
-      } else {
-        setState(() {
-          breakfastToday = [];
-          lunchToday = [];
-          snackToday = [];
-        });
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(
+        screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07, 25);
+    double dividerThickness = 0.5;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -193,59 +159,42 @@ class _MenuPageState extends State<MenuPage> {
             children: [
               //padding
               SizedBox(
-                height: screenHeight * 0.03,
+                height: paddingMedium,
               ),
 
               //Date
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => goToday(),
-                    child: Icon(
-                      Icons.navigate_before,
-                      color: backColor,
-                      size: 30,
-                    ),
+              GestureDetector(
+                onTap: () => changeDate(screenWidth, screenHeight),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        size: iconSize,
+                      ),
+                      Text(
+                        DateFormat.yMMMEd().format(date[0]!),
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
                   ),
-                  Text(
-                    displayDate(),
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                  GestureDetector(
-                    onTap: () => goTomorrow(),
-                    child: Icon(
-                      Icons.navigate_next_sharp,
-                      color: nextColor,
-                      size: 30,
-                    ),
-                  )
-                ],
-              ),
-
-              //Padding
-              SizedBox(
-                height: screenHeight * 0.01,
-              ),
-
-              //today's menu
-              Text(
-                displayDay(),
-                style: Theme.of(context).textTheme.displayLarge,
+                ),
               ),
 
               //padding
               SizedBox(
-                height: screenHeight * 0.01,
+                height: paddingSmall,
               ),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 child: Row(
                   children: [
                     Expanded(
                       child: Divider(
-                        thickness: 0.5,
+                        thickness: dividerThickness,
                         color: Theme.of(context).dividerColor,
                       ),
                     ),
@@ -255,20 +204,17 @@ class _MenuPageState extends State<MenuPage> {
 
               //padding
               SizedBox(
-                height: screenHeight * 0.01,
+                height: paddingSmall,
               ),
 
               //breakfast
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                child: const Row(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: Row(
                   children: [
                     Text(
                       'Breakfast - 9:00 AM',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),
@@ -277,20 +223,17 @@ class _MenuPageState extends State<MenuPage> {
 
               //padding
               SizedBox(
-                height: screenHeight * 0.03,
+                height: paddingMedium,
               ),
 
               //lunch
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                child: const Row(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: Row(
                   children: [
                     Text(
                       'Lunch - 11:45 AM',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),
@@ -299,34 +242,28 @@ class _MenuPageState extends State<MenuPage> {
 
               //padding
               SizedBox(
-                height: screenHeight * 0.03,
+                height: paddingMedium,
               ),
 
               //snack
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                child: const Row(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: Row(
                   children: [
                     Text(
                       'Snack - *3:00 PM',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                child: const Row(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: Row(
                   children: [
                     Text(
                       '(*Or when child wakes from nap)',
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),
@@ -335,7 +272,7 @@ class _MenuPageState extends State<MenuPage> {
 
               //padding
               SizedBox(
-                height: screenHeight * 0.03,
+                height: paddingMedium,
               ),
             ],
           ),
@@ -348,24 +285,22 @@ class _MenuPageState extends State<MenuPage> {
       List<String> list, double screenHeight, double screenWidth) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.007),
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
                 Expanded(
                   child: Text(
                     str,
                     textAlign: TextAlign.left,
                     softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],
