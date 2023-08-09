@@ -167,6 +167,7 @@ class _ManagementPageState extends State<ManagementPage> {
                   hintText: "First Name",
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
+                  horizontalPadding: horizontalPadding,
                 ),
 
                 SizedBox(
@@ -179,6 +180,7 @@ class _ManagementPageState extends State<ManagementPage> {
                   hintText: "Last Name",
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
+                  horizontalPadding: horizontalPadding,
                 ),
 
                 SizedBox(
@@ -191,6 +193,7 @@ class _ManagementPageState extends State<ManagementPage> {
                   hintText: "Email",
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
+                  horizontalPadding: horizontalPadding,
                 ),
 
                 SizedBox(
