@@ -106,10 +106,27 @@ class _ManagementPageState extends State<ManagementPage> {
     emailController.dispose();
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double paddingIndented = 0;
+
+  void setPadding(
+      double small, double medium, double indent, double horizontal) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      paddingIndented = indent;
+      horizontalPadding = horizontal;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.1,
+        screenWidth * 0.07);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -119,7 +136,7 @@ class _ManagementPageState extends State<ManagementPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 CircleAvatar(
@@ -132,7 +149,7 @@ class _ManagementPageState extends State<ManagementPage> {
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 Text(
@@ -141,7 +158,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 //first name
@@ -153,7 +170,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //last name
@@ -165,7 +182,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //email
@@ -177,24 +194,23 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //save button
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: MaterialButton(
                     onPressed: () => saveProfile(),
-                    padding: EdgeInsets.all(screenHeight * 0.01),
+                    padding: EdgeInsets.all(paddingSmall),
                     color: Theme.of(context).primaryColor,
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add),
                         Text(
                           "Save",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                       ],
                     ),

@@ -186,11 +186,7 @@ class _ReportsPageState extends State<ReportsPage> {
   double paddingIndented = 0;
 
   void setPadding(
-    double small,
-    double medium,
-    double indent,
-    double horizontal,
-  ) {
+      double small, double medium, double indent, double horizontal) {
     setState(() {
       paddingSmall = small;
       paddingMedium = medium;
