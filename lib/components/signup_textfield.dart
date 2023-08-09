@@ -5,6 +5,8 @@ class SignUpTextField extends StatelessWidget {
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
+  final double horizontalPadding;
+  final double borderRadius;
 
   const SignUpTextField({
     super.key,
@@ -12,38 +14,36 @@ class SignUpTextField extends StatelessWidget {
     required this.hintText,
     required this.screenHeight,
     required this.screenWidth,
+    required this.horizontalPadding,
+    required this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          //border
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
+            //border
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
 
-          //filled color
-          fillColor: Theme.of(context).secondaryHeaderColor,
-          filled: true,
+            //filled color
+            fillColor: Theme.of(context).secondaryHeaderColor,
+            filled: true,
 
-          //hints
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 20,
-            color: Theme.of(context).hintColor,
-          ),
-        ),
+            //hints
+            hintText: hintText,
+            hintStyle: Theme.of(context).textTheme.labelMedium),
       ),
     );
   }

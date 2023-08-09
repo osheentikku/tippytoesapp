@@ -6,6 +6,8 @@ class LoginIconTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final Icon preIcon;
+  final double horizontalPadding;
+  final double borderRadius;
 
   const LoginIconTextField({
     super.key,
@@ -14,23 +16,25 @@ class LoginIconTextField extends StatelessWidget {
     required this.preIcon,
     required this.screenHeight,
     required this.screenWidth,
+    required this.horizontalPadding,
+    required this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
           //border
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide:
                 BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide:
                 BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
@@ -41,10 +45,7 @@ class LoginIconTextField extends StatelessWidget {
 
           //hints
           hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 20,
-            color: Theme.of(context).hintColor,
-          ),
+          hintStyle: Theme.of(context).textTheme.labelMedium,
           prefixIcon: preIcon,
         ),
       ),

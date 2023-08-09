@@ -22,7 +22,8 @@ class _NewUserPageState extends State<NewUserPage> {
   final lastNameController = TextEditingController();
 
   //account type
-  bool isAdmin = false;
+  bool? isAdmin;
+
   bool isApproved = false;
 
   //user signup method
@@ -38,7 +39,7 @@ class _NewUserPageState extends State<NewUserPage> {
           firstNameController.text.trim().toCapitalCase(),
           lastNameController.text.trim().toCapitalCase(),
           user.email!,
-          isAdmin,
+          isAdmin!,
           isApproved,
         );
 
@@ -77,10 +78,28 @@ class _NewUserPageState extends State<NewUserPage> {
     }
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double borderRadius = 0;
+
+  void setPadding(
+      double small, double medium, double horizontal, double border) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      horizontalPadding = horizontal;
+      borderRadius = border;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    //get screen height and width
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07,
+        screenWidth * 0.05);
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -91,16 +110,11 @@ class _NewUserPageState extends State<NewUserPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //pre padding
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: paddingMedium),
 
                 //create an account
-                const Text(
-                  "Finish creating your account",
-                  style: TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text("Finish creating your account",
+                    style: Theme.of(context).textTheme.displayLarge),
 
                 //padding
                 SizedBox(height: screenHeight * 0.03),
@@ -111,11 +125,13 @@ class _NewUserPageState extends State<NewUserPage> {
                   screenWidth: screenWidth,
                   controller: firstNameController,
                   hintText: "First Name",
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 //last name
@@ -124,70 +140,63 @@ class _NewUserPageState extends State<NewUserPage> {
                   screenWidth: screenWidth,
                   controller: lastNameController,
                   hintText: "Last Name",
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 //account type
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: DropdownButtonFormField(
-                    items: const [
-                      DropdownMenuItem(
-                        value: true,
-                        child: Text(
-                          "Admin",
-                          style: TextStyle(fontSize: 20),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        color: Theme.of(context).secondaryHeaderColor),
+                    child: DropdownButton(
+                      isExpanded: true,
+                      items: [
+                        DropdownMenuItem(
+                          value: true,
+                          child: Text(
+                            "Admin",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ),
-                      ),
-                      DropdownMenuItem(
-                        value: false,
-                        child: Text(
-                          "Parent/Guardian",
-                          style: TextStyle(fontSize: 20),
+                        DropdownMenuItem(
+                          value: false,
+                          child: Text(
+                            "Parent/Guardian",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ),
+                      ],
+                      value: isAdmin,
+                      onChanged: setAdmin,
+                      hint: Text(
+                        "Select account type",
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                    ],
-                    onChanged: setAdmin,
-                    hint: Text(
-                      "Select account type",
-                      style: TextStyle(
-                          fontSize: 20, color: Theme.of(context).hintColor),
-                    ),
-                    iconSize: 20,
-                    decoration: InputDecoration(
-                      //border
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).secondaryHeaderColor,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).secondaryHeaderColor,
-                        ),
-                      ),
-
-                      //filled color
-                      fillColor: Theme.of(context).secondaryHeaderColor,
-                      filled: true,
+                      iconSize: 20,
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      dropdownColor: Theme.of(context).secondaryHeaderColor,
                     ),
                   ),
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 //create an account
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: const Text(
                     "After your account is created, you will need to login again.",
                     style: TextStyle(
@@ -200,7 +209,7 @@ class _NewUserPageState extends State<NewUserPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
 
                 //signup
                 LoginSignupButton(
@@ -208,14 +217,13 @@ class _NewUserPageState extends State<NewUserPage> {
                   onTap: userSignup,
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
+                  borderRadius: borderRadius,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
-
-                //or continue with
               ],
             ),
           ),

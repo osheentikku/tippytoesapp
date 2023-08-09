@@ -61,11 +61,31 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double borderRadius = 0;
+  double iconSize = 0;
+
+  void setPadding(double small, double medium, double horizontal, double border,
+      double icon) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      horizontalPadding = horizontal;
+      borderRadius = border;
+      iconSize = icon;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //get screen height and width
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07,
+        screenWidth * 0.05, screenHeight * 0.035);
+    double dividerThickness = 0.5;
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -76,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //pre logo padding
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: paddingMedium),
 
                 //logo
                 CircleAvatar(
@@ -86,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: paddingMedium),
 
                 //email
                 LoginIconTextField(
@@ -97,36 +117,38 @@ class _LoginPageState extends State<LoginPage> {
                   preIcon: Icon(
                     Icons.mail_outline_rounded,
                     color: Theme.of(context).primaryIconTheme.color,
-                    size: screenHeight * 0.035,
+                    size: iconSize,
                   ),
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //password
                 LoginIconPasswordTextField(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
                   controller: passwordController,
                   hintText: "Password",
                   preIcon: Icon(
                     Icons.lock_outline_rounded,
                     color: Theme.of(context).primaryIconTheme.color,
-                    size: screenHeight * 0.035,
+                    size: iconSize,
                   ),
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.008,
+                  height: paddingSmall,
                 ),
 
                 //forgot password
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -141,9 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           'Forgot Password?',
-                          style: TextStyle(fontSize: 18),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                     ],
@@ -151,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //pading
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: paddingMedium),
 
                 //login
                 LoginSignupButton(
@@ -159,21 +181,22 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: userLogin,
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
+                  borderRadius: borderRadius,
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //or continue with
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -189,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -199,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //apple/google logo
@@ -216,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //spacing
                     SizedBox(
-                      width: screenWidth * 0.07,
+                      width: paddingMedium,
                     ),
 
                     //apple logo
@@ -234,24 +257,23 @@ class _LoginPageState extends State<LoginPage> {
 
                 //dont have an account?
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: GestureDetector(
                     onTap: widget.onTap,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           'Don\'t have an account?',
-                          style: TextStyle(fontSize: 18),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         SizedBox(
-                          width: screenWidth * 0.01,
+                          width: paddingSmall,
                         ),
-                        const Text(
+                        Text(
                           'Sign up.',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
+                          style: Theme.of(context).textTheme.displayMedium,
+                        )
                       ],
                     ),
                   ),

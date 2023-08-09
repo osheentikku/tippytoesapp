@@ -53,11 +53,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     super.dispose();
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double borderRadius = 0;
+
+  void setPadding(
+      double small, double medium, double horizontal, double border) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      horizontalPadding = horizontal;
+      borderRadius = border;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //get screen height and width
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07,
+        screenWidth * 0.05);
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -81,21 +98,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.04),
+                SizedBox(height: paddingMedium),
 
                 //email
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Text(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Text(
                     "Enter your email and we will send you a password reset link.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //padding
@@ -109,6 +126,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     color: Theme.of(context).primaryIconTheme.color,
                     size: screenHeight * 0.035,
                   ),
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
                 ),
 
                 //enter email instructions
@@ -118,21 +137,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
                 //Reset Password Button
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
+                  margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: MaterialButton(
                     onPressed: () => passwordReset(),
                     padding: EdgeInsets.all(screenHeight * 0.015),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                      borderRadius: BorderRadius.circular(borderRadius),
                     ),
                     color: Theme.of(context).secondaryHeaderColor,
-                    child: const Text(
-                      "Reset Password",
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: Text("Reset Password",
+                        style: Theme.of(context).textTheme.displayLarge),
                   ),
                 ),
 
