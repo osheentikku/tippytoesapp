@@ -21,7 +21,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
     const AdminManagementPage(),
   ];
 
-  int currentIndex = 1;
+  int currentIndex = 0;
   void onTap(int index) {
     setState(() {
       currentIndex = index;
