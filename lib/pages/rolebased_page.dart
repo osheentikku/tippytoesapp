@@ -46,6 +46,7 @@ class _RoleBasedPageState extends State<RoleBasedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: FutureBuilder<Widget>(
         // Invoke the function to determine the page to show
         future: checkAndRedirect(),
