@@ -766,34 +766,38 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TypeAheadField(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: 'Select Parent/Guardian',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    labelText: 'Select Parent/Guardian',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            suggestionsCallback: (String pattern) async {
-              return parents
-                  .where((item) =>
-                      item.toLowerCase().contains(pattern.toLowerCase()))
-                  .toList();
-            },
-            itemBuilder: (context, suggestion) {
-              return ListTile(
-                title: Text(suggestion),
+                suggestionsCallback: (String pattern) async {
+                  return parents
+                      .where((item) =>
+                          item.toLowerCase().contains(pattern.toLowerCase()))
+                      .toList();
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  controller.text = suggestion;
+                },
+                hideOnEmpty: true,
+                autoFlipDirection: true,
               );
             },
-            onSuggestionSelected: (suggestion) {
-              controller.text = suggestion;
-            },
-            hideOnEmpty: true,
-            autoFlipDirection: true,
           ),
           SizedBox(height: paddingSmall),
 
@@ -821,34 +825,38 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TypeAheadField(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: 'Select Staff',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    labelText: 'Select Staff',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            suggestionsCallback: (String pattern) async {
-              return staff
-                  .where((item) =>
-                      item.toLowerCase().contains(pattern.toLowerCase()))
-                  .toList();
-            },
-            itemBuilder: (context, suggestion) {
-              return ListTile(
-                title: Text(suggestion),
+                suggestionsCallback: (String pattern) async {
+                  return staff
+                      .where((item) =>
+                          item.toLowerCase().contains(pattern.toLowerCase()))
+                      .toList();
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  controller.text = suggestion;
+                },
+                hideOnEmpty: true,
+                autoFlipDirection: true,
               );
             },
-            onSuggestionSelected: (suggestion) {
-              controller.text = suggestion;
-            },
-            hideOnEmpty: true,
-            autoFlipDirection: true,
           ),
           SizedBox(height: paddingSmall),
 
@@ -860,9 +868,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             },
             color: Theme.of(context).primaryColor,
             elevation: 1,
-            child: const Text(
+            child: Text(
               'Add Staff',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
         ],
@@ -889,9 +897,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                       str,
                       textAlign: TextAlign.left,
                       softWrap: true,
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ),
@@ -940,9 +946,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     str,
                     textAlign: TextAlign.left,
                     softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 15,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],
@@ -982,9 +986,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     str,
                     textAlign: TextAlign.left,
                     softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 15,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],

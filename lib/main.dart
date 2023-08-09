@@ -38,8 +38,15 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
+          bodyMedium: TextStyle(
+            fontSize: 15,
+            color: Colors.black,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 15,
+            color: Colors.black54,
+          ),
         ),
-        
       ),
       debugShowCheckedModeBanner: false,
       home: const AuthPage(),

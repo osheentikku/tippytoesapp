@@ -343,31 +343,36 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TypeAheadField(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: controller,
-              decoration: InputDecoration(labelText: 'Add item to $mealName'),
-            ),
-            suggestionsCallback: (String pattern) async {
-              if (pattern.isNotEmpty) {
-                return mealOptions
-                    .where((item) =>
-                        item.toLowerCase().contains(pattern.toLowerCase()))
-                    .toList();
-              }
-              return const Iterable.empty();
-            },
-            itemBuilder: (context, suggestion) {
-              return ListTile(
-                title: Text(suggestion),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: controller,
+                  decoration:
+                      InputDecoration(labelText: 'Add item to $mealName'),
+                ),
+                suggestionsCallback: (String pattern) async {
+                  if (pattern.isNotEmpty) {
+                    return mealOptions
+                        .where((item) =>
+                            item.toLowerCase().contains(pattern.toLowerCase()))
+                        .toList();
+                  }
+                  return const Iterable.empty();
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  controller.text = suggestion;
+                },
+                minCharsForSuggestions: 1,
+                hideOnEmpty: true,
+                autoFlipDirection: true,
               );
             },
-            onSuggestionSelected: (suggestion) {
-              controller.text = suggestion;
-            },
-            minCharsForSuggestions: 1,
-            hideOnEmpty: true,
-            autoFlipDirection: true,
           ),
           SizedBox(height: screenHeight * 0.01),
 
