@@ -37,6 +37,8 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
     return Scaffold(
       body: pages[currentIndex],
       appBar: AppBar(
@@ -46,22 +48,26 @@ class _NavigationPageState extends State<NavigationPage> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.description), label: "Reports"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
-        ],
-        currentIndex: currentIndex,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Theme.of(context).primaryColor,
-        iconSize: 35,
-        unselectedItemColor: Theme.of(context).hintColor,
-        selectedItemColor: Colors.black,
-        onTap: onTap,
-      ),
+      bottomNavigationBar: isKeyboardOpen
+          ? null
+          : BottomNavigationBar(
+              items: const [
+                //BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.restaurant), label: "Menu"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.description), label: "Reports"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: "Account"),
+              ],
+              currentIndex: currentIndex,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Theme.of(context).primaryColor,
+              iconSize: 20,
+              unselectedItemColor: Theme.of(context).hintColor,
+              selectedItemColor: Colors.black,
+              onTap: onTap,
+            ),
     );
   }
 }

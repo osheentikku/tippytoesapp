@@ -99,8 +99,7 @@ class _SignupPageState extends State<SignupPage> {
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-      'First Name': firstName,
-      'Last Name': lastName,
+      'Name': '$firstName $lastName',
       'Email': email,
       'Admin': isAdmin,
       'Approved': isApproved,
@@ -330,7 +329,7 @@ class _SignupPageState extends State<SignupPage> {
 
                     //apple logo
                     GoogleAppleLogin(
-                      onTap: () => AuthService().signInWithGoogle(),
+                      onTap: () => AuthService().signInWithApple(),
                       screenHeight: screenHeight,
                       screenWidth: screenWidth,
                       imagePath: "lib/images/apple.png",

@@ -221,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //apple logo
                     GoogleAppleLogin(
-                      onTap: () => AuthService().signInWithGoogle(),
+                      onTap: () => AuthService().signInWithApple(),
                       screenHeight: screenHeight,
                       screenWidth: screenWidth,
                       imagePath: "lib/images/apple.png",

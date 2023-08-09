@@ -30,7 +30,7 @@
 	<key>CFBundleName</key>
 	<string>tippytoesapp</string>
 	<key>CFBundlePackageType</key>
-	<string>APPL</string>
+	<string>Tippy Toes Daycare</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>

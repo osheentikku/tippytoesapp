@@ -39,7 +39,7 @@ class ReportTextField extends StatelessWidget {
           //hints
           labelText: hintText,
           labelStyle:
-              TextStyle(fontSize: 20, color: Theme.of(context).hintColor),
+              TextStyle(fontSize: 15, color: Theme.of(context).hintColor),
         ),
       ),
     );

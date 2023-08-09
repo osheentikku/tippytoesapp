@@ -29,22 +29,23 @@ class _NewUserPageState extends State<NewUserPage> {
   Future userSignup() async {
     if (firstNameController.text.isEmpty || lastNameController.text.isEmpty) {
       showMessage(context, "Please fill out all fields.");
-    }
-    //add user details
-    try {
-      User user = FirebaseAuth.instance.currentUser!;
+    } else {
+      //add user details
+      try {
+        User user = FirebaseAuth.instance.currentUser!;
 
-      addUserDetails(
-        firstNameController.text.trim().toCapitalCase(),
-        lastNameController.text.trim().toCapitalCase(),
-        user.email!,
-        isAdmin,
-        isApproved,
-      );
+        await addUserDetails(
+          firstNameController.text.trim().toCapitalCase(),
+          lastNameController.text.trim().toCapitalCase(),
+          user.email!,
+          isAdmin,
+          isApproved,
+        );
 
-      FirebaseAuth.instance.signOut();
-    } on FirebaseAuthException catch (e) {
-      showMessage(context, e.message.toString());
+        FirebaseAuth.instance.signOut();
+      } on FirebaseAuthException catch (e) {
+        showMessage(context, e.message.toString());
+      }
     }
   }
 
@@ -59,8 +60,7 @@ class _NewUserPageState extends State<NewUserPage> {
       bool isAdmin, bool isApproved) async {
     User user = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-      'First Name': firstName,
-      'Last Name': lastName,
+      'Name': '$firstName $lastName',
       'Email': email,
       'Admin': isAdmin,
       'Approved': isApproved,

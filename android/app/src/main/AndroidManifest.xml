@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.tippytoes.tippytoesapp">
    <application
-        android:label="tippytoesapp"
+        android:label="Tippy Toes Daycare"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

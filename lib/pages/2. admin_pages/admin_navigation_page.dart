@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import 'admin_home_page.dart';
 import 'admin_management_page.dart';
@@ -15,13 +16,13 @@ class AdminNavigationPage extends StatefulWidget {
 
 class _AdminNavigationPageState extends State<AdminNavigationPage> {
   List pages = [
-    const AdminHomePage(),
+    //const AdminHomePage(),
     const AdminMenuPage(),
     const AdminReportsPage(),
     const AdminManagementPage(),
   ];
 
-  int currentIndex = 1;
+  int currentIndex = 0;
   void onTap(int index) {
     setState(() {
       currentIndex = index;
@@ -38,7 +39,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[currentIndex],
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actions: [
           IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),
@@ -46,9 +47,10 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
+      body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          //BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
           BottomNavigationBarItem(
               icon: Icon(Icons.description), label: "Reports"),
@@ -57,7 +59,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).primaryColor,
-        iconSize: 35,
+        iconSize: 20,
         unselectedItemColor: Theme.of(context).hintColor,
         selectedItemColor: Colors.black,
         onTap: onTap,

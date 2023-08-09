@@ -38,8 +38,8 @@ class SignUpTextField extends StatelessWidget {
           filled: true,
 
           //hints
-          labelText: hintText,
-          labelStyle: TextStyle(
+          hintText: hintText,
+          hintStyle: TextStyle(
             fontSize: 20,
             color: Theme.of(context).hintColor,
           ),
