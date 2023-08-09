@@ -180,10 +180,27 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
     snackController.dispose();
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double iconSize = 0;
+
+  void setPadding(double small, double medium, double horizontal, double icon) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      horizontalPadding = horizontal;
+      iconSize = icon;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(
+        screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07, 25);
+    double dividerThickness = 0.5;
 
     return GestureDetector(
       onTap: () {
@@ -200,30 +217,43 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: paddingMedium,
                 ),
 
                 //Date
                 GestureDetector(
                   onTap: () => changeDate(screenWidth, screenHeight),
-                  child: Text(
-                    DateFormat.yMMMEd().format(date[0]!),
-                    style: Theme.of(context).textTheme.displayLarge,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.calendar_month,
+                          size: iconSize,
+                        ),
+                        Text(
+                          DateFormat.yMMMEd().format(date[0]!),
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
                 //Padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -233,12 +263,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //breakfast
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text(
@@ -254,12 +284,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //lunch
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text(
@@ -275,12 +305,12 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //snack
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text(
@@ -291,7 +321,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text(
@@ -307,7 +337,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 MaterialButton(
@@ -321,7 +351,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 ),
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
               ],
             ),
@@ -339,37 +369,42 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       double screenHeight,
       double screenWidth) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TypeAheadField(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: controller,
-              decoration: InputDecoration(labelText: 'Add item to $mealName'),
-            ),
-            suggestionsCallback: (String pattern) async {
-              if (pattern.isNotEmpty) {
-                return mealOptions
-                    .where((item) =>
-                        item.toLowerCase().contains(pattern.toLowerCase()))
-                    .toList();
-              }
-              return const Iterable.empty();
-            },
-            itemBuilder: (context, suggestion) {
-              return ListTile(
-                title: Text(suggestion),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: controller,
+                  decoration:
+                      InputDecoration(labelText: 'Add item to $mealName'),
+                ),
+                suggestionsCallback: (String pattern) async {
+                  if (pattern.isNotEmpty) {
+                    return mealOptions
+                        .where((item) =>
+                            item.toLowerCase().contains(pattern.toLowerCase()))
+                        .toList();
+                  }
+                  return const Iterable.empty();
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  controller.text = suggestion;
+                },
+                minCharsForSuggestions: 1,
+                hideOnEmpty: true,
+                autoFlipDirection: true,
               );
             },
-            onSuggestionSelected: (suggestion) {
-              controller.text = suggestion;
-            },
-            minCharsForSuggestions: 1,
-            hideOnEmpty: true,
-            autoFlipDirection: true,
           ),
-          SizedBox(height: screenHeight * 0.01),
+          SizedBox(height: paddingSmall),
 
           //add item button
           MaterialButton(
@@ -393,35 +428,33 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       List<String> list, double screenHeight, double screenWidth) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.007),
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
                 GestureDetector(
                   onTap: () => removeItem(list, str),
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     color: Colors.red,
-                    size: 25,
+                    size: iconSize,
                   ),
                 ),
                 SizedBox(
-                  width: screenWidth * 0.005,
+                  width: paddingSmall,
                 ),
                 Expanded(
                   child: Text(
                     str,
                     textAlign: TextAlign.left,
                     softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],

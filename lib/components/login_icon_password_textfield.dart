@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
 class LoginIconPasswordTextField extends StatefulWidget {
-  final double screenHeight;
-  final double screenWidth;
   final TextEditingController controller;
   final String hintText;
   final Icon preIcon;
+  final double horizontalPadding;
+  final double borderRadius;
 
-  const LoginIconPasswordTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.preIcon,
-    required this.screenHeight,
-    required this.screenWidth,
-  });
+  const LoginIconPasswordTextField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      required this.preIcon,
+      required this.horizontalPadding,
+      required this.borderRadius});
 
   @override
   State<LoginIconPasswordTextField> createState() =>
@@ -27,19 +26,19 @@ class _LoginIconPasswordTextFieldState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: widget.screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
       child: TextField(
         controller: widget.controller,
         obscureText: obscure,
         decoration: InputDecoration(
           //border
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.screenWidth * 0.05),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
             borderSide:
                 BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.screenWidth * 0.05),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
             borderSide:
                 BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
@@ -50,10 +49,7 @@ class _LoginIconPasswordTextFieldState
 
           //hints
           hintText: widget.hintText,
-          hintStyle: TextStyle(
-            fontSize: 20,
-            color: Theme.of(context).hintColor,
-          ),
+          hintStyle: Theme.of(context).textTheme.labelMedium,
           prefixIcon: widget.preIcon,
 
           //hide/view

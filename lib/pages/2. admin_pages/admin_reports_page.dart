@@ -137,10 +137,29 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
     });
   }
 
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double paddingIndented = 0;
+
+  void setPadding(
+      double small, double medium, double indent, double horizontal) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      paddingIndented = indent;
+      horizontalPadding = horizontal;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.1,
+        screenWidth * 0.07);
+    double dividerThickness = 0.5;
+    double textfieldBorder = screenHeight * 0.003;
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -156,7 +175,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: paddingMedium,
                 ),
 
                 //title
@@ -167,17 +186,17 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //divider
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -187,12 +206,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.005,
+                  height: paddingSmall,
                 ),
 
                 //display roster in dropdown
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: DropdownButtonFormField(
                     items: currentStudents
                         .map<DropdownMenuItem<String>>((String value) {
@@ -200,8 +219,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                         value: value,
                         child: Text(
                           value,
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.black),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       );
                     }).toList(),
@@ -216,7 +234,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: paddingMedium,
                 ),
 
                 //student
@@ -225,12 +243,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //divider
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -238,13 +256,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                   ),
                 ),
 
-                SizedBox(
-                  height: screenHeight * 0.01,
-                ),
-
                 //diaper changes
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -256,12 +270,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: paddingSmall,
                 ),
 
                 //bm
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: Row(
                     children: [
                       Text(
@@ -274,17 +288,20 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //bm textfield
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: ReportTextField(
-                      controller: diaperBMController,
-                      hintText: "Update Timing",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: diaperBMController,
+                    hintText: "Update Timing",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //wet
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: Row(
                     children: [
                       Text(
@@ -297,17 +314,20 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //wet textfield
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
                   child: ReportTextField(
-                      controller: diaperWetController,
-                      hintText: "Update Timing",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: diaperWetController,
+                    hintText: "Update Timing",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //nap
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text(
@@ -320,18 +340,20 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //nap textfield
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
                     controller: napController,
                     hintText: "Update Timing",
                     screenHeight: screenHeight,
                     screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
                   ),
                 ),
 
                 //mood AM
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Text(
@@ -344,17 +366,20 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //moodAM textfield
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
-                      controller: moodAMController,
-                      hintText: "Update Mood",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: moodAMController,
+                    hintText: "Update Mood",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //mood pm
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -368,17 +393,20 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //mood pm textfield
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
-                      controller: moodPMController,
-                      hintText: "Update Mood",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: moodPMController,
+                    hintText: "Update Mood",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //health
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -392,23 +420,26 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //health textfield
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: ReportTextField(
-                      controller: healthController,
-                      hintText: "Update Health",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: healthController,
+                    hintText: "Update Health",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                  ),
                 ),
 
                 //clear and save button
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MaterialButton(
                         onPressed: () => clearFields(),
-                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        padding: EdgeInsets.all(paddingSmall),
                         color: Theme.of(context).primaryColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -422,11 +453,11 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                         ),
                       ),
                       SizedBox(
-                        width: screenWidth * 0.03,
+                        width: paddingMedium,
                       ),
                       MaterialButton(
                         onPressed: () => saveReport(),
-                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        padding: EdgeInsets.all(paddingSmall),
                         color: Theme.of(context).primaryColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -444,7 +475,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 )
               ],
             ),
@@ -458,16 +489,16 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
       List<String> list, double screenHeight, double screenWidth) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.008),
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
                 Expanded(
                   child: GestureDetector(
                     onTap: () => populateStudent(str),
@@ -481,7 +512,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: paddingMedium),
               ],
             ),
           );

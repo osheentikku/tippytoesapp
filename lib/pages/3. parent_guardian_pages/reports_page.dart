@@ -85,21 +85,21 @@ class _ReportsPageState extends State<ReportsPage> {
     }
   }
 
-  Widget displayText(String report, double padding, double screenWidth) {
+  Widget displayText(String report, double padding) {
     if (report.isEmpty) {
       setState(() {
         report = "N/A";
       });
     }
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: padding, vertical: screenWidth * 0.007),
+      padding:
+          EdgeInsets.symmetric(horizontal: padding, vertical: paddingSmall),
       child: Row(
         children: [
           Expanded(
             child: Text(
               report,
-              style: const TextStyle(fontSize: 20),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],
@@ -107,15 +107,10 @@ class _ReportsPageState extends State<ReportsPage> {
     );
   }
 
-  Widget displayReport(double screenWidth, double screenHeight) {
-    if (reportExists) {
-      return Column(children: [
-        displayDiaper(screenWidth, screenHeight),
-        displayMainReport(screenWidth, screenHeight)
-      ]);
-    } else {
+  Widget displayReport() {
+    if (!reportExists) {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Text(
           "The report for today has not been updated.",
           style: Theme.of(context).textTheme.displayLarge,
@@ -123,65 +118,60 @@ class _ReportsPageState extends State<ReportsPage> {
         ),
       );
     }
+    return Container();
   }
 
-  Widget displayDiaper(double screenWidth, double screenHeight) {
-    if (diaperBM == "N/A" && diaperWet == "N/A") {
+  Widget displayDiaper() {
+    if (diaperBM.isNotEmpty || diaperWet.isNotEmpty) {
       return Column(
         children: [
           //diaper changes
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-            child: const Row(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   "Diaper Changes:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
               ],
             ),
-          ),
-
-          SizedBox(
-            height: screenHeight * 0.01,
           ),
 
           //bm
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-            child: const Row(
+            padding: EdgeInsets.symmetric(horizontal: paddingIndented),
+            child: Row(
               children: [
                 Text(
                   "Bowel Movements",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
               ],
             ),
           ),
 
-          displayText(diaperBM, screenWidth * 0.1, screenWidth),
+          displayText(diaperBM, paddingIndented),
 
-          SizedBox(
-            height: screenHeight * 0.02,
-          ),
+          SizedBox(height: paddingMedium),
 
           //wet
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-            child: const Row(
+            padding: EdgeInsets.symmetric(horizontal: paddingIndented),
+            child: Row(
               children: [
                 Text(
                   "Wet",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
               ],
             ),
           ),
-          displayText(diaperWet, screenWidth * 0.1, screenWidth),
+          displayText(diaperWet, paddingIndented),
 
           SizedBox(
-            height: screenHeight * 0.02,
+            height: paddingMedium,
           ),
         ],
       );
@@ -190,90 +180,28 @@ class _ReportsPageState extends State<ReportsPage> {
     }
   }
 
-  Widget displayMainReport(double screenWidth, double screenHeight) {
-    return Column(
-      children: [
-        //nap
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-          child: const Row(
-            children: [
-              Text(
-                "Nap",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-        displayText(nap, screenWidth * 0.07, screenWidth),
+  double paddingSmall = 0;
+  double horizontalPadding = 0;
+  double paddingMedium = 0;
+  double paddingIndented = 0;
 
-        SizedBox(
-          height: screenHeight * 0.02,
-        ),
-
-        //mood AM
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-          child: const Row(
-            children: [
-              Text(
-                "Mood AM",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-        displayText(moodAM, screenWidth * 0.07, screenWidth),
-
-        SizedBox(
-          height: screenHeight * 0.02,
-        ),
-
-        //mood pm
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "Mood PM",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-        displayText(moodPM, screenWidth * 0.07, screenWidth),
-
-        SizedBox(
-          height: screenHeight * 0.02,
-        ),
-
-        //health
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "Health",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-        displayText(health, screenWidth * 0.07, screenWidth),
-
-        SizedBox(
-          height: screenHeight * 0.03,
-        )
-      ],
-    );
+  void setPadding(
+      double small, double medium, double indent, double horizontal) {
+    setState(() {
+      paddingSmall = small;
+      paddingMedium = medium;
+      paddingIndented = indent;
+      horizontalPadding = horizontal;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.1,
+        screenWidth * 0.07);
+    double dividerThickness = 0.5;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -283,7 +211,7 @@ class _ReportsPageState extends State<ReportsPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: paddingMedium,
                 ),
 
                 //title
@@ -294,7 +222,7 @@ class _ReportsPageState extends State<ReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: paddingSmall,
                 ),
 
                 Text(
@@ -305,17 +233,17 @@ class _ReportsPageState extends State<ReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: paddingSmall,
                 ),
 
                 //divider
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: dividerThickness,
                           color: Theme.of(context).dividerColor,
                         ),
                       ),
@@ -323,11 +251,85 @@ class _ReportsPageState extends State<ReportsPage> {
                   ),
                 ),
 
+                SizedBox(height: paddingSmall),
+
+                displayReport(),
+
+                displayDiaper(),
+
+                //nap
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Nap",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
+                  ),
+                ),
+                displayText(nap, horizontalPadding),
+
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: paddingMedium,
                 ),
 
-                displayReport(screenWidth, screenHeight)
+                //mood AM
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Mood AM",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
+                  ),
+                ),
+                displayText(moodAM, horizontalPadding),
+
+                SizedBox(
+                  height: paddingMedium,
+                ),
+
+                //mood pm
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Mood PM",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
+                  ),
+                ),
+                displayText(moodPM, horizontalPadding),
+
+                SizedBox(
+                  height: paddingMedium,
+                ),
+
+                //health
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Health",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
+                  ),
+                ),
+                displayText(health, horizontalPadding),
+
+                SizedBox(
+                  height: paddingMedium,
+                )
               ],
             ),
           ),

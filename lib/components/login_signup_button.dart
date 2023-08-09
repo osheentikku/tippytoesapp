@@ -5,6 +5,7 @@ class LoginSignupButton extends StatelessWidget {
   final String text;
   final double screenHeight;
   final double screenWidth;
+  final double borderRadius;
 
   const LoginSignupButton({
     super.key,
@@ -12,6 +13,7 @@ class LoginSignupButton extends StatelessWidget {
     required this.text,
     required this.screenHeight,
     required this.screenWidth,
+    required this.borderRadius,
   });
 
   @override
@@ -22,16 +24,13 @@ class LoginSignupButton extends StatelessWidget {
         padding: EdgeInsets.all(screenHeight * 0.015),
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(screenWidth * 0.05),
+          borderRadius: BorderRadius.circular(borderRadius),
           color: Theme.of(context).secondaryHeaderColor,
         ),
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
       ),

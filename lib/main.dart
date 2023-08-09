@@ -38,6 +38,19 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
+          bodyMedium: TextStyle(
+            fontSize: 15,
+            color: Colors.black,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 15,
+            color: Colors.black54,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ),
       debugShowCheckedModeBanner: false,

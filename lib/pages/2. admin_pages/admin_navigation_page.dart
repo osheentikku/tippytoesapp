@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import 'admin_home_page.dart';
 import 'admin_management_page.dart';
@@ -39,7 +38,6 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actions: [
           IconButton(onPressed: userLogout, icon: const Icon(Icons.logout)),

@@ -65,6 +65,7 @@ class _CheckApprovalPageState extends State<CheckApprovalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: FutureBuilder<Widget>(
         // Invoke the function to determine the page to show
         future: checkAndRedirect(),

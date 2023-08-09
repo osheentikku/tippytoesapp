@@ -5,6 +5,8 @@ class SignUpPasswordTextField extends StatefulWidget {
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
+  final double horizontalPadding;
+  final double borderRadius;
 
   const SignUpPasswordTextField({
     super.key,
@@ -12,6 +14,8 @@ class SignUpPasswordTextField extends StatefulWidget {
     required this.hintText,
     required this.screenHeight,
     required this.screenWidth,
+    required this.horizontalPadding,
+    required this.borderRadius,
   });
 
   @override
@@ -24,19 +28,19 @@ class _SignUpPasswordTextFieldState extends State<SignUpPasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: widget.screenWidth * 0.07),
+      padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
       child: TextField(
         controller: widget.controller,
         obscureText: obscure,
         decoration: InputDecoration(
           //border
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.screenWidth * 0.05),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
             borderSide:
                 BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.screenWidth * 0.05),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
             borderSide:
                 BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
@@ -47,10 +51,7 @@ class _SignUpPasswordTextFieldState extends State<SignUpPasswordTextField> {
 
           //hints
           hintText: widget.hintText,
-          hintStyle: TextStyle(
-            fontSize: 20,
-            color: Theme.of(context).hintColor,
-          ),
+          hintStyle: Theme.of(context).textTheme.labelMedium,
 
           //hide/view
           suffixIcon: IconButton(
