@@ -40,7 +40,7 @@ class AddStudentTextField extends StatelessWidget {
           //hints
           labelText: hintText,
           labelStyle: TextStyle(
-            fontSize: 20,
+            fontSize: 15,
             color: Theme.of(context).hintColor,
           ),
         ),

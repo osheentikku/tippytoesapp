@@ -141,8 +141,14 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SafeArea(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: SafeArea(
         child: SingleChildScrollView(
           child: Center(
             child: Column(
@@ -150,7 +156,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.01,
                 ),
 
                 //title
@@ -161,7 +167,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //divider
@@ -181,7 +187,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //display roster in dropdown
@@ -195,7 +201,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                         child: Text(
                           value,
                           style: const TextStyle(
-                              fontSize: 20, color: Colors.black),
+                              fontSize: 18, color: Colors.black),
                         ),
                       );
                     }).toList(),
@@ -214,11 +220,8 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 ),
 
                 //student
-                Text(
-                  displayCurrentStudent(),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 25),
-                ),
+                Text(displayCurrentStudent(),
+                    style: Theme.of(context).textTheme.displayLarge),
 
                 //divider
                 Padding(
@@ -242,13 +245,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //diaper changes
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         "Diaper Changes",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -260,12 +262,11 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //bm
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         "Bowel Movements",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -284,12 +285,11 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //wet
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         "Wet",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -308,12 +308,11 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //nap
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         "Nap",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -323,21 +322,21 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                   child: ReportTextField(
-                      controller: napController,
-                      hintText: "Update Timing",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                    controller: napController,
+                    hintText: "Update Timing",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                  ),
                 ),
 
                 //mood AM
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         "Mood AM",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -356,13 +355,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //mood pm
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         "Mood PM",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -381,13 +379,12 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                 //health
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         "Health",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -413,14 +410,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                         onPressed: () => clearFields(),
                         padding: EdgeInsets.all(screenHeight * 0.01),
                         color: Theme.of(context).primaryColor,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.restart_alt_rounded),
+                            const Icon(Icons.restart_alt_rounded),
                             Text(
                               "Clear",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
                           ],
                         ),
@@ -432,14 +428,13 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                         onPressed: () => saveReport(),
                         padding: EdgeInsets.all(screenHeight * 0.01),
                         color: Theme.of(context).primaryColor,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add),
+                            const Icon(Icons.add),
                             Text(
                               "Save Report",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
                           ],
                         ),

@@ -1,6 +1,7 @@
 import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../components/add_student_textfield.dart';
 import '../../components/show_message.dart';
@@ -206,7 +207,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               "Confirmation",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).dividerColor,
               ),
@@ -216,7 +217,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             "Are you sure you want to delete $item?",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).dividerColor,
             ),
@@ -504,7 +505,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.005,
                 ),
 
                 //title
@@ -515,7 +516,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //divider
@@ -535,7 +536,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //current roster
@@ -551,7 +552,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //display current roster
@@ -573,7 +574,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //add/edit a new student
@@ -586,7 +587,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: screenHeight * 0.005),
 
                 //name
                 AddStudentTextField(
@@ -604,7 +605,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 //parent selector
                 bulletedListParent(currentParents, screenHeight, screenWidth),
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
                 parentSelection(
                     parentContoller, allParents, screenHeight, screenWidth),
@@ -622,17 +623,16 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     children: [
                       MaterialButton(
                         onPressed: () => clearFields(),
-                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        padding: EdgeInsets.all(screenHeight * 0.005),
                         color: Theme.of(context).primaryColor,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.restart_alt_rounded),
                             Text(
                               "Clear",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
+                              style: Theme.of(context).textTheme.displayMedium,
+                            )
                           ],
                         ),
                       ),
@@ -642,16 +642,15 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                       MaterialButton(
                         onPressed: () => saveStudent(
                             studentNameController.text.trim().toCapitalCase()),
-                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        padding: EdgeInsets.all(screenHeight * 0.005),
                         color: Theme.of(context).primaryColor,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.add),
                             Text(
                               "Save student",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
                           ],
                         ),
@@ -662,7 +661,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 Padding(
@@ -680,7 +679,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                 ),
 
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //title
@@ -691,7 +690,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 Padding(
@@ -710,25 +709,25 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //Add Staff
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-                  child: const Text(
+                  child: Text(
                     "Add Staff",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
 
                 //padding
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: screenHeight * 0.005),
 
                 //staff selector
                 bulletedListStaff(currentStaff, screenHeight, screenWidth),
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
                 staffSelection(
                     staffContoller, allStaff, screenHeight, screenWidth),
@@ -752,79 +751,37 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Autocomplete<String>(
-            optionsBuilder: (TextEditingValue textEditingValue) {
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: 'Select Parent/Guardian',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: screenHeight * 0.002,
+                  ),
+                ),
+              ),
+            ),
+            suggestionsCallback: (String pattern) async {
               return parents
-                  .where((item) => item.contains(textEditingValue.text))
+                  .where((item) =>
+                      item.toLowerCase().contains(pattern.toLowerCase()))
                   .toList();
             },
-            onSelected: (String selectedValue) {
-              controller.text = selectedValue;
-            },
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController textEditingController,
-                FocusNode focusNode,
-                VoidCallback onFieldSubmitted) {
-              controller = textEditingController;
-              return TextField(
-                controller: controller,
-                focusNode: focusNode,
-                decoration: InputDecoration(
-                  //border
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      width: screenHeight * 0.002,
-                    ),
-                  ),
-                  labelText: 'Select parent/guardian',
-                  labelStyle: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).hintColor),
-                  ),
-                ),
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
               );
             },
-            optionsViewBuilder: (BuildContext context,
-                AutocompleteOnSelected<String> onSelected,
-                Iterable<String> options) {
-              return Align(
-                alignment: Alignment.topLeft,
-                child: Material(
-                  elevation: 4,
-                  child: Container(
-                    //set max height for large lists
-                    constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
-                    width: screenWidth * 0.7,
-                    child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      removeBottom: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: options.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final String option = options.elementAt(index);
-                          return GestureDetector(
-                            onTap: () {
-                              onSelected(option);
-                            },
-                            child: ListTile(
-                              title: Text(option),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              );
+            onSuggestionSelected: (suggestion) {
+              controller.text = suggestion;
             },
+            hideOnEmpty: true,
+            autoFlipDirection: true,
           ),
-          SizedBox(height: screenHeight * 0.01),
+          SizedBox(height: screenHeight * 0.005),
 
           //add item button
           MaterialButton(
@@ -834,9 +791,9 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             },
             color: Theme.of(context).primaryColor,
             elevation: 1,
-            child: const Text(
+            child: Text(
               'Add Parent',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
         ],
@@ -851,79 +808,37 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Autocomplete<String>(
-            optionsBuilder: (TextEditingValue textEditingValue) {
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: 'Select Staff',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: screenHeight * 0.002,
+                  ),
+                ),
+              ),
+            ),
+            suggestionsCallback: (String pattern) async {
               return staff
-                  .where((item) => item.contains(textEditingValue.text))
+                  .where((item) =>
+                      item.toLowerCase().contains(pattern.toLowerCase()))
                   .toList();
             },
-            onSelected: (String selectedValue) {
-              controller.text = selectedValue;
-            },
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController textEditingController,
-                FocusNode focusNode,
-                VoidCallback onFieldSubmitted) {
-              controller = textEditingController;
-              return TextField(
-                controller: controller,
-                focusNode: focusNode,
-                decoration: InputDecoration(
-                  //border
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      width: screenHeight * 0.002,
-                    ),
-                  ),
-                  labelText: 'Select staff',
-                  labelStyle: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).hintColor),
-                  ),
-                ),
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
               );
             },
-            optionsViewBuilder: (BuildContext context,
-                AutocompleteOnSelected<String> onSelected,
-                Iterable<String> options) {
-              return Align(
-                alignment: Alignment.topLeft,
-                child: Material(
-                  elevation: 4,
-                  child: Container(
-                    //set max height for large lists
-                    constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
-                    width: screenWidth * 0.7,
-                    child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      removeBottom: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: options.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final String option = options.elementAt(index);
-                          return GestureDetector(
-                            onTap: () {
-                              onSelected(option);
-                            },
-                            child: ListTile(
-                              title: Text(option),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              );
+            onSuggestionSelected: (suggestion) {
+              controller.text = suggestion;
             },
+            hideOnEmpty: true,
+            autoFlipDirection: true,
           ),
-          SizedBox(height: screenHeight * 0.01),
+          SizedBox(height: screenHeight * 0.005),
 
           //add item button
           MaterialButton(
@@ -935,7 +850,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
             elevation: 1,
             child: const Text(
               'Add Staff',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -964,7 +879,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                       textAlign: TextAlign.left,
                       softWrap: true,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 15,
                       ),
                     ),
                   ),
@@ -1016,7 +931,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     textAlign: TextAlign.left,
                     softWrap: true,
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 15,
                     ),
                   ),
                 ),
@@ -1059,7 +974,7 @@ class _AdminManagementPageState extends State<AdminManagementPage> {
                     textAlign: TextAlign.left,
                     softWrap: true,
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 15,
                     ),
                   ),
                 ),

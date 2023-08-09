@@ -33,6 +33,11 @@ class MyApp extends StatelessWidget {
             fontSize: 18,
             color: Colors.black,
           ),
+          displayMedium: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ),
       debugShowCheckedModeBanner: false,

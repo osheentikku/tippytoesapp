@@ -2,8 +2,8 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../../components/show_message.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class AdminMenuPage extends StatefulWidget {
   const AdminMenuPage({super.key});
@@ -184,16 +184,23 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
+
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.03,
+                  height: screenHeight * 0.01,
                 ),
 
                 //Date
@@ -207,7 +214,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //Padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 Padding(
@@ -226,7 +233,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 //padding
                 SizedBox(
-                  height: screenHeight * 0.01,
+                  height: screenHeight * 0.005,
                 ),
 
                 //breakfast
@@ -307,9 +314,9 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                   onPressed: setTodayMenu,
                   color: Theme.of(context).primaryColor,
                   elevation: 1,
-                  child: const Text(
+                  child: Text(
                     'Save Menu',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
                 //padding
@@ -328,7 +335,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       String mealName,
       TextEditingController controller,
       List<String> mealOptions,
-      List<String> list,
+      List<String> mealToday,
       double screenHeight,
       double screenWidth) {
     return Padding(
@@ -336,80 +343,45 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Autocomplete<String>(
-            optionsBuilder: (TextEditingValue textEditingValue) {
-              return mealOptions
-                  .where((item) => item.contains(textEditingValue.text))
-                  .toList();
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: controller,
+              decoration: InputDecoration(labelText: 'Add item to $mealName'),
+            ),
+            suggestionsCallback: (String pattern) async {
+              if (pattern.isNotEmpty) {
+                return mealOptions
+                    .where((item) =>
+                        item.toLowerCase().contains(pattern.toLowerCase()))
+                    .toList();
+              }
+              return const Iterable.empty();
             },
-            onSelected: (String selectedValue) {
-              controller.text = selectedValue;
-            },
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController textEditingController,
-                FocusNode focusNode,
-                VoidCallback onFieldSubmitted) {
-              controller = textEditingController;
-              return TextField(
-                controller: controller,
-                focusNode: focusNode,
-                decoration: InputDecoration(
-                    labelText: 'Add Items for $mealName',
-                    labelStyle: TextStyle(color: Theme.of(context).hintColor),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).hintColor))),
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
               );
             },
-            optionsViewBuilder: (BuildContext context,
-                AutocompleteOnSelected<String> onSelected,
-                Iterable<String> options) {
-              return Align(
-                alignment: Alignment.topLeft,
-                child: Material(
-                  elevation: 4,
-                  child: Container(
-                    //set max height for large lists
-                    constraints: BoxConstraints(maxHeight: screenHeight * 0.2),
-                    width: screenWidth * 0.7,
-                    child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      removeBottom: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: options.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final String option = options.elementAt(index);
-                          return GestureDetector(
-                            onTap: () {
-                              onSelected(option);
-                            },
-                            child: ListTile(
-                              title: Text(option),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              );
+            onSuggestionSelected: (suggestion) {
+              controller.text = suggestion;
             },
+            minCharsForSuggestions: 1,
+            hideOnEmpty: true,
+            autoFlipDirection: true,
           ),
           SizedBox(height: screenHeight * 0.01),
 
           //add item button
           MaterialButton(
             onPressed: () {
-              addMealItem(list, mealName, controller.text);
+              addMealItem(mealToday, mealName, controller.text);
               controller.clear();
             },
             color: Theme.of(context).primaryColor,
             elevation: 1,
-            child: const Text(
+            child: Text(
               'Add Item',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
         ],
