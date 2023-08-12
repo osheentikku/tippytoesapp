@@ -12,17 +12,19 @@ class AuthService {
     //begin interactive login process
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    //obtain auth details from request
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+    if (gUser != null) {
+      //obtain auth details from request
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-    //create a new credential for user
-    final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth.idToken,
-    );
+      //create a new credential for user
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
 
-    //login
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      //login
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    }
   }
 
   /// Generates a cryptographically secure random nonce, to be included in a
