@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ManagementTextField extends StatelessWidget {
+class AccountTextField extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final TextEditingController controller;
   final String hintText;
   final double horizontalPadding;
 
-  const ManagementTextField({
+  const AccountTextField({
     super.key,
     required this.controller,
     required this.hintText,

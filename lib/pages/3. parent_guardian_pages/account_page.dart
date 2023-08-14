@@ -2,18 +2,18 @@ import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/components/managment_textfield.dart';
+import 'package:tippytoesapp/components/account_textfield.dart';
 
 import '../../components/show_message.dart';
 
-class ManagementPage extends StatefulWidget {
-  const ManagementPage({super.key});
+class AccountPage extends StatefulWidget {
+  const AccountPage({super.key});
 
   @override
-  State<ManagementPage> createState() => _ManagementPageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _ManagementPageState extends State<ManagementPage> {
+class _AccountPageState extends State<AccountPage> {
   //text editing controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -49,6 +49,57 @@ class _ManagementPageState extends State<ManagementPage> {
       'Name': '$firstName $lastName',
       'Email': email,
     });
+  }
+
+  void deleteAccount() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          title: Center(
+            child: Text("Confirmation",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium),
+          ),
+          content: Text("Are you sure you want to delete your account?",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium),
+          actionsPadding: EdgeInsets.zero,
+          actions: [
+            TextButton(
+              onPressed: () async {
+                //delete document
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .delete();
+
+                await FirebaseAuth.instance.currentUser!.delete();
+
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+                onPressed: () {
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Text(
+                  "No",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
+          ],
+        );
+      },
+    );
   }
 
   //save student data to Firestore
@@ -162,7 +213,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 //first name
-                ManagementTextField(
+                AccountTextField(
                   controller: firstNameController,
                   hintText: "First Name",
                   screenHeight: screenHeight,
@@ -175,7 +226,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 //last name
-                ManagementTextField(
+                AccountTextField(
                   controller: lastNameController,
                   hintText: "Last Name",
                   screenHeight: screenHeight,
@@ -188,7 +239,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
 
                 //email
-                ManagementTextField(
+                AccountTextField(
                   controller: emailController,
                   hintText: "Email",
                   screenHeight: screenHeight,
@@ -213,6 +264,26 @@ class _ManagementPageState extends State<ManagementPage> {
                         Icon(Icons.add),
                         Text(
                           "Save",
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                //delete button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: MaterialButton(
+                    onPressed: () => deleteAccount(),
+                    padding: EdgeInsets.all(paddingSmall),
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.delete),
+                        Text(
+                          "Delete Account",
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                       ],

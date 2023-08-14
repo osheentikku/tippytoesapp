@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tippytoesapp/pages/3.%20parent_guardian_pages/account_page.dart';
 
-import 'admin_home_page.dart';
+//import 'admin_home_page.dart';
 import 'admin_management_page.dart';
 import 'admin_menu_page.dart';
 import 'admin_reports_page.dart';
@@ -19,6 +20,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
     const AdminMenuPage(),
     const AdminReportsPage(),
     const AdminManagementPage(),
+    const AccountPage(),
   ];
 
   int currentIndex = 0;
@@ -52,6 +54,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: "Menu"),
           BottomNavigationBarItem(
               icon: Icon(Icons.description), label: "Reports"),
+          BottomNavigationBarItem(icon: Icon(Icons.group), label: "Classroom"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
         ],
         currentIndex: currentIndex,
