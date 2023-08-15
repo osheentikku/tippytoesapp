@@ -62,20 +62,50 @@ class _AccountPageState extends State<AccountPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium),
           ),
-          content: Text("Are you sure you want to delete your account?",
+          content: Text(
+              "Are you sure you want to delete your account? All data associated with your account will be deleted too.",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineMedium),
           actionsPadding: EdgeInsets.zero,
           actions: [
             TextButton(
               onPressed: () async {
+                //delete from students
+                DocumentSnapshot documentSnapshot = await FirebaseFirestore
+                    .instance
+                    .collection("users")
+                    .doc(user.uid)
+                    .get();
+
+                String name = documentSnapshot['Name'];
+                String email = documentSnapshot["Email"];
+
+                String studentName = documentSnapshot["Student"] ?? "";
+                if (studentName.isNotEmpty) {
+                  DocumentSnapshot studentSnapshot = await FirebaseFirestore
+                      .instance
+                      .collection("students")
+                      .doc(studentName)
+                      .get();
+
+                  List<String> parents =
+                      List<String>.from(studentSnapshot["ParentOrGuardian"]);
+                  parents.remove("$name: $email");
+
+                  //delete document
+                  await FirebaseFirestore.instance
+                      .collection("students")
+                      .doc(studentName)
+                      .update({"ParentOrGuardian": parents});
+                }
+
                 //delete document
                 await FirebaseFirestore.instance
                     .collection("users")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .doc(user.uid)
                     .delete();
 
-                await FirebaseAuth.instance.currentUser!.delete();
+                await user.delete();
 
                 if (mounted) {
                   Navigator.of(context).pop();

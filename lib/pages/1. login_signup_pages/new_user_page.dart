@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:change_case/change_case.dart';
+import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 
 import '../../components/show_message.dart';
+import '../check_approval_page.dart';
 
 class NewUserPage extends StatefulWidget {
   const NewUserPage({
@@ -23,17 +25,18 @@ class _NewUserPageState extends State<NewUserPage> {
 
   //account type
   bool? isAdmin;
+  bool redirect = false;
 
   bool isApproved = false;
 
   //user signup method
   Future userSignup() async {
-    if (firstNameController.text.isEmpty || lastNameController.text.isEmpty) {
-      showMessage(context, "Please fill out all fields.");
+    if (isAdmin == null) {
+      showMessage(context, "Please select an account type");
     } else {
-      //add user details
       try {
         User user = FirebaseAuth.instance.currentUser!;
+        String provider = user.providerData[0].providerId;
 
         await addUserDetails(
           firstNameController.text.trim().toCapitalCase(),
@@ -43,7 +46,9 @@ class _NewUserPageState extends State<NewUserPage> {
           isApproved,
         );
 
-        FirebaseAuth.instance.signOut();
+        setState(() {
+          redirect = true;
+        });
       } on FirebaseAuthException catch (e) {
         showMessage(context, e.message.toString());
       }
@@ -101,134 +106,138 @@ class _NewUserPageState extends State<NewUserPage> {
     setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07,
         screenWidth * 0.05);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //pre padding
-                SizedBox(height: paddingMedium),
+    if (redirect) {
+      return CheckApprovalPage();
+    } else {
+      return Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        body: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //pre padding
+                  SizedBox(height: paddingMedium),
 
-                //create an account
-                Text("Finish creating your account",
-                    style: Theme.of(context).textTheme.displayLarge),
+                  //create an account
+                  Text("Finish creating your account",
+                      style: Theme.of(context).textTheme.displayLarge),
 
-                //padding
-                SizedBox(height: screenHeight * 0.03),
+                  //padding
+                  SizedBox(height: screenHeight * 0.03),
 
-                //first name
-                SignUpTextField(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  controller: firstNameController,
-                  hintText: "First Name",
-                  horizontalPadding: horizontalPadding,
-                  borderRadius: borderRadius,
-                ),
-
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
-
-                //last name
-                SignUpTextField(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  controller: lastNameController,
-                  hintText: "Last Name",
-                  horizontalPadding: horizontalPadding,
-                  borderRadius: borderRadius,
-                ),
-
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
-
-                //account type
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Container(
+                  //create an account
+                  Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    decoration: BoxDecoration(
+                    child: Text(
+                      "Providing your name is not required but highly reccomended to ease communication.",
+                      style: Theme.of(context).textTheme.displayMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+
+                  //padding
+                  SizedBox(height: screenHeight * 0.03),
+                  //first name
+                  SignUpTextField(
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    controller: firstNameController,
+                    hintText: "First Name",
+                    horizontalPadding: horizontalPadding,
+                    borderRadius: borderRadius,
+                  ),
+
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
+
+                  //last name
+                  SignUpTextField(
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    controller: lastNameController,
+                    hintText: "Last Name",
+                    horizontalPadding: horizontalPadding,
+                    borderRadius: borderRadius,
+                  ),
+
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
+
+                  //account type
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: horizontalPadding),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          color: Theme.of(context).secondaryHeaderColor),
+                      child: DropdownButton(
+                        isExpanded: true,
+                        items: [
+                          DropdownMenuItem(
+                            value: true,
+                            child: Text(
+                              "Admin",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                          DropdownMenuItem(
+                            value: false,
+                            child: Text(
+                              "Parent/Guardian",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
+                        value: isAdmin,
+                        onChanged: setAdmin,
+                        hint: Text(
+                          "Select account type",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        iconSize: 20,
                         borderRadius: BorderRadius.circular(borderRadius),
-                        color: Theme.of(context).secondaryHeaderColor),
-                    child: DropdownButton(
-                      isExpanded: true,
-                      items: [
-                        DropdownMenuItem(
-                          value: true,
-                          child: Text(
-                            "Admin",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: false,
-                          child: Text(
-                            "Parent/Guardian",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
-                      value: isAdmin,
-                      onChanged: setAdmin,
-                      hint: Text(
-                        "Select account type",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        dropdownColor: Theme.of(context).secondaryHeaderColor,
                       ),
-                      iconSize: 20,
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      dropdownColor: Theme.of(context).secondaryHeaderColor,
                     ),
                   ),
-                ),
 
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
-
-                //create an account
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: const Text(
-                    "After your account is created, you will need to login again.",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 158, 19, 9),
-                    ),
-                    textAlign: TextAlign.center,
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
                   ),
-                ),
 
-                //padding
-                SizedBox(height: paddingMedium),
+                  //padding
+                  SizedBox(height: paddingMedium),
 
-                //signup
-                LoginSignupButton(
-                  text: 'Sign Up',
-                  onTap: userSignup,
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  borderRadius: borderRadius,
-                ),
+                  //signup
+                  LoginSignupButton(
+                    text: 'Sign Up',
+                    onTap: userSignup,
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    borderRadius: borderRadius,
+                  ),
 
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
-              ],
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

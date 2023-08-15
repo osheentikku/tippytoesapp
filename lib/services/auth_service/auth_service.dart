@@ -23,7 +23,9 @@ class AuthService {
       );
 
       //login
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return FirebaseAuth.instance.currentUser!
+          .updateDisplayName(gUser.displayName);
     }
   }
 
@@ -65,9 +67,16 @@ class AuthService {
         rawNonce: rawNonce,
       );
 
+      final appleDisplayName = [
+        appleCredential.givenName ?? '',
+        appleCredential.familyName ?? '',
+      ].join(' ').trim();
+
       // Sign in the user with Firebase. If the nonce we generated earlier doesn't
       // match the nonce in `appleCredential.identityToken`, sign in will fail.
-      return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      return FirebaseAuth.instance.currentUser!
+          .updateDisplayName(appleDisplayName);
     }
   }
 }
