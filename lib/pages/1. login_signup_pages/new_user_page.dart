@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:tippytoesapp/components/login_signup_button.dart';
 import 'package:tippytoesapp/components/signup_textfield.dart';
 import 'package:change_case/change_case.dart';
-import 'package:tippytoesapp/services/auth_service/auth_service.dart';
 
 import '../../components/show_message.dart';
 import '../check_approval_page.dart';
@@ -36,7 +35,7 @@ class _NewUserPageState extends State<NewUserPage> {
     } else {
       try {
         User user = FirebaseAuth.instance.currentUser!;
-        String provider = user.providerData[0].providerId;
+
 
         await addUserDetails(
           firstNameController.text.trim().toCapitalCase(),
@@ -107,7 +106,7 @@ class _NewUserPageState extends State<NewUserPage> {
         screenWidth * 0.05);
 
     if (redirect) {
-      return CheckApprovalPage();
+      return const CheckApprovalPage();
     } else {
       return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,

@@ -190,14 +190,12 @@ class _AccountPageState extends State<AccountPage> {
   double paddingSmall = 0;
   double horizontalPadding = 0;
   double paddingMedium = 0;
-  double paddingIndented = 0;
 
   void setPadding(
-      double small, double medium, double indent, double horizontal) {
+      double small, double medium, double horizontal) {
     setState(() {
       paddingSmall = small;
       paddingMedium = medium;
-      paddingIndented = indent;
       horizontalPadding = horizontal;
     });
   }
@@ -206,7 +204,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.1,
+    setPadding(screenHeight * 0.005, screenHeight * 0.02,
         screenWidth * 0.07);
     return Scaffold(
       body: SafeArea(
