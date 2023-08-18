@@ -6,14 +6,14 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../components/add_student_textfield.dart';
 import '../../components/show_message.dart';
 
-class AdminManagementPage extends StatefulWidget {
-  const AdminManagementPage({super.key});
+class AdminClassroomPage extends StatefulWidget {
+  const AdminClassroomPage({super.key});
 
   @override
-  State<AdminManagementPage> createState() => _AdminManagementPageState();
+  State<AdminClassroomPage> createState() => _AdminClassroomPageState();
 }
 
-class _AdminManagementPageState extends State<AdminManagementPage> {
+class _AdminClassroomPageState extends State<AdminClassroomPage> {
   //text controllers
   TextEditingController studentNameController = TextEditingController();
   TextEditingController parentContoller = TextEditingController();
