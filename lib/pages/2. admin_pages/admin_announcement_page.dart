@@ -1,6 +1,11 @@
+import 'dart:collection';
+
 import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tippytoesapp/components/announcements_date_textfield.dart';
 import 'package:tippytoesapp/components/announcements_textfield.dart';
 
 import '../../components/show_message.dart';
@@ -15,11 +20,14 @@ class AdminAnnouncementPage extends StatefulWidget {
 class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
   TextEditingController announcementTitle = TextEditingController();
   TextEditingController announcementBody = TextEditingController();
+  TextEditingController announcementDate = TextEditingController();
 
   String title = "";
   String body = "";
+  String endDate = "";
 
   List<String> activeAnnouncements = [];
+  HashMap<String, String> titleToBody = HashMap();
 
   @override
   void initState() {
@@ -30,16 +38,23 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
   Future loadFromFirestore() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("announcements")
-        .orderBy('Created', descending: true)
+        .orderBy('End Date')
         .get();
 
     for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
       setState(() {
-        activeAnnouncements.add(documentSnapshot.id);
+        DateTime endDate = (documentSnapshot["End Date"] as Timestamp).toDate();
+        if (endDate
+            .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+          FirebaseFirestore.instance
+              .collection("announcements")
+              .doc(documentSnapshot.id)
+              .delete();
+        } else {
+          activeAnnouncements.add(documentSnapshot.id);
+          titleToBody[documentSnapshot["Title"]] = documentSnapshot["Body"];
+        }
       });
-    }
-    if (activeAnnouncements.isNotEmpty) {
-      populateAnnouncement(activeAnnouncements[0]);
     }
   }
 
@@ -48,8 +63,7 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
     showModalBottomSheet(
       context: context,
       useSafeArea: true,
-      isScrollControlled:
-          false, // Optional: Set to true if you want a full-screen sheet
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -80,22 +94,37 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
                   horizontalPadding: horizontalPadding,
                   textfieldBorder: textfieldBorder,
                 ),
+                AnnouncementsDateTextField(
+                    controller: announcementDate,
+                    hintText: "End Date",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                    context: context),
                 MaterialButton(
                   onPressed: () async {
                     setState(() {
                       title = announcementTitle.text.trim().toCapitalCase();
                       body = announcementBody.text.trim();
+                      endDate = announcementDate.text.trim();
                     });
-                    if (activeAnnouncements.contains(title)) {
+                    if (title.isEmpty) {
+                      showMessage(context, "Please enter a title.");
+                    } else if (activeAnnouncements.contains(title)) {
                       showMessage(context,
                           "The announcement title already exists. Please rename and try again.");
+                    } else if (body.isEmpty) {
+                      showMessage(context, "Please enter a body");
+                    } else if (endDate.isEmpty) {
+                      showMessage(context, "Please enter an end date.");
                     } else {
                       await saveAnnouncement();
-                    }
 
-                    // Close the bottom sheet
-                    if (mounted) {
-                      Navigator.of(context).pop();
+                      // Close the bottom sheet
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
                     }
                   },
                   color: Theme.of(context).primaryColor,
@@ -116,23 +145,35 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
   }
 
   Future saveAnnouncement() async {
-    if (title.isEmpty) {
-      showMessage(context, "Please enter a title.");
-    } else {
-      //set report in firestore
-      FirebaseFirestore.instance.collection('announcements').doc(title).set({
-        'Title': title,
-        'Body': body,
-        'Created': FieldValue.serverTimestamp()
-      }).then((value) {
-        // Menu successfully set for today.
-        // You can show a confirmation dialog or a snackbar.
-        setState(() {
-          activeAnnouncements.insert(0, title);
-        });
-        showMessage(context, "Announcement successfully created.");
-      }).catchError((e) {
-        // Handle errors here.
+    //set report in firestore
+    FirebaseFirestore.instance.collection('announcements').doc(title).set({
+      'Title': title,
+      'Body': body,
+      'End Date': DateFormat.yMMMEd().parse(endDate),
+    }).then((value) {
+      // Menu successfully set for today.
+      // You can show a confirmation dialog or a snackbar.
+      setState(() {
+        activeAnnouncements.add(title);
+        sortAnnouncements();
+        titleToBody[title] = body;
+      });
+      showMessage(context, "Announcement successfully created.");
+    }).catchError((e) {
+      // Handle errors here.
+    });
+  }
+
+  Future sortAnnouncements() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("announcements")
+        .orderBy('End Date')
+        .get();
+
+    activeAnnouncements.clear();
+    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+      setState(() {
+        activeAnnouncements.add(documentSnapshot.id);
       });
     }
   }
@@ -189,32 +230,7 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
     );
   }
 
-  Widget displayAnnouncements(double screenWidth) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              width: screenWidth * 0.5,
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).primaryColor),
-              ),
-              child: Column(),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              width: screenWidth * 0.5,
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).primaryColor),
-              ),
-              child: Column(),
-            ),
-          ),
-        ],
-      ),
-    );
+  Widget displayAnnouncements(double screenHeight, double screenWidth) {
     if (activeAnnouncements.isEmpty) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -225,52 +241,8 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
         ),
       );
     } else {
-      return displayMainAnnouncement();
+      return bulletedList(screenHeight, screenWidth);
     }
-    //displayOtherAnnouncements();
-    //return Container();
-  }
-
-  Widget displayMainAnnouncement() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColor),
-                  ),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        SizedBox(height: paddingSmall),
-                        Text(
-                          title,
-                          style: Theme.of(context).textTheme.displayLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: paddingSmall),
-                        Visibility(
-                          visible: body.isNotEmpty,
-                          child: Text(
-                            body,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Future populateAnnouncement(String announcement) async {
@@ -282,6 +254,14 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
       title = main["Title"] ?? "";
       body = main["Body"] ?? "";
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    announcementTitle.dispose();
+    announcementBody.dispose();
+    announcementDate.dispose();
   }
 
   double paddingSmall = 0;
@@ -373,7 +353,7 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
                 ),
 
                 SizedBox(height: paddingMedium),
-                displayAnnouncements(screenWidth),
+                displayAnnouncements(screenHeight, screenWidth),
               ],
             ),
           ),
@@ -381,40 +361,120 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
       ),
     );
   }
+/*
+  Widget bulletedList(double screenHeight, double screenWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: activeAnnouncements.map((item) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: paddingSmall),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: screenWidth * 0.009,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        item,
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      Text(
+                        titleToBody[item]!,
+                        textAlign: TextAlign.left,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  } */
 
-  Widget bulletedListRoster(List<String> list) {
-    return Container(
-      alignment: Alignment.centerLeft,
+  Widget bulletedList(double screenHeight, double screenWidth) {
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: list.map((str) {
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: paddingSmall),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    str,
-                    textAlign: TextAlign.left,
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => deleteAnnouncement(str),
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                    size: iconSize,
-                  ),
-                ),
-              ],
+      itemCount: activeAnnouncements.length,
+      itemBuilder: (context, index) {
+        return Container(
+          padding: EdgeInsets.all(paddingSmall),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+              width: screenWidth * 0.009,
             ),
-          );
-        }).toList(),
-      ),
+          ),
+          child: Column(
+            children: [
+              Text(
+                activeAnnouncements[index],
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              Text(
+                titleToBody[activeAnnouncements[index]]!,
+                textAlign: TextAlign.left,
+                softWrap: true,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const Divider(),
     );
   }
 }
+
+        /*
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: paddingSmall),
+            child: Container(
+              padding: EdgeInsets.all(paddingSmall),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                  width: screenWidth * 0.009,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: paddingSmall,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        item,
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      Text(
+                        titleToBody[item]!,
+                        textAlign: TextAlign.left,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );*/

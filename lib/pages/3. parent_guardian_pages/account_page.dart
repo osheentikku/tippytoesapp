@@ -201,7 +201,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contfext) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     setPadding(screenHeight * 0.005, screenHeight * 0.02,
