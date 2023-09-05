@@ -6,14 +6,14 @@ import 'package:tippytoesapp/components/managment_textfield.dart';
 
 import '../../components/show_message.dart';
 
-class ManagementPage extends StatefulWidget {
-  const ManagementPage({super.key});
+class AccountPage extends StatefulWidget {
+  const AccountPage({super.key});
 
   @override
-  State<ManagementPage> createState() => _ManagementPageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _ManagementPageState extends State<ManagementPage> {
+class _AccountPageState extends State<AccountPage> {
   //text editing controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -49,6 +49,87 @@ class _ManagementPageState extends State<ManagementPage> {
       'Name': '$firstName $lastName',
       'Email': email,
     });
+  }
+
+  void deleteAccount() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          title: Center(
+            child: Text("Confirmation",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium),
+          ),
+          content: Text(
+              "Are you sure you want to delete your account? All data associated with your account will be deleted too.",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium),
+          actionsPadding: EdgeInsets.zero,
+          actions: [
+            TextButton(
+              onPressed: () async {
+                //delete from students
+                DocumentSnapshot documentSnapshot = await FirebaseFirestore
+                    .instance
+                    .collection("users")
+                    .doc(user.uid)
+                    .get();
+
+                String name = documentSnapshot['Name'];
+                String email = documentSnapshot["Email"];
+
+                String studentName = documentSnapshot["Student"] ?? "";
+                if (studentName.isNotEmpty) {
+                  DocumentSnapshot studentSnapshot = await FirebaseFirestore
+                      .instance
+                      .collection("students")
+                      .doc(studentName)
+                      .get();
+
+                  List<String> parents =
+                      List<String>.from(studentSnapshot["ParentOrGuardian"]);
+                  parents.remove("$name: $email");
+
+                  //delete document
+                  await FirebaseFirestore.instance
+                      .collection("students")
+                      .doc(studentName)
+                      .update({"ParentOrGuardian": parents});
+                }
+
+                //delete document
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(user.uid)
+                    .delete();
+
+                await user.delete();
+
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+                onPressed: () {
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Text(
+                  "No",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
+          ],
+        );
+      },
+    );
   }
 
   //save student data to Firestore
@@ -213,6 +294,25 @@ class _ManagementPageState extends State<ManagementPage> {
                         Icon(Icons.add),
                         Text(
                           "Save",
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                //delete button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: MaterialButton(
+                    onPressed: () => deleteAccount(),
+                    padding: EdgeInsets.all(paddingSmall),
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.delete),
+                        Text(
+                          "Delete Account",
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                       ],
