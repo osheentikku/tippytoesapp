@@ -220,6 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
+/*
                 //padding
                 SizedBox(
                   height: paddingMedium,
@@ -251,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-
+*/
                 //padding
                 SizedBox(height: screenHeight * 0.05),
 

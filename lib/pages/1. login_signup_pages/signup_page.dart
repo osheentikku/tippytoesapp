@@ -321,7 +321,7 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   ),
                 ),
-
+/*
                 //padding
                 SizedBox(height: paddingMedium),
 
@@ -347,9 +347,9 @@ class _SignupPageState extends State<SignupPage> {
                       screenHeight: screenHeight,
                       screenWidth: screenWidth,
                       imagePath: "lib/images/apple.png",
-                    ),
-                  ],
-                ),
+                    ), 
+                  ], 
+                ), */
 
                 //padding
                 SizedBox(height: paddingMedium),
