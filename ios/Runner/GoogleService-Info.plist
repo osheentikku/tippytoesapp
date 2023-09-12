@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>595744277476-dj9rg5cuaquft4k7ndb9vikdiic17ch1.apps.googleusercontent.com</string>
+	<string>595744277476-1mtoeqmeaa3k7vchs0itc8ueok6ogrhf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.595744277476-dj9rg5cuaquft4k7ndb9vikdiic17ch1</string>
+	<string>com.googleusercontent.apps.595744277476-1mtoeqmeaa3k7vchs0itc8ueok6ogrhf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>595744277476-sd9hbbarfvbkvqr595m6ea8nh347j930.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC2ydJdfuCCnXihdv_KneT0tOrp06A6C6Y</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>us.tippytoes.tippytoesapp</string>
+	<string>us.tippytoes.tippytoesdaycareapp</string>
 	<key>PROJECT_ID</key>
 	<string>tippytoes-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:595744277476:ios:2f05658543b93369443df1</string>
+	<string>1:595744277476:ios:e18e43571df753a2443df1</string>
 </dict>
 </plist>

@@ -1,0 +1,3 @@
+package_rename_config:
+  ios:
+    package_name: us.tippytoes.tippytoesdaycareapp
