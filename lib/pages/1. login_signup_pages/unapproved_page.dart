@@ -31,35 +31,6 @@ class _UnapprovedPageState extends State<UnapprovedPage> {
           actions: [
             TextButton(
               onPressed: () async {
-                //delete from students
-                DocumentSnapshot documentSnapshot = await FirebaseFirestore
-                    .instance
-                    .collection("users")
-                    .doc(user.uid)
-                    .get();
-
-                String name = documentSnapshot['Name'];
-                String email = documentSnapshot["Email"];
-
-                String studentName = documentSnapshot["Student"] ?? "";
-                if (studentName.isNotEmpty) {
-                  DocumentSnapshot studentSnapshot = await FirebaseFirestore
-                      .instance
-                      .collection("students")
-                      .doc(studentName)
-                      .get();
-
-                  List<String> parents =
-                      List<String>.from(studentSnapshot["ParentOrGuardian"]);
-                  parents.remove("$name: $email");
-
-                  //delete document
-                  await FirebaseFirestore.instance
-                      .collection("students")
-                      .doc(studentName)
-                      .update({"ParentOrGuardian": parents});
-                }
-
                 //delete document
                 await FirebaseFirestore.instance
                     .collection("users")

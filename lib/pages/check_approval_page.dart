@@ -49,16 +49,16 @@ class _CheckApprovalPageState extends State<CheckApprovalPage> {
 
   // Function to check user role and redirect accordingly
   Future<Widget> checkAndRedirect() async {
-    bool oldUser = await checkUserData();
+    /*bool oldUser = await checkUserData();
     if (!oldUser && context.mounted) {
       return const NewUserPage();
+    } else { */
+    bool isApproved = await checkUserApproval();
+    if (isApproved) {
+      return const RoleBasedPage();
     } else {
-      bool isApproved = await checkUserApproval();
-      if (isApproved) {
-        return const RoleBasedPage();
-      } else {
-        return const UnapprovedPage();
-      }
+      return const UnapprovedPage();
+      //  }
     }
   }
 
