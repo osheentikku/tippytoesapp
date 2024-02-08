@@ -6,6 +6,7 @@ class LoginSignupButton extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final double borderRadius;
+  final double width;
 
   const LoginSignupButton({
     super.key,
@@ -14,6 +15,7 @@ class LoginSignupButton extends StatelessWidget {
     required this.screenHeight,
     required this.screenWidth,
     required this.borderRadius,
+    required this.width,
   });
 
   @override
@@ -21,6 +23,7 @@ class LoginSignupButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: width,
         padding: EdgeInsets.all(screenHeight * 0.015),
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
         decoration: BoxDecoration(

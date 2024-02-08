@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07,
-        screenWidth * 0.05, screenHeight * 0.035);
+        screenWidth * 0.01, screenHeight * 0.035);
     double dividerThickness = 0.5;
 
     return Scaffold(
@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                 //logo
                 CircleAvatar(
                   backgroundColor: Theme.of(context).secondaryHeaderColor,
-                  radius: screenWidth * 0.33,
+                  radius: screenHeight * 0.23,
                   backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
 
@@ -121,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
@@ -139,36 +140,41 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
                 SizedBox(
-                  height: paddingSmall,
+                  height: screenHeight * 0.01,
                 ),
 
                 //forgot password
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const ForgotPasswordPage();
-                              },
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const ForgotPasswordPage();
+                                },
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(width: screenHeight * 0.02)
+                      ],
+                    ),
                   ),
                 ),
 
@@ -182,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.2,
                 ),
 
                 //padding
@@ -189,34 +196,37 @@ class _LoginPageState extends State<LoginPage> {
                   height: paddingMedium,
                 ),
 
-                //or continue with
+/*                //or continue with
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: dividerThickness,
-                          color: Theme.of(context).dividerColor,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.03),
-                        child: Text(
-                          'Or continue with',
-                          style: TextStyle(
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: dividerThickness,
                             color: Theme.of(context).dividerColor,
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: dividerThickness,
-                          color: Theme.of(context).dividerColor,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03),
+                          child: Text(
+                            'Or continue with',
+                            style: TextStyle(
+                              color: Theme.of(context).dividerColor,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Divider(
+                            thickness: dividerThickness,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -237,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                       imagePath: "lib/images/google.png",
                     ),
 
-                    //spacing
+                    /* //spacing
                     SizedBox(
                       width: paddingMedium,
                     ),
@@ -248,36 +258,42 @@ class _LoginPageState extends State<LoginPage> {
                       screenHeight: screenHeight,
                       screenWidth: screenWidth,
                       imagePath: "lib/images/apple.png",
-                    ),
+                    ), */
                   ],
                 ),
 
                 //padding
                 SizedBox(height: screenHeight * 0.05),
-
+*/
                 //dont have an account?
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: GestureDetector(
-                    onTap: widget.onTap,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don\'t have an account?',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        SizedBox(
-                          width: paddingSmall,
-                        ),
-                        Text(
-                          'Sign up.',
-                          style: Theme.of(context).textTheme.displayMedium,
-                        )
-                      ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: GestureDetector(
+                      onTap: widget.onTap,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Don\'t have an account?',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          SizedBox(
+                            width: paddingSmall,
+                          ),
+                          Text(
+                            'Sign up.',
+                            style: Theme.of(context).textTheme.displayMedium,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
+
+                //end pag padding
+                SizedBox(height: paddingMedium),
               ],
             ),
           ),

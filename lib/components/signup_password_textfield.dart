@@ -7,6 +7,7 @@ class SignUpPasswordTextField extends StatefulWidget {
   final String hintText;
   final double horizontalPadding;
   final double borderRadius;
+  final double width;
 
   const SignUpPasswordTextField({
     super.key,
@@ -16,6 +17,7 @@ class SignUpPasswordTextField extends StatefulWidget {
     required this.screenWidth,
     required this.horizontalPadding,
     required this.borderRadius,
+    required this.width
   });
 
   @override
@@ -29,40 +31,43 @@ class _SignUpPasswordTextFieldState extends State<SignUpPasswordTextField> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
-      child: TextField(
-        controller: widget.controller,
-        obscureText: obscure,
-        decoration: InputDecoration(
-          //border
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
-
-          //filled color
-          fillColor: Theme.of(context).secondaryHeaderColor,
-          filled: true,
-
-          //hints
-          hintText: widget.hintText,
-          hintStyle: Theme.of(context).textTheme.labelMedium,
-
-          //hide/view
-          suffixIcon: IconButton(
-            icon: obscure
-                ? const Icon(Icons.visibility)
-                : const Icon(Icons.visibility_off),
-            onPressed: () {
-              setState(() {
-                obscure = !obscure;
-              });
-            },
+      child: Container(
+        width: widget.width,
+        child: TextField(
+          controller: widget.controller,
+          obscureText: obscure,
+          decoration: InputDecoration(
+            //border
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
+      
+            //filled color
+            fillColor: Theme.of(context).secondaryHeaderColor,
+            filled: true,
+      
+            //hints
+            hintText: widget.hintText,
+            hintStyle: Theme.of(context).textTheme.labelMedium,
+      
+            //hide/view
+            suffixIcon: IconButton(
+              icon: obscure
+                  ? const Icon(Icons.visibility)
+                  : const Icon(Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  obscure = !obscure;
+                });
+              },
+            ),
           ),
         ),
       ),

@@ -10,6 +10,7 @@ class AuthService {
   //Google Sign in
   signInWithGoogle() async {
     //begin interactive login process
+    
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
     if (gUser != null) {

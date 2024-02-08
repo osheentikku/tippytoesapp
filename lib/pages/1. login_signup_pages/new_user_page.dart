@@ -126,8 +126,47 @@ class _NewUserPageState extends State<NewUserPage> {
                   //padding
                   SizedBox(height: screenHeight * 0.03),
 
+<<<<<<< Updated upstream
                   //create an account
                   Padding(
+=======
+                //first name
+                SignUpTextField(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  controller: firstNameController,
+                  hintText: "First Name",
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
+                ),
+
+                //padding
+                SizedBox(
+                  height: paddingMedium,
+                ),
+
+                //last name
+                SignUpTextField(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  controller: lastNameController,
+                  hintText: "Last Name",
+                  horizontalPadding: horizontalPadding,
+                  borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
+                ),
+
+                //padding
+                SizedBox(
+                  height: paddingMedium,
+                ),
+
+                //account type
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Container(
+>>>>>>> Stashed changes
                     padding:
                         EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: Text(
@@ -218,6 +257,7 @@ class _NewUserPageState extends State<NewUserPage> {
                   //padding
                   SizedBox(height: paddingMedium),
 
+<<<<<<< Updated upstream
                   //signup
                   LoginSignupButton(
                     text: 'Sign Up',
@@ -226,6 +266,17 @@ class _NewUserPageState extends State<NewUserPage> {
                     screenWidth: screenWidth,
                     borderRadius: borderRadius,
                   ),
+=======
+                //signup
+                LoginSignupButton(
+                  text: 'Sign Up',
+                  onTap: userSignup,
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  borderRadius: borderRadius,
+                  width: screenHeight * 0.2,
+                ),
+>>>>>>> Stashed changes
 
                   //padding
                   SizedBox(

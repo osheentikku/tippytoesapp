@@ -220,7 +220,7 @@ class _AccountPageState extends State<AccountPage> {
 
                 CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
-                  radius: screenWidth * 0.2,
+                  radius: screenHeight * 0.23,
                   child: Icon(
                     Icons.person,
                     color: Theme.of(context).secondaryHeaderColor,
