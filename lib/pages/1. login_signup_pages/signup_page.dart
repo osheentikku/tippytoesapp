@@ -359,6 +359,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(height: paddingMedium),
+                */
 
                 //already have an account?
                 Padding(

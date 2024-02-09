@@ -764,18 +764,22 @@ class _AdminClassroomPageState extends State<AdminClassroomPage> {
         children: [
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
+              //this may not work bc it got updated?
               return TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    labelText: 'Select Parent/Guardian',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
+                controller: controller,
+                builder: (context, controller, focusNode) {
+                  return TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                      labelText: 'Select Parent/Guardian',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
                 suggestionsCallback: (String pattern) async {
                   return parents
                       .where((item) =>
@@ -787,7 +791,7 @@ class _AdminClassroomPageState extends State<AdminClassroomPage> {
                     title: Text(suggestion),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSelected: (suggestion) {
                   controller.text = suggestion;
                 },
                 hideOnEmpty: true,
@@ -823,18 +827,22 @@ class _AdminClassroomPageState extends State<AdminClassroomPage> {
         children: [
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
+              //this may not work bc it got updated?
               return TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    labelText: 'Select Staff',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
+                controller: controller,
+                builder: (context, controller, focusNode) {
+                  return TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                      labelText: 'Select Parent/Guardian',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
                 suggestionsCallback: (String pattern) async {
                   return staff
                       .where((item) =>
@@ -846,7 +854,7 @@ class _AdminClassroomPageState extends State<AdminClassroomPage> {
                     title: Text(suggestion),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSelected: (suggestion) {
                   controller.text = suggestion;
                 },
                 hideOnEmpty: true,

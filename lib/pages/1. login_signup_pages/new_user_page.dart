@@ -36,7 +36,6 @@ class _NewUserPageState extends State<NewUserPage> {
       try {
         User user = FirebaseAuth.instance.currentUser!;
 
-
         await addUserDetails(
           firstNameController.text.trim().toCapitalCase(),
           lastNameController.text.trim().toCapitalCase(),
@@ -126,58 +125,6 @@ class _NewUserPageState extends State<NewUserPage> {
                   //padding
                   SizedBox(height: screenHeight * 0.03),
 
-<<<<<<< Updated upstream
-                  //create an account
-                  Padding(
-=======
-                //first name
-                SignUpTextField(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  controller: firstNameController,
-                  hintText: "First Name",
-                  horizontalPadding: horizontalPadding,
-                  borderRadius: borderRadius,
-                  width: screenHeight * 0.7,
-                ),
-
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
-
-                //last name
-                SignUpTextField(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  controller: lastNameController,
-                  hintText: "Last Name",
-                  horizontalPadding: horizontalPadding,
-                  borderRadius: borderRadius,
-                  width: screenHeight * 0.7,
-                ),
-
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
-
-                //account type
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Container(
->>>>>>> Stashed changes
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    child: Text(
-                      "Providing your name is not required but highly reccomended to ease communication.",
-                      style: Theme.of(context).textTheme.displayMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
-                  //padding
-                  SizedBox(height: screenHeight * 0.03),
                   //first name
                   SignUpTextField(
                     screenHeight: screenHeight,
@@ -186,6 +133,7 @@ class _NewUserPageState extends State<NewUserPage> {
                     hintText: "First Name",
                     horizontalPadding: horizontalPadding,
                     borderRadius: borderRadius,
+                    width: screenHeight * 0.7,
                   ),
 
                   //padding
@@ -201,6 +149,57 @@ class _NewUserPageState extends State<NewUserPage> {
                     hintText: "Last Name",
                     horizontalPadding: horizontalPadding,
                     borderRadius: borderRadius,
+                    width: screenHeight * 0.7,
+                  ),
+
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
+
+                  //account type
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: horizontalPadding),
+                      child: Text(
+                        "Providing your name is not required but highly reccomended to ease communication.",
+                        style: Theme.of(context).textTheme.displayMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+
+                  //padding
+                  SizedBox(height: screenHeight * 0.03),
+
+                  //first name
+                  SignUpTextField(
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    controller: firstNameController,
+                    hintText: "First Name",
+                    horizontalPadding: horizontalPadding,
+                    borderRadius: borderRadius,
+                    width: screenHeight * 0.7,
+                  ),
+
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
+
+                  //last name
+                  SignUpTextField(
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    controller: lastNameController,
+                    hintText: "Last Name",
+                    horizontalPadding: horizontalPadding,
+                    borderRadius: borderRadius,
+                    width: screenHeight * 0.7,
                   ),
 
                   //padding
@@ -257,7 +256,6 @@ class _NewUserPageState extends State<NewUserPage> {
                   //padding
                   SizedBox(height: paddingMedium),
 
-<<<<<<< Updated upstream
                   //signup
                   LoginSignupButton(
                     text: 'Sign Up',
@@ -265,18 +263,8 @@ class _NewUserPageState extends State<NewUserPage> {
                     screenHeight: screenHeight,
                     screenWidth: screenWidth,
                     borderRadius: borderRadius,
+                    width: screenHeight * 0.2,
                   ),
-=======
-                //signup
-                LoginSignupButton(
-                  text: 'Sign Up',
-                  onTap: userSignup,
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  borderRadius: borderRadius,
-                  width: screenHeight * 0.2,
-                ),
->>>>>>> Stashed changes
 
                   //padding
                   SizedBox(

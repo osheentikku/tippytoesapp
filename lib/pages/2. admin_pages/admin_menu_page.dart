@@ -376,11 +376,14 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: controller,
-                  decoration:
-                      InputDecoration(labelText: 'Add item to $mealName'),
-                ),
+                controller: controller,
+                builder: (context, controller, focusNode) {
+                  return TextField(
+                    controller: controller,
+                    decoration:
+                        InputDecoration(labelText: 'Add item to $mealName'),
+                  );
+                },
                 suggestionsCallback: (String pattern) async {
                   if (pattern.isNotEmpty) {
                     return mealOptions
@@ -388,19 +391,17 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                             item.toLowerCase().contains(pattern.toLowerCase()))
                         .toList();
                   }
-                  return const Iterable.empty();
+                  //return const Iterable.empty();
+                  return null;
                 },
                 itemBuilder: (context, suggestion) {
                   return ListTile(
                     title: Text(suggestion),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSelected: (suggestion) {
                   controller.text = suggestion;
                 },
-                minCharsForSuggestions: 1,
-                hideOnEmpty: true,
-                autoFlipDirection: true,
               );
             },
           ),
