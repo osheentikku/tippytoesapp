@@ -61,7 +61,7 @@ class _AnnouncementsDateTextFieldState
             String formattedDate = DateFormat.yMMMEd().format(pickedDate);
             setState(() {
               widget.controller.text =
-                  formattedDate; //set foratted date to TextField value.
+                  formattedDate; //set formatted date to TextField value.
             });
           }
         },

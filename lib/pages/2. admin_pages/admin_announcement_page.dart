@@ -157,6 +157,9 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
         activeAnnouncements.add(title);
         sortAnnouncements();
         titleToBody[title] = body;
+        announcementTitle.clear();
+        announcementBody.clear();
+        announcementDate.clear();
       });
       showMessage(context, "Announcement successfully created.");
     }).catchError((e) {
@@ -178,7 +181,114 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
     }
   }
 
-  void deleteAnnouncement(String str) async {
+  void editAnnouncement(BuildContext context, double screenHeight,
+      double screenWidth, String originalTitle) async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection("announcements")
+        .doc(originalTitle)
+        .get();
+    setState(() {
+      announcementTitle.text = originalTitle;
+      announcementBody.text = titleToBody[originalTitle]!;
+      announcementDate.text =
+          DateFormat.yMMMEd().format(documentSnapshot['End Date'].toDate());
+    });
+    if (!context.mounted) return;
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: paddingMedium,
+                ),
+                Text(
+                  'Edit Announcement',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+                SizedBox(height: paddingSmall * 3),
+                AnnouncementsTextField(
+                  controller: announcementTitle,
+                  hintText: "Title",
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  horizontalPadding: horizontalPadding,
+                  textfieldBorder: textfieldBorder,
+                ),
+                AnnouncementsTextField(
+                  controller: announcementBody,
+                  hintText: "Body",
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  horizontalPadding: horizontalPadding,
+                  textfieldBorder: textfieldBorder,
+                ),
+                AnnouncementsDateTextField(
+                    controller: announcementDate,
+                    hintText: "End Date",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    horizontalPadding: horizontalPadding,
+                    textfieldBorder: textfieldBorder,
+                    context: context),
+                MaterialButton(
+                  onPressed: () async {
+                    setState(() {
+                      title = announcementTitle.text.trim().toCapitalCase();
+                      body = announcementBody.text.trim();
+                      endDate = announcementDate.text.trim();
+                    });
+                    if (title.isEmpty) {
+                      showMessage(context, "Please enter a title.");
+                    } else if (title != originalTitle &&
+                        activeAnnouncements.contains(title)) {
+                      showMessage(context,
+                          "The announcement title already exists. Please rename and try again.");
+                    } else if (body.isEmpty) {
+                      showMessage(context, "Please enter a body");
+                    } else if (endDate.isEmpty) {
+                      showMessage(context, "Please enter an end date.");
+                    } else {
+                      await FirebaseFirestore.instance
+                          .collection("announcements")
+                          .doc(originalTitle)
+                          .delete();
+
+                      setState(() {
+                        activeAnnouncements.remove(originalTitle);
+                      });
+
+                      await saveAnnouncement();
+
+                      // Close the bottom sheet
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    }
+                  },
+                  color: Theme.of(context).primaryColor,
+                  child: Text(
+                    'Post Announcement',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+                SizedBox(
+                  height: paddingMedium,
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void deleteAnnouncement(String title) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -189,24 +299,25 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium),
           ),
-          content: Text("Are you sure you want to delete $str?",
+          content: Text("Are you sure you want to delete $title?",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineMedium),
           actionsPadding: EdgeInsets.zero,
           actions: [
             TextButton(
               onPressed: () async {
-                int colonPosition = str.indexOf(":");
-                String documentName = str.substring(0, colonPosition - 1);
-
                 await FirebaseFirestore.instance
                     .collection("announcements")
-                    .doc(documentName)
+                    .doc(title)
                     .delete();
+
+                setState(() {
+                  activeAnnouncements.remove(title);
+                });
 
                 if (mounted) {
                   Navigator.of(context).pop();
-                  showMessage(context, "$str successfully deleted.");
+                  showMessage(context, "$title successfully deleted.");
                 }
               },
               child: const Text(
@@ -314,15 +425,18 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
                 //divider
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: dividerThickness,
-                          color: Theme.of(context).dividerColor,
+                  child: Container(
+                    width: screenHeight * 0.75,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: dividerThickness,
+                            color: Theme.of(context).dividerColor,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 
@@ -334,20 +448,23 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
                 //create new announcement
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: MaterialButton(
-                    onPressed: () =>
-                        newAnnouncement(context, screenHeight, screenWidth),
-                    padding: EdgeInsets.all(paddingSmall),
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.add),
-                        Text(
-                          "New Announcement",
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      ],
+                  child: Container(
+                    width: screenHeight * 0.75,
+                    child: MaterialButton(
+                      onPressed: () =>
+                          newAnnouncement(context, screenHeight, screenWidth),
+                      padding: EdgeInsets.all(paddingSmall),
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.add),
+                          Text(
+                            "New Announcement",
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -404,39 +521,69 @@ class _AdminAnnouncementPageState extends State<AdminAnnouncementPage> {
   } */
 
   Widget bulletedList(double screenHeight, double screenWidth) {
-    return ListView.separated(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      itemCount: activeAnnouncements.length,
-      itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.all(paddingSmall),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-              width: screenWidth * 0.009,
-            ),
-          ),
-          child: Column(
+    return Container(
+      width: screenHeight * 0.9,
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        itemCount: activeAnnouncements.length,
+        itemBuilder: (context, index) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                activeAnnouncements[index],
-                textAlign: TextAlign.center,
-                softWrap: true,
-                style: Theme.of(context).textTheme.displayMedium,
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => editAnnouncement(context, screenHeight,
+                        screenWidth, activeAnnouncements[index]),
+                    child: Icon(
+                      Icons.edit,
+                      size: iconSize,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => deleteAnnouncement(activeAnnouncements[index]),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                      size: iconSize,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                titleToBody[activeAnnouncements[index]]!,
-                textAlign: TextAlign.left,
-                softWrap: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(paddingSmall),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: textfieldBorder,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        activeAnnouncements[index],
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      Text(
+                        titleToBody[activeAnnouncements[index]]!,
+                        textAlign: TextAlign.left,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const Divider(),
+          );
+        },
+        separatorBuilder: (context, index) => const Divider(),
+      ),
     );
   }
 }
