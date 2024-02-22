@@ -191,8 +191,7 @@ class _AccountPageState extends State<AccountPage> {
   double horizontalPadding = 0;
   double paddingMedium = 0;
 
-  void setPadding(
-      double small, double medium, double horizontal) {
+  void setPadding(double small, double medium, double horizontal) {
     setState(() {
       paddingSmall = small;
       paddingMedium = medium;
@@ -204,8 +203,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext contfext) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    setPadding(screenHeight * 0.005, screenHeight * 0.02,
-        screenWidth * 0.07);
+    setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -220,11 +218,11 @@ class _AccountPageState extends State<AccountPage> {
 
                 CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
-                  radius: screenHeight * 0.23,
+                  radius: screenHeight * 0.15,
                   child: Icon(
                     Icons.person,
                     color: Theme.of(context).secondaryHeaderColor,
-                    size: screenWidth * 0.3,
+                    size: screenHeight * 0.25,
                   ),
                 ),
                 SizedBox(
@@ -247,6 +245,7 @@ class _AccountPageState extends State<AccountPage> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   horizontalPadding: horizontalPadding,
+                  width: screenHeight * 0.7,
                 ),
 
                 SizedBox(
@@ -260,6 +259,7 @@ class _AccountPageState extends State<AccountPage> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   horizontalPadding: horizontalPadding,
+                  width: screenHeight * 0.7,
                 ),
 
                 SizedBox(
@@ -273,6 +273,7 @@ class _AccountPageState extends State<AccountPage> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   horizontalPadding: horizontalPadding,
+                  width: screenHeight * 0.7,
                 ),
 
                 SizedBox(
@@ -282,41 +283,57 @@ class _AccountPageState extends State<AccountPage> {
                 //save button
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: MaterialButton(
-                    onPressed: () => saveProfile(),
-                    padding: EdgeInsets.all(paddingSmall),
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add),
-                        Text(
-                          "Save",
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: MaterialButton(
+                      onPressed: () => saveProfile(),
+                      padding: EdgeInsets.all(paddingSmall),
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add),
+                          Text(
+                            "Save",
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                ),
+
+                //spacing
+                SizedBox(
+                  height: paddingMedium,
                 ),
 
                 //delete button
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: MaterialButton(
-                    onPressed: () => deleteAccount(),
-                    padding: EdgeInsets.all(paddingSmall),
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.delete),
-                        Text(
-                          "Delete Account",
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: MaterialButton(
+                      onPressed: () => deleteAccount(),
+                      padding: EdgeInsets.all(paddingSmall),
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.delete),
+                          Text(
+                            "Delete Account",
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                ),
+
+                //spacing
+                SizedBox(
+                  height: paddingMedium,
                 ),
               ],
             ),
