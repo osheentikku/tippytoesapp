@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tippytoesapp/pages/2.%20admin_pages/admin_announcement_page.dart';
@@ -65,6 +66,23 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
     FirebaseAuth.instance.signOut();
   }
 
+  String name = "";
+  //fill out profile fields
+  Future getName() async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user.uid)
+        .get();
+
+    name = documentSnapshot['Name'];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +123,7 @@ class _AdminNavigationPageState extends State<AdminNavigationPage> {
                 decoration:
                     BoxDecoration(color: Theme.of(context).primaryColor),
                 accountName: Text(
-                  user.displayName!,
+                  name,
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
                 accountEmail: Text(
