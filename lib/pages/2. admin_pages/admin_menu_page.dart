@@ -249,15 +249,18 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: dividerThickness,
-                          color: Theme.of(context).dividerColor,
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: dividerThickness,
+                            color: Theme.of(context).dividerColor,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 
@@ -269,13 +272,16 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //breakfast
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Breakfast - 9:00 AM',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Breakfast - 9:00 AM',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 bulletedList(breakfastToday, screenHeight, screenWidth),
@@ -290,13 +296,16 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //lunch
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Lunch - 11:45 AM',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Lunch - 11:45 AM',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 bulletedList(lunchToday, screenHeight, screenWidth),
@@ -311,24 +320,30 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //snack
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Snack - *3:00PM',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Snack - *3:00PM',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    children: [
-                      Text(
-                        '(*Or when child wakes from nap)',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
+                  child: Container(
+                    width: screenHeight * 0.7,
+                    child: Row(
+                      children: [
+                        Text(
+                          '(*Or when child wakes from nap)',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 bulletedList(snackToday, screenHeight, screenWidth),
@@ -370,57 +385,62 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       double screenWidth) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return TypeAheadField(
-                controller: controller,
-                builder: (context, controller, focusNode) {
-                  return TextField(
-                    controller: controller,
-                    decoration:
-                        InputDecoration(labelText: 'Add item to $mealName'),
-                  );
-                },
-                suggestionsCallback: (String pattern) async {
-                  if (pattern.isNotEmpty) {
-                    return mealOptions
-                        .where((item) =>
-                            item.toLowerCase().contains(pattern.toLowerCase()))
-                        .toList();
-                  }
-                  //return const Iterable.empty();
-                  return null;
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
-                },
-                onSelected: (suggestion) {
-                  controller.text = suggestion;
-                },
-              );
-            },
-          ),
-          SizedBox(height: paddingSmall),
-
-          //add item button
-          MaterialButton(
-            onPressed: () {
-              addMealItem(mealToday, mealName, controller.text);
-              controller.clear();
-            },
-            color: Theme.of(context).primaryColor,
-            elevation: 1,
-            child: Text(
-              'Add Item',
-              style: Theme.of(context).textTheme.displayMedium,
+      child: Container(
+        width: screenHeight * 0.7,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return TypeAheadField(
+                  controller: controller,
+                  builder: (context, controller, focusNode) {
+                    return TextField(
+                      controller: controller,
+                      focusNode: focusNode,
+                      decoration:
+                          InputDecoration(labelText: 'Add item to $mealName'),
+                    );
+                  },
+                  suggestionsCallback: (String pattern) {
+                    if (pattern.isNotEmpty) {
+                      return mealOptions
+                          .where((item) => item
+                              .toLowerCase()
+                              .contains(pattern.toLowerCase()))
+                          .toList();
+                    }
+                    return null;
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSelected: (suggestion) {
+                    controller.text = suggestion;
+                  },
+                  constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
+                );
+              },
             ),
-          ),
-        ],
+            SizedBox(height: paddingSmall),
+
+            //add item button
+            MaterialButton(
+              onPressed: () {
+                addMealItem(mealToday, mealName, controller.text);
+                controller.clear();
+              },
+              color: Theme.of(context).primaryColor,
+              elevation: 1,
+              child: Text(
+                'Add Item',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -428,8 +448,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
   Widget bulletedList(
       List<String> list, double screenHeight, double screenWidth) {
     return Container(
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      width: screenHeight * 0.7,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {
