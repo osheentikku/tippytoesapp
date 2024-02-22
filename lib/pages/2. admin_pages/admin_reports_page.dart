@@ -1,5 +1,7 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tippytoesapp/components/report_textfield.dart';
 
 import '../../components/show_message.dart';
@@ -24,6 +26,11 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
   List<String> currentStudents = [];
   String currentStudent = "";
 
+  //date
+  List<DateTime?> date = [];
+  DateTime dateToday = DateTime.now();
+  String dateTodayString = "";
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +43,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
       currentStudents.clear();
       currentStudents.add("Select a student");
       currentStudent = "Select a student";
+      date.add(DateTime.now());
+      dateToday = DateTime.now();
+      dateTodayString = '${dateToday.month}-${dateToday.day}-${dateToday.year}';
     });
     //get all students in Firestore
     QuerySnapshot studentSnapshot =
@@ -54,10 +64,8 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
 
   //populate fields with student data
   Future populateStudent(String studentName) async {
-    //get today's date
-    DateTime dateToday = DateTime.now();
     String dateTodayFormat =
-        '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+        '${date[0]!.month}-${date[0]!.day}-${date[0]!.year}';
     try {
       //student report for today from Firestore
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
@@ -98,10 +106,8 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
   }
 
   Future saveReport() async {
-    //get today's date
-    DateTime dateToday = DateTime.now();
     String dateTodayString =
-        '${dateToday.month}-${dateToday.day}-${dateToday.year}';
+        '${date[0]!.month}-${date[0]!.day}-${date[0]!.year}';
 
     //set report in firestore
     FirebaseFirestore.instance
@@ -125,6 +131,35 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
     });
   }
 
+  Future changeDate(
+      double screenWidth, double screenHeight, String studentName) async {
+    final values = await showCalendarDatePicker2Dialog(
+      context: context,
+      config: CalendarDatePicker2WithActionButtonsConfig(
+        calendarType: CalendarDatePicker2Type.single,
+        firstDate: DateTime.now().subtract(const Duration(days: 7)),
+        lastDate: DateTime.now().add(const Duration(days: 7)),
+      ),
+      dialogSize: Size(screenWidth * 0.8, screenHeight * 0.2),
+      borderRadius: BorderRadius.circular(15),
+      value: date,
+      dialogBackgroundColor: Colors.white,
+    );
+    if (values != null) {
+      setState(() {
+        date = values;
+        dateTodayString = '${date[0]!.month}-${date[0]!.day}-${date[0]!.year}';
+        diaperBMController.clear();
+        diaperWetController.clear();
+        napController.clear();
+        moodAMController.clear();
+        moodPMController.clear();
+        healthController.clear();
+      });
+    }
+    populateStudent(studentName);
+  }
+
   void clearFields() {
     setState(() {
       diaperBMController.clear();
@@ -141,14 +176,16 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
   double horizontalPadding = 0;
   double paddingMedium = 0;
   double paddingIndented = 0;
+  double iconSize = 0;
 
-  void setPadding(
-      double small, double medium, double indent, double horizontal) {
+  void setPadding(double small, double medium, double indent, double horizontal,
+      double icon) {
     setState(() {
       paddingSmall = small;
       paddingMedium = medium;
       paddingIndented = indent;
       horizontalPadding = horizontal;
+      iconSize = icon;
     });
   }
 
@@ -157,7 +194,7 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.1,
-        screenWidth * 0.07);
+        screenWidth * 0.07, 25);
     double dividerThickness = 0.5;
     double textfieldBorder = screenHeight * 0.003;
     return GestureDetector(
@@ -170,29 +207,55 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
       child: SafeArea(
         child: SingleChildScrollView(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //padding
-                SizedBox(
-                  height: paddingMedium,
-                ),
+            child: Container(
+              width: screenHeight * 0.75,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //padding
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
 
-                //title
-                Text(
-                  "Student Reports",
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
+                  //title
+                  Container(
+                    width: screenHeight * 0.75,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Student Reports | ",
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                        //Date
+                        GestureDetector(
+                          onTap: () => changeDate(
+                              screenWidth, screenHeight, currentStudent),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.calendar_month,
+                                size: iconSize,
+                              ),
+                              Text(
+                                DateFormat.yMMMEd().format(date[0]!),
+                                style: Theme.of(context).textTheme.displayLarge,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
-                //padding
-                SizedBox(
-                  height: paddingSmall,
-                ),
+                  //padding
+                  SizedBox(
+                    height: paddingSmall,
+                  ),
 
-                //divider
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
+                  //divider
+                  Row(
                     children: [
                       Expanded(
                         child: Divider(
@@ -202,17 +265,14 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       ),
                     ],
                   ),
-                ),
 
-                //padding
-                SizedBox(
-                  height: paddingSmall,
-                ),
+                  //padding
+                  SizedBox(
+                    height: paddingSmall,
+                  ),
 
-                //display roster in dropdown
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: DropdownButtonFormField(
+                  //display roster in dropdown
+                  DropdownButtonFormField(
                     items: currentStudents
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -231,20 +291,17 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       }
                     },
                   ),
-                ),
 
-                SizedBox(
-                  height: paddingMedium,
-                ),
+                  SizedBox(
+                    height: paddingMedium,
+                  ),
 
-                //student
-                Text(displayCurrentStudent(),
-                    style: Theme.of(context).textTheme.displayLarge),
+                  //student
+                  Text(displayCurrentStudent(),
+                      style: Theme.of(context).textTheme.displayLarge),
 
-                //divider
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
-                  child: Row(
+                  //divider
+                  Row(
                     children: [
                       Expanded(
                         child: Divider(
@@ -254,42 +311,23 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       ),
                     ],
                   ),
-                ),
 
-                //diaper changes
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  SizedBox(
+                    height: paddingSmall,
+                  ),
+
+                  //bm
+                  Row(
                     children: [
                       Text(
-                        "Diaper Changes",
+                        "Diaper Change - Bowel Movements",
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: paddingSmall,
-                ),
 
-                //bm
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Bowel Movements",
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
-                ),
-
-                //bm textfield
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
-                  child: ReportTextField(
+                  //bm textfield
+                  ReportTextField(
                     controller: diaperBMController,
                     hintText: "Update Timing",
                     screenHeight: screenHeight,
@@ -297,25 +335,19 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     horizontalPadding: horizontalPadding,
                     textfieldBorder: textfieldBorder,
                   ),
-                ),
 
-                //wet
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
-                  child: Row(
+                  //wet
+                  Row(
                     children: [
                       Text(
-                        "Wet",
+                        "Diaper Change - Wet",
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
-                ),
 
-                //wet textfield
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: paddingIndented),
-                  child: ReportTextField(
+                  //wet textfield
+                  ReportTextField(
                     controller: diaperWetController,
                     hintText: "Update Timing",
                     screenHeight: screenHeight,
@@ -323,12 +355,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     horizontalPadding: horizontalPadding,
                     textfieldBorder: textfieldBorder,
                   ),
-                ),
 
-                //nap
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
+                  //nap
+                  Row(
                     children: [
                       Text(
                         "Nap",
@@ -336,12 +365,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       ),
                     ],
                   ),
-                ),
 
-                //nap textfield
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: ReportTextField(
+                  //nap textfield
+                  ReportTextField(
                     controller: napController,
                     hintText: "Update Timing",
                     screenHeight: screenHeight,
@@ -349,12 +375,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     horizontalPadding: horizontalPadding,
                     textfieldBorder: textfieldBorder,
                   ),
-                ),
 
-                //mood AM
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
+                  //mood AM
+                  Row(
                     children: [
                       Text(
                         "Mood AM",
@@ -362,12 +385,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       ),
                     ],
                   ),
-                ),
 
-                //moodAM textfield
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: ReportTextField(
+                  //moodAM textfield
+                  ReportTextField(
                     controller: moodAMController,
                     hintText: "Update Mood",
                     screenHeight: screenHeight,
@@ -375,12 +395,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     horizontalPadding: horizontalPadding,
                     textfieldBorder: textfieldBorder,
                   ),
-                ),
 
-                //mood pm
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
+                  //mood pm
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
@@ -389,12 +406,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       ),
                     ],
                   ),
-                ),
 
-                //mood pm textfield
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: ReportTextField(
+                  //mood pm textfield
+                  ReportTextField(
                     controller: moodPMController,
                     hintText: "Update Mood",
                     screenHeight: screenHeight,
@@ -402,12 +416,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     horizontalPadding: horizontalPadding,
                     textfieldBorder: textfieldBorder,
                   ),
-                ),
 
-                //health
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
+                  //health
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
@@ -416,12 +427,9 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                       ),
                     ],
                   ),
-                ),
 
-                //health textfield
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: ReportTextField(
+                  //health textfield
+                  ReportTextField(
                     controller: healthController,
                     hintText: "Update Health",
                     screenHeight: screenHeight,
@@ -429,55 +437,58 @@ class _AdminReportsPageState extends State<AdminReportsPage> {
                     horizontalPadding: horizontalPadding,
                     textfieldBorder: textfieldBorder,
                   ),
-                ),
 
-                //clear and save button
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MaterialButton(
-                        onPressed: () => clearFields(),
-                        padding: EdgeInsets.all(paddingSmall),
-                        color: Theme.of(context).primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.restart_alt_rounded),
-                            Text(
-                              "Clear",
-                              style: Theme.of(context).textTheme.displayMedium,
-                            ),
-                          ],
+                  //clear and save button
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          onPressed: () => clearFields(),
+                          padding: EdgeInsets.all(paddingMedium),
+                          color: Theme.of(context).primaryColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.restart_alt_rounded),
+                              Text(
+                                "Clear",
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: paddingMedium,
-                      ),
-                      MaterialButton(
-                        onPressed: () => saveReport(),
-                        padding: EdgeInsets.all(paddingSmall),
-                        color: Theme.of(context).primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.add),
-                            Text(
-                              "Save Report",
-                              style: Theme.of(context).textTheme.displayMedium,
-                            ),
-                          ],
+                        SizedBox(
+                          width: paddingMedium,
                         ),
-                      ),
-                    ],
+                        MaterialButton(
+                          onPressed: () => saveReport(),
+                          padding: EdgeInsets.all(paddingMedium),
+                          color: Theme.of(context).primaryColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.add),
+                              Text(
+                                "Save Report",
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  height: paddingMedium,
-                )
-              ],
+                  SizedBox(
+                    height: paddingMedium,
+                  )
+                ],
+              ),
             ),
           ),
         ),
