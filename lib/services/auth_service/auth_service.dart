@@ -10,19 +10,24 @@ class AuthService {
   //Google Sign in
   signInWithGoogle() async {
     //begin interactive login process
+    
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    //obtain auth details from request
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+    if (gUser != null) {
+      //obtain auth details from request
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-    //create a new credential for user
-    final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth.idToken,
-    );
+      //create a new credential for user
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
 
-    //login
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      //login
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return FirebaseAuth.instance.currentUser!
+          .updateDisplayName(gUser.displayName);
+    }
   }
 
   /// Generates a cryptographically secure random nonce, to be included in a
@@ -63,9 +68,16 @@ class AuthService {
         rawNonce: rawNonce,
       );
 
+      final appleDisplayName = [
+        appleCredential.givenName ?? '',
+        appleCredential.familyName ?? '',
+      ].join(' ').trim();
+
       // Sign in the user with Firebase. If the nonce we generated earlier doesn't
       // match the nonce in `appleCredential.identityToken`, sign in will fail.
-      return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      return FirebaseAuth.instance.currentUser!
+          .updateDisplayName(appleDisplayName);
     }
   }
 }

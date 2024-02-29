@@ -137,7 +137,7 @@ class _SignupPageState extends State<SignupPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     setPadding(screenHeight * 0.005, screenHeight * 0.02, screenWidth * 0.07,
-        screenWidth * 0.05);
+        screenWidth * 0.01);
     double dividerThickness = 0.5;
 
     return Scaffold(
@@ -166,6 +166,7 @@ class _SignupPageState extends State<SignupPage> {
                   hintText: "First Name",
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
@@ -181,6 +182,7 @@ class _SignupPageState extends State<SignupPage> {
                   hintText: "Last Name",
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
@@ -196,6 +198,7 @@ class _SignupPageState extends State<SignupPage> {
                   hintText: "Email",
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
@@ -211,6 +214,7 @@ class _SignupPageState extends State<SignupPage> {
                   hintText: "Password",
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
@@ -226,6 +230,7 @@ class _SignupPageState extends State<SignupPage> {
                   hintText: "Confirm Password",
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //padding
@@ -237,8 +242,8 @@ class _SignupPageState extends State<SignupPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    width: screenHeight * 0.7,
+                    padding: EdgeInsets.symmetric(horizontal: paddingMedium),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(borderRadius),
                         color: Theme.of(context).secondaryHeaderColor),
@@ -284,13 +289,14 @@ class _SignupPageState extends State<SignupPage> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.2,
                 ),
 
                 //padding
                 SizedBox(
                   height: paddingMedium,
                 ),
-
+/*
                 //or continue with
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -353,6 +359,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 //padding
                 SizedBox(height: paddingMedium),
+                */
 
                 //already have an account?
                 Padding(
@@ -377,6 +384,8 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                 ),
+                //post padding
+                SizedBox(height: paddingMedium),
               ],
             ),
           ),

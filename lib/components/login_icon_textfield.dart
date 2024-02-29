@@ -8,6 +8,7 @@ class LoginIconTextField extends StatelessWidget {
   final Icon preIcon;
   final double horizontalPadding;
   final double borderRadius;
+  final double width;
 
   const LoginIconTextField({
     super.key,
@@ -18,35 +19,39 @@ class LoginIconTextField extends StatelessWidget {
     required this.screenWidth,
     required this.horizontalPadding,
     required this.borderRadius,
+    required this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          //border
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
+      child: Container(
+        width: width,
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            //border
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
 
-          //filled color
-          fillColor: Theme.of(context).secondaryHeaderColor,
-          filled: true,
+            //filled color
+            fillColor: Theme.of(context).secondaryHeaderColor,
+            filled: true,
 
-          //hints
-          hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.labelMedium,
-          prefixIcon: preIcon,
+            //hints
+            hintText: hintText,
+            hintStyle: Theme.of(context).textTheme.labelMedium,
+            prefixIcon: preIcon,
+          ),
         ),
       ),
     );

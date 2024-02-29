@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tippytoesapp/pages/1.%20login_signup_pages/unapproved_page.dart';
+import 'package:tippytoesapp/pages/1.%20login_signup_pages/pending_approval_page.dart';
 import 'package:tippytoesapp/pages/1.%20login_signup_pages/new_user_page.dart';
 import 'package:tippytoesapp/pages/rolebased_page.dart';
 
@@ -57,7 +57,7 @@ class _CheckApprovalPageState extends State<CheckApprovalPage> {
       if (isApproved) {
         return const RoleBasedPage();
       } else {
-        return const UnapprovedPage();
+        return const PendingApprovalPage();
       }
     }
   }

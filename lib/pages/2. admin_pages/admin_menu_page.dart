@@ -143,6 +143,9 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       setState(() {
         date = values;
         dateTodayString = '${date[0]!.month}-${date[0]!.day}-${date[0]!.year}';
+        breakfastController.clear();
+        lunchController.clear();
+        snackController.clear();
       });
     }
     await populateMenu();
@@ -223,22 +226,18 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 //Date
                 GestureDetector(
                   onTap: () => changeDate(screenWidth, screenHeight),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.calendar_month,
-                          size: iconSize,
-                        ),
-                        Text(
-                          DateFormat.yMMMEd().format(date[0]!),
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        size: iconSize,
+                      ),
+                      Text(
+                        DateFormat.yMMMEd().format(date[0]!),
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
                   ),
                 ),
 
@@ -247,8 +246,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                   height: paddingSmall,
                 ),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                Container(
+                  width: screenHeight * 0.75,
                   child: Row(
                     children: [
                       Expanded(
@@ -267,8 +266,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 ),
 
                 //breakfast
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                Container(
+                  width: screenHeight * 0.75,
                   child: Row(
                     children: [
                       Text(
@@ -288,8 +287,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 ),
 
                 //lunch
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                Container(
+                  width: screenHeight * 0.75,
                   child: Row(
                     children: [
                       Text(
@@ -309,8 +308,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                 ),
 
                 //snack
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                Container(
+                  width: screenHeight * 0.75,
                   child: Row(
                     children: [
                       Text(
@@ -320,8 +319,8 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                Container(
+                  width: screenHeight * 0.75,
                   child: Row(
                     children: [
                       Text(
@@ -368,39 +367,41 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
       List<String> mealToday,
       double screenHeight,
       double screenWidth) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+    return Container(
+      width: screenHeight * 0.75,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: controller,
-                  decoration:
-                      InputDecoration(labelText: 'Add item to $mealName'),
-                ),
-                suggestionsCallback: (String pattern) async {
+                controller: controller,
+                builder: (context, controller, focusNode) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    decoration:
+                        InputDecoration(labelText: 'Add item to $mealName'),
+                  );
+                },
+                suggestionsCallback: (String pattern) {
                   if (pattern.isNotEmpty) {
                     return mealOptions
                         .where((item) =>
                             item.toLowerCase().contains(pattern.toLowerCase()))
                         .toList();
                   }
-                  return const Iterable.empty();
+                  return null;
                 },
                 itemBuilder: (context, suggestion) {
                   return ListTile(
                     title: Text(suggestion),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSelected: (suggestion) {
                   controller.text = suggestion;
                 },
-                minCharsForSuggestions: 1,
-                hideOnEmpty: true,
-                autoFlipDirection: true,
+                constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
               );
             },
           ),
@@ -427,8 +428,7 @@ class _AdminMenuPageState extends State<AdminMenuPage> {
   Widget bulletedList(
       List<String> list, double screenHeight, double screenWidth) {
     return Container(
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      width: screenHeight * 0.75,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list.map((str) {

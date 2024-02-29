@@ -6,6 +6,7 @@ class LoginIconPasswordTextField extends StatefulWidget {
   final Icon preIcon;
   final double horizontalPadding;
   final double borderRadius;
+  final double width;
 
   const LoginIconPasswordTextField(
       {super.key,
@@ -13,7 +14,8 @@ class LoginIconPasswordTextField extends StatefulWidget {
       required this.hintText,
       required this.preIcon,
       required this.horizontalPadding,
-      required this.borderRadius});
+      required this.borderRadius,
+      required this.width});
 
   @override
   State<LoginIconPasswordTextField> createState() =>
@@ -27,43 +29,46 @@ class _LoginIconPasswordTextFieldState
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
-      child: TextField(
-        controller: widget.controller,
-        obscureText: obscure,
-        decoration: InputDecoration(
-          //border
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            borderSide:
-                BorderSide(color: Theme.of(context).secondaryHeaderColor),
-          ),
+      child: Container(
+        width: widget.width,
+        child: TextField(
+          controller: widget.controller,
+          obscureText: obscure,
+          decoration: InputDecoration(
+            //border
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              borderSide:
+                  BorderSide(color: Theme.of(context).secondaryHeaderColor),
+            ),
 
-          //filled color
-          fillColor: Theme.of(context).secondaryHeaderColor,
-          filled: true,
+            //filled color
+            fillColor: Theme.of(context).secondaryHeaderColor,
+            filled: true,
 
-          //hints
-          hintText: widget.hintText,
-          hintStyle: Theme.of(context).textTheme.labelMedium,
-          prefixIcon: widget.preIcon,
+            //hints
+            hintText: widget.hintText,
+            hintStyle: Theme.of(context).textTheme.labelMedium,
+            prefixIcon: widget.preIcon,
 
-          //hide/view
-          suffixIcon: IconButton(
-            icon: obscure
-                ? const Icon(
-                    Icons.visibility,
-                  )
-                : const Icon(Icons.visibility_off),
-            onPressed: () {
-              setState(() {
-                obscure = !obscure;
-              });
-            },
+            //hide/view
+            suffixIcon: IconButton(
+              icon: obscure
+                  ? const Icon(
+                      Icons.visibility,
+                    )
+                  : const Icon(Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  obscure = !obscure;
+                });
+              },
+            ),
           ),
         ),
       ),

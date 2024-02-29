@@ -93,7 +93,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 //logo
                 CircleAvatar(
                   backgroundColor: Theme.of(context).secondaryHeaderColor,
-                  radius: screenWidth * 0.33,
+                  radius: screenHeight * 0.23,
                   backgroundImage: const AssetImage('lib/images/tippytoeslogo'),
                 ),
 
@@ -128,6 +128,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                   horizontalPadding: horizontalPadding,
                   borderRadius: borderRadius,
+                  width: screenHeight * 0.7,
                 ),
 
                 //enter email instructions
